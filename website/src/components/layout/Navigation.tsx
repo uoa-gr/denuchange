@@ -77,13 +77,16 @@ export function Navigation() {
       </div>
       {/* Yellow wave accent */}
       <svg
-        className="w-full h-2"
-        viewBox="0 0 1440 8"
+        className="w-full h-3 block"
+        viewBox="0 0 1440 12"
         preserveAspectRatio="none"
       >
+        {/* Blue background fills top */}
+        <rect x="0" y="0" width="1440" height="6" fill="#1e73be" />
+        {/* Yellow wave */}
         <path
           fill="#f1c100"
-          d="M0,4 Q360,8 720,4 T1440,4 L1440,8 L0,8 Z"
+          d="M0,2 Q360,10 720,2 T1440,2 L1440,12 L0,12 Z"
         />
       </svg>
 
