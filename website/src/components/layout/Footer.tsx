@@ -56,7 +56,7 @@ export function Footer() {
               <p className="text-sm font-medium">NKUA</p>
               <p className="text-xs text-muted-foreground">National & Kapodistrian University of Athens</p>
             </div>
-          </a>``
+          </a>
         </div>
 
         <Separator className="my-8" />
