@@ -21,6 +21,8 @@ export function Navigation() {
             src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`}
             alt="DENUCHANGE"
             className="h-10 w-10 rounded-full object-cover"
+            width={40}
+            height={40}
           />
           <span className="font-semibold text-sm tracking-tight">
             DENUCHANGE 2026

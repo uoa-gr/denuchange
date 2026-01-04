@@ -4,14 +4,16 @@ export function Hero() {
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
       {/* Background Image */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 bg-slate-800">
         <img
           src={`${import.meta.env.BASE_URL}images/hero-naxos-aerial.jpeg`}
           alt="Aerial view of Naxos coastline"
           className="w-full h-full object-cover"
+          width={1920}
+          height={1080}
           fetchPriority="high"
           loading="eager"
-          decoding="async"
+          decoding="sync"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
       </div>

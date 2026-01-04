@@ -166,6 +166,9 @@
     @apply bg-background text-foreground;
     font-family: 'Inter', system-ui, sans-serif;
   }
+  img {
+    content-visibility: auto;
+  }
 }
 
 /* Container utility */
