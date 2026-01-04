@@ -1,22 +1,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Mail, ExternalLink } from "lucide-react"
-
-const links = [
-  {
-    label: "IAG Official Website",
-    url: "https://www.geomorph.org/",
-  },
-  {
-    label: "DENUCHANGE Working Group",
-    url: "https://www.geomorph.org/denuchange-working-group-4/",
-  },
-  {
-    label: "NKUA",
-    url: "https://en.uoa.gr/",
-  },
-]
+import { Mail } from "lucide-react"
 
 export function Contact() {
   return (
@@ -40,7 +25,7 @@ export function Contact() {
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-4">
                 <Mail className="h-6 w-6 text-primary" />
               </div>
-              
+
               <h3 className="text-lg font-semibold mb-2">
                 Prof. Niki Evelpidou
               </h3>
@@ -61,24 +46,9 @@ export function Contact() {
             </CardContent>
           </Card>
 
-          {/* Useful Links */}
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {links.map((link) => (
-              <a
-                key={link.label}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 p-3 rounded-lg border bg-background hover:bg-accent transition-colors text-sm"
-              >
-                {link.label}
-                <ExternalLink className="h-3 w-3 text-muted-foreground" />
-              </a>
-            ))}
-          </div>
+
         </div>
       </div>
     </section>
   )
 }
-
