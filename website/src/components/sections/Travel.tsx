@@ -150,7 +150,7 @@ export function Travel() {
         <div className="max-w-4xl mx-auto mt-8 p-4 bg-primary/10 border border-primary/20 rounded-lg text-center">
           <p className="text-sm font-medium">
             <strong>Discount Code:</strong>{" "}
-            <span className="font-mono bg-background px-2 py-1 rounded">DENUCHANGE2026</span>
+            <span className="font-mono bg-background px-2 py-1 rounded">DENUCHANGE2027</span>
           </p>
           <p className="text-xs text-muted-foreground mt-1">
             Mention you are attending the DENUCHANGE Workshop when booking.
