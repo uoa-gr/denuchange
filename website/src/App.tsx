@@ -13,8 +13,6 @@ import { Contact } from "@/components/sections/Contact"
 function App() {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* IAG brand colors accent line */}
-      <div className="h-1 w-full bg-gradient-to-r from-[#1e73be] via-[#1e73be] to-[#f1c100]" />
       <Navigation />
       <main className="flex-1">
         <Hero />

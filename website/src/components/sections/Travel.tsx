@@ -147,10 +147,10 @@ export function Travel() {
           ))}
         </div>
 
-        <div className="max-w-4xl mx-auto mt-8 p-4 bg-primary/10 border border-primary/20 rounded-lg text-center">
+        <div className="max-w-4xl mx-auto mt-8 p-4 bg-[#f1c100]/15 border border-[#f1c100]/30 rounded-lg text-center">
           <p className="text-sm font-medium">
             <strong>Discount Code:</strong>{" "}
-            <span className="font-mono bg-background px-2 py-1 rounded">DENUCHANGE2027</span>
+            <span className="font-mono bg-[#f1c100]/20 text-foreground px-2 py-1 rounded border border-[#f1c100]/40">DENUCHANGE2027</span>
           </p>
           <p className="text-xs text-muted-foreground mt-1">
             Mention you are attending the DENUCHANGE Workshop when booking.
