@@ -75,8 +75,15 @@ export function Navigation() {
         </button>
         </div>
       </div>
-      {/* Yellow accent line */}
-      <div className="h-1 bg-[#f1c100]" />
+      {/* Yellow wave accent */}
+      <svg
+        className="w-full h-3 -mb-px"
+        viewBox="0 0 1200 12"
+        preserveAspectRatio="none"
+        fill="#f1c100"
+      >
+        <path d="M0,0 C300,12 600,0 900,12 C1050,6 1200,0 1200,0 L1200,12 L0,12 Z" />
+      </svg>
 
       {/* Mobile menu dropdown */}
       {isOpen && (
