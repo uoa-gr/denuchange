@@ -260,7 +260,7 @@ export function FieldTrip() {
                     >
                       <div className="w-48">
                         <img
-                          src={currentStop.image}
+                          src={`${import.meta.env.BASE_URL}${currentStop.image.replace(/^\//, '')}`}
                           alt={currentStop.name}
                           className="w-full h-28 object-cover rounded-md mb-2"
                         />

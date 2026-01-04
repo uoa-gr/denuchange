@@ -15,7 +15,7 @@ export function Navigation() {
       <div className="container flex h-16 items-center justify-between">
         <a href="#" className="flex items-center gap-3">
           <img
-            src="/images/logo-denuchange.jpg"
+            src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`}
             alt="DENUCHANGE"
             className="h-10 w-10 rounded-full object-cover"
           />
@@ -58,4 +58,3 @@ export function Navigation() {
     </nav>
   )
 }
-

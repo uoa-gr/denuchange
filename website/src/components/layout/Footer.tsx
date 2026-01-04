@@ -13,7 +13,7 @@ export function Footer() {
             className="opacity-80 hover:opacity-100 transition-opacity"
           >
             <img
-              src="/images/logo-iag.jpg"
+              src={`${import.meta.env.BASE_URL}images/logo-iag.jpg`}
               alt="IAG - International Association of Geomorphologists"
               className="h-12 object-contain"
             />
@@ -25,7 +25,7 @@ export function Footer() {
             className="opacity-80 hover:opacity-100 transition-opacity"
           >
             <img
-              src="/images/logo-denuchange.jpg"
+              src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`}
               alt="DENUCHANGE Working Group"
               className="h-12 object-contain rounded-full"
             />
@@ -37,7 +37,7 @@ export function Footer() {
             className="opacity-80 hover:opacity-100 transition-opacity"
           >
             <img
-              src="/images/logo-nkua.jpg"
+              src={`${import.meta.env.BASE_URL}images/logo-nkua.jpg`}
               alt="National and Kapodistrian University of Athens"
               className="h-12 object-contain"
             />
@@ -57,4 +57,3 @@ export function Footer() {
     </footer>
   )
 }
-

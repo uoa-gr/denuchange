@@ -6,7 +6,7 @@ export function Hero() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/images/hero-naxos-aerial.jpeg"
+          src={`${import.meta.env.BASE_URL}images/hero-naxos-aerial.jpeg`}
           alt="Aerial view of Naxos coastline"
           className="w-full h-full object-cover"
         />
@@ -23,10 +23,10 @@ export function Hero() {
             preserveAspectRatio="none"
           >
             <path
-              d="M20,30 
-                 Q50,10 100,25 
-                 T200,20 
-                 T300,30 
+              d="M20,30
+                 Q50,10 100,25
+                 T200,20
+                 T300,30
                  T380,25
                  Q400,30 395,50
                  Q400,100 390,150
@@ -78,4 +78,3 @@ export function Hero() {
     </section>
   )
 }
-
