@@ -42,7 +42,6 @@ export function Travel() {
                 <p className="font-medium">Sky Express</p>
                 <p className="text-sm text-muted-foreground">
                   Athens (ATH) → Naxos (JNX)<br />
-                  Limited seasonal schedule, book early
                 </p>
               </div>
               <Button variant="outline" size="sm" asChild>
