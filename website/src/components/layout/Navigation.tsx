@@ -77,12 +77,14 @@ export function Navigation() {
       </div>
       {/* Yellow wave accent */}
       <svg
-        className="w-full h-3 -mb-px"
-        viewBox="0 0 1200 12"
+        className="w-full h-2"
+        viewBox="0 0 1440 8"
         preserveAspectRatio="none"
-        fill="#f1c100"
       >
-        <path d="M0,0 C300,12 600,0 900,12 C1050,6 1200,0 1200,0 L1200,12 L0,12 Z" />
+        <path
+          fill="#f1c100"
+          d="M0,4 Q360,8 720,4 T1440,4 L1440,8 L0,8 Z"
+        />
       </svg>
 
       {/* Mobile menu dropdown */}
