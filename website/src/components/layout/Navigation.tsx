@@ -25,20 +25,20 @@ export function Navigation() {
             height={40}
           />
           <span className="font-semibold text-sm tracking-tight">
-            <span className="text-[#f1c100]">DENU</span>
-            <span className="text-[#1e40af]">CHANGE</span>
-            {" "}
-            <span className="text-[#f1c100]">2026</span>
+            DENUCHANGE 2026
           </span>
         </a>
 
         <div className="hidden md:flex items-center gap-6">
-          {navItems.map((item) => (
+          {navItems.map((item, index) => (
             <a
               key={item.href}
               href={item.href}
               className={cn(
-                "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                "text-sm font-medium transition-colors",
+                index % 2 === 0
+                  ? "text-[#f1c100] hover:text-[#d9ae00]"
+                  : "text-[#1e40af] hover:text-[#1e3a8a]"
               )}
             >
               {item.label}
@@ -81,12 +81,17 @@ export function Navigation() {
       {isOpen && (
         <div className="md:hidden border-t bg-background">
           <div className="container py-4 flex flex-col gap-2">
-            {navItems.map((item) => (
+            {navItems.map((item, index) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground py-2 px-2 rounded hover:bg-muted transition-colors"
+                className={cn(
+                  "text-sm font-medium py-2 px-2 rounded hover:bg-muted transition-colors",
+                  index % 2 === 0
+                    ? "text-[#f1c100] hover:text-[#d9ae00]"
+                    : "text-[#1e40af] hover:text-[#1e3a8a]"
+                )}
               >
                 {item.label}
               </a>
