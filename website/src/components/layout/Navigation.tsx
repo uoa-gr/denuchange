@@ -14,8 +14,8 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-[#f1c100] shadow-md">
-      <div className="container flex h-14 items-center justify-between">
+    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center justify-between">
         <a href="#" className="flex items-center gap-3">
           <img
             src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`}
@@ -24,7 +24,7 @@ export function Navigation() {
             width={40}
             height={40}
           />
-          <span className="font-semibold text-sm tracking-tight text-[#1e73be]">
+          <span className="font-semibold text-sm tracking-tight">
             DENUCHANGE 2026
           </span>
         </a>
@@ -35,7 +35,7 @@ export function Navigation() {
               key={item.href}
               href={item.href}
               className={cn(
-                "text-sm font-medium text-[#1e73be] transition-colors hover:text-[#1e73be]/80"
+                "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               )}
             >
               {item.label}
@@ -45,7 +45,7 @@ export function Navigation() {
 
         {/* Mobile menu button */}
         <button
-          className="md:hidden p-2 text-[#1e73be]"
+          className="md:hidden p-2"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
         >
@@ -76,14 +76,14 @@ export function Navigation() {
 
       {/* Mobile menu dropdown */}
       {isOpen && (
-        <div className="md:hidden border-t border-[#1e73be]/20 bg-[#f1c100]">
+        <div className="md:hidden border-t bg-background">
           <div className="container py-4 flex flex-col gap-2">
             {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="text-sm font-medium text-[#1e73be] hover:text-[#1e73be]/80 py-2 px-2 rounded hover:bg-[#1e73be]/10 transition-colors"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground py-2 px-2 rounded hover:bg-muted transition-colors"
               >
                 {item.label}
               </a>

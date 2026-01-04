@@ -18,8 +18,40 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
       </div>
 
-      {/* Content Container */}
-      <div className="relative z-10 mx-4 max-w-2xl bg-white/90 backdrop-blur-sm rounded-lg shadow-xl px-8 py-12">
+      {/* Content Container with Wavy Shape */}
+      <div className="relative z-10 mx-4 max-w-2xl">
+        {/* Wavy background shape */}
+        <div className="absolute inset-0 -m-8">
+          <svg
+            viewBox="0 0 400 300"
+            className="w-full h-full"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M20,30
+                 Q50,10 100,25
+                 T200,20
+                 T300,30
+                 T380,25
+                 Q400,30 395,50
+                 Q400,100 390,150
+                 Q395,200 385,250
+                 Q380,280 350,285
+                 T250,290
+                 T150,285
+                 T50,290
+                 Q20,285 15,260
+                 Q5,200 15,150
+                 Q10,100 20,50
+                 Q15,35 20,30"
+              fill="white"
+              className="drop-shadow-2xl"
+            />
+          </svg>
+        </div>
+
+        {/* Text Content */}
+        <div className="relative z-10 text-center px-8 py-12">
           <p className="text-xs font-medium tracking-[0.2em] text-primary mb-4 uppercase">
             October 6–9, 2026 · Naxos, Greece
           </p>
@@ -35,13 +67,14 @@ export function Hero() {
             processes in coastal and terrestrial environments.
           </p>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Button size="lg" asChild>
-            <a href="#registration">Register Now</a>
-          </Button>
-          <Button size="lg" asChild className="bg-[#f1c100] hover:bg-[#d9ae00] text-zinc-900 border-none">
-            <a href="#program">View Program</a>
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Button size="lg" asChild>
+              <a href="#registration">Register Now</a>
+            </Button>
+            <Button size="lg" asChild className="bg-[#f1c100] hover:bg-[#d9ae00] text-zinc-900 border-none">
+              <a href="#program">View Program</a>
+            </Button>
+          </div>
         </div>
       </div>
 
