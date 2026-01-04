@@ -11,9 +11,7 @@ const navItems = [
 
 export function Navigation() {
   return (
-    <nav className="sticky top-0 z-50 w-full border-b-2 border-b-[#1e73be] bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      {/* IAG colors accent line */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#1e73be] via-[#1e73be] to-[#f1c100]" />
+    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <a href="#" className="flex items-center gap-3">
           <img
