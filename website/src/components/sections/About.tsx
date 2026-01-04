@@ -10,7 +10,14 @@ export function About() {
           </Badge>
 
           <h2 className="text-3xl font-bold tracking-tight mb-6">
-            Advancing Our Understanding of Denudation Processes
+            <a
+              href="https://www.geomorph.org/denuchange-working-group-4/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
+            >
+              Advancing Our Understanding of Denudation Processes
+            </a>
           </h2>
 
           <div className="prose prose-lg max-w-none text-muted-foreground space-y-4">

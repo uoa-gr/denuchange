@@ -1,7 +1,23 @@
 import { Badge } from "@/components/ui/badge"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Plane, Ship, ExternalLink } from "lucide-react"
+import { Separator } from "@/components/ui/separator"
+import { Plane, Ship, Hotel, ExternalLink } from "lucide-react"
+
+const hotels = [
+  {
+    name: "Princess of Naxos",
+    website: "https://princessofnaxos.com",
+  },
+  {
+    name: "Princess Mare",
+    website: "https://princessmare.com.gr/",
+  },
+  {
+    name: "Hotel Grotta",
+    website: "https://www.hotelgrotta.gr/",
+  },
+]
 
 export function Travel() {
   return (
@@ -9,10 +25,10 @@ export function Travel() {
       <div className="container">
         <div className="max-w-3xl mx-auto text-center mb-12">
           <Badge variant="outline" className="mb-4">
-            Getting There
+            Travel & Accommodation
           </Badge>
           <h2 className="text-3xl font-bold tracking-tight mb-4">
-            Travel to Naxos
+            Getting to Naxos
           </h2>
           <p className="text-muted-foreground">
             Naxos is accessible by air and sea from Athens.
@@ -98,6 +114,46 @@ export function Travel() {
             >
               ferryhopper.com
             </a>
+          </p>
+        </div>
+
+        <Separator className="my-12 max-w-4xl mx-auto" />
+
+        {/* Accommodation */}
+        <div className="max-w-3xl mx-auto text-center mb-8">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Hotel className="h-5 w-5 text-primary" />
+            <h3 className="text-2xl font-bold tracking-tight">Accommodation</h3>
+          </div>
+          <p className="text-muted-foreground">
+            Suggested hotels for your stay in Naxos.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          {hotels.map((hotel) => (
+            <Card key={hotel.name} className="text-center">
+              <CardHeader>
+                <CardTitle className="text-lg">{hotel.name}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Button variant="outline" size="sm" asChild>
+                  <a href={hotel.website} target="_blank" rel="noopener noreferrer">
+                    Visit Website <ExternalLink className="ml-2 h-3 w-3" />
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <div className="max-w-4xl mx-auto mt-8 p-4 bg-primary/10 border border-primary/20 rounded-lg text-center">
+          <p className="text-sm font-medium">
+            <strong>Discount Code:</strong>{" "}
+            <span className="font-mono bg-background px-2 py-1 rounded">DENUCHANGE2026</span>
+          </p>
+          <p className="text-xs text-muted-foreground mt-1">
+            Mention you are attending the DENUCHANGE Workshop when booking.
           </p>
         </div>
       </div>

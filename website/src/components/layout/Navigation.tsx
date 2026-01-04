@@ -5,7 +5,7 @@ const navItems = [
   { href: "#program", label: "Program" },
   { href: "#field-trip", label: "Field Trip" },
   { href: "#registration", label: "Registration" },
-  { href: "#travel", label: "Travel" },
+  { href: "#travel", label: "Travel & Stay" },
   { href: "#contact", label: "Contact" },
 ]
 

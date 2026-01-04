@@ -199,6 +199,11 @@ export function FieldTrip() {
             A two-day excursion exploring the continuum from catchment dynamics
             to coastal evolution across Naxos Island.
           </p>
+          <p className="text-sm text-muted-foreground mt-3">
+            <a href="#travel" className="text-primary hover:underline">
+              View travel & accommodation options →
+            </a>
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto items-stretch">
