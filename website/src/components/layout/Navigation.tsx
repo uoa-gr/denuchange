@@ -14,8 +14,9 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-gradient-to-r from-[#1e73be] to-[#f1c100]">
-      <div className="container flex h-16 items-center justify-between">
+    <nav className="sticky top-0 z-50 w-full">
+      <div className="bg-[#1e73be]">
+        <div className="container flex h-14 items-center justify-between">
         <a href="#" className="flex items-center gap-3">
           <img
             src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`}
@@ -72,18 +73,21 @@ export function Navigation() {
             )}
           </svg>
         </button>
+        </div>
       </div>
+      {/* Yellow accent line */}
+      <div className="h-1 bg-[#f1c100]" />
 
       {/* Mobile menu dropdown */}
       {isOpen && (
-        <div className="md:hidden border-t bg-background">
+        <div className="md:hidden border-t border-[#f1c100] bg-[#1e73be]">
           <div className="container py-4 flex flex-col gap-2">
             {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground py-2 px-2 rounded hover:bg-muted transition-colors"
+                className="text-sm font-medium text-white/90 hover:text-white py-2 px-2 rounded hover:bg-white/10 transition-colors"
               >
                 {item.label}
               </a>
