@@ -14,7 +14,7 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-0 z-50 w-full border-b bg-gradient-to-r from-[#1e73be] to-[#f1c100]">
       <div className="container flex h-16 items-center justify-between">
         <a href="#" className="flex items-center gap-3">
           <img
@@ -24,7 +24,7 @@ export function Navigation() {
             width={40}
             height={40}
           />
-          <span className="font-semibold text-sm tracking-tight">
+          <span className="font-semibold text-sm tracking-tight text-white">
             DENUCHANGE 2026
           </span>
         </a>
@@ -35,7 +35,7 @@ export function Navigation() {
               key={item.href}
               href={item.href}
               className={cn(
-                "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                "text-sm font-medium text-white/90 transition-colors hover:text-white"
               )}
             >
               {item.label}
@@ -45,7 +45,7 @@ export function Navigation() {
 
         {/* Mobile menu button */}
         <button
-          className="md:hidden p-2"
+          className="md:hidden p-2 text-white"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
         >
