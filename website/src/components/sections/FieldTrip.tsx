@@ -297,7 +297,7 @@ export function FieldTrip() {
               ))}
             </div>
 
-            <div className="mt-6 p-4 bg-primary/5 rounded-lg border">
+            <div className="mt-6 p-4 bg-[#f1c100]/15 border border-[#f1c100]/25 rounded-lg">
               <p className="text-sm text-muted-foreground">
                 <strong className="text-foreground">Route:</strong> From Peritsis Valley
                 (mountains) through Alyki Lagoon to the coastal stops at Alyko and Pyrgaki.

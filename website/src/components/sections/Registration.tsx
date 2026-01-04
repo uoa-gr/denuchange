@@ -52,7 +52,7 @@ export function Registration() {
             Join Us in Naxos
           </h2>
           <p className="text-muted-foreground">
-            Register to participate in the workshop and submit your abstract 
+            Register to participate in the workshop and submit your abstract
             for oral or poster presentation.
           </p>
         </div>
@@ -85,7 +85,7 @@ export function Registration() {
                 </TableBody>
               </Table>
               <p className="mt-4 text-xs text-muted-foreground">
-                Full fee includes materials, coffee breaks, lunches (Oct 6-7), 
+                Full fee includes materials, coffee breaks, lunches (Oct 6-7),
                 Workshop Dinner (Oct 7), and field trip.
               </p>
             </CardContent>
@@ -120,7 +120,7 @@ export function Registration() {
         </div>
 
         {/* Abstract Guidelines */}
-        <div className="max-w-3xl mx-auto mt-12 p-6 bg-muted/50 rounded-lg">
+        <div className="max-w-3xl mx-auto mt-12 p-6 bg-[#f1c100]/15 border border-[#f1c100]/25 rounded-lg">
           <h3 className="font-semibold mb-3">Abstract Guidelines</h3>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-muted-foreground">
             <li>• Maximum 500 words (excl. title/authors)</li>
@@ -135,4 +135,3 @@ export function Registration() {
     </section>
   )
 }
-

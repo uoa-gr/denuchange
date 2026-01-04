@@ -66,7 +66,7 @@ export function Hero() {
             <Button size="lg" asChild>
               <a href="#registration">Register Now</a>
             </Button>
-            <Button size="lg" variant="outline" asChild>
+            <Button size="lg" asChild className="bg-[#f1c100] hover:bg-[#d9ae00] text-zinc-900 border-none">
               <a href="#program">View Program</a>
             </Button>
           </div>
