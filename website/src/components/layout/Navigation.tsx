@@ -14,8 +14,29 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
+    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 overflow-hidden">
+      {/* Decorative curved lines */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        preserveAspectRatio="none"
+        viewBox="0 0 1200 64"
+      >
+        <path
+          d="M0,50 Q300,10 600,40 T1200,30"
+          fill="none"
+          stroke="#f1c100"
+          strokeWidth="2"
+          opacity="0.6"
+        />
+        <path
+          d="M0,20 Q400,60 800,25 T1200,45"
+          fill="none"
+          stroke="#1e40af"
+          strokeWidth="2"
+          opacity="0.6"
+        />
+      </svg>
+      <div className="container relative flex h-16 items-center justify-between">
         <a href="#" className="flex items-center gap-3">
           <img
             src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`}
@@ -30,16 +51,11 @@ export function Navigation() {
         </a>
 
         <div className="hidden md:flex items-center gap-6">
-          {navItems.map((item, index) => (
+          {navItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className={cn(
-                "text-sm font-medium transition-colors",
-                index % 2 === 0
-                  ? "text-[#f1c100] hover:text-[#d9ae00]"
-                  : "text-[#1e40af] hover:text-[#1e3a8a]"
-              )}
+              className="text-sm font-medium text-foreground transition-colors hover:text-muted-foreground"
             >
               {item.label}
             </a>
@@ -81,17 +97,12 @@ export function Navigation() {
       {isOpen && (
         <div className="md:hidden border-t bg-background">
           <div className="container py-4 flex flex-col gap-2">
-            {navItems.map((item, index) => (
+            {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className={cn(
-                  "text-sm font-medium py-2 px-2 rounded hover:bg-muted transition-colors",
-                  index % 2 === 0
-                    ? "text-[#f1c100] hover:text-[#d9ae00]"
-                    : "text-[#1e40af] hover:text-[#1e3a8a]"
-                )}
+                className="text-sm font-medium text-foreground hover:text-muted-foreground py-2 px-2 rounded hover:bg-muted transition-colors"
               >
                 {item.label}
               </a>
