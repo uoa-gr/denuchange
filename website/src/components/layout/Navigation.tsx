@@ -13,29 +13,8 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 overflow-hidden">
-      {/* Decorative wave lines */}
-      <svg
-        className="absolute inset-0 w-full h-full pointer-events-none"
-        preserveAspectRatio="none"
-        viewBox="0 0 1440 64"
-      >
-        <path
-          d="M0,32 C120,48 240,16 360,32 C480,48 600,16 720,32 C840,48 960,16 1080,32 C1200,48 1320,16 1440,32"
-          fill="none"
-          stroke="#f1c100"
-          strokeWidth="2"
-          opacity="0.5"
-        />
-        <path
-          d="M0,32 C120,16 240,48 360,32 C480,16 600,48 720,32 C840,16 960,48 1080,32 C1200,16 1320,48 1440,32"
-          fill="none"
-          stroke="#1e40af"
-          strokeWidth="2"
-          opacity="0.5"
-        />
-      </svg>
-      <div className="container relative flex h-16 items-center justify-between">
+    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center justify-between">
         <a href="#" className="flex items-center gap-3">
           <img
             src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`}
