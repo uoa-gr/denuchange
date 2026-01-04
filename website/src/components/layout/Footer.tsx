@@ -4,43 +4,55 @@ export function Footer() {
   return (
     <footer className="border-t bg-muted/30">
       <div className="container py-12">
-        {/* Logos */}
-        <div className="flex flex-wrap items-center justify-center gap-8 mb-8">
+        {/* Organization Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 max-w-4xl mx-auto">
           <a
             href="https://www.geomorph.org/"
             target="_blank"
             rel="noopener noreferrer"
-            className="opacity-80 hover:opacity-100 transition-opacity"
+            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors"
           >
             <img
               src={`${import.meta.env.BASE_URL}images/logo-iag.jpg`}
-              alt="IAG - International Association of Geomorphologists"
-              className="h-12 object-contain"
+              alt="IAG"
+              className="h-10 w-10 object-contain flex-shrink-0"
             />
+            <div className="text-left">
+              <p className="text-sm font-medium">IAG</p>
+              <p className="text-xs text-muted-foreground">International Association of Geomorphologists</p>
+            </div>
           </a>
           <a
             href="https://www.geomorph.org/denuchange-working-group-4/"
             target="_blank"
             rel="noopener noreferrer"
-            className="opacity-80 hover:opacity-100 transition-opacity"
+            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors"
           >
             <img
               src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`}
-              alt="DENUCHANGE Working Group"
-              className="h-12 object-contain rounded-full"
+              alt="DENUCHANGE"
+              className="h-10 w-10 object-contain rounded-full flex-shrink-0"
             />
+            <div className="text-left">
+              <p className="text-sm font-medium">DENUCHANGE</p>
+              <p className="text-xs text-muted-foreground">IAG Working Group</p>
+            </div>
           </a>
           <a
             href="https://en.uoa.gr/"
             target="_blank"
             rel="noopener noreferrer"
-            className="opacity-80 hover:opacity-100 transition-opacity"
+            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors"
           >
             <img
               src={`${import.meta.env.BASE_URL}images/logo-nkua.jpg`}
-              alt="National and Kapodistrian University of Athens"
-              className="h-12 object-contain"
+              alt="NKUA"
+              className="h-10 w-10 object-contain flex-shrink-0"
             />
+            <div className="text-left">
+              <p className="text-sm font-medium">NKUA</p>
+              <p className="text-xs text-muted-foreground">National & Kapodistrian University of Athens</p>
+            </div>
           </a>
         </div>
 

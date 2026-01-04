@@ -70,7 +70,7 @@ export function Program() {
 
         <Separator className="my-12 max-w-3xl mx-auto" />
 
-        <div className="max-w-3xl mx-auto text-center">
+        <div className="max-w-3xl mx-auto text-center p-4 bg-[#f1c100]/15 border border-[#f1c100]/25 rounded-lg">
           <p className="text-sm text-muted-foreground">
             Detailed program with session times will be announced after abstract review.
             <br />
