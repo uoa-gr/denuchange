@@ -4,36 +4,23 @@ import { Separator } from "@/components/ui/separator"
 
 const schedule = [
   {
-    day: "Day 1",
-    date: "October 6",
+    day: "Days 1-2",
+    date: "October 6-7",
     title: "Workshop Sessions",
     items: [
-      "Welcome and Registration",
-      "Keynote Presentations",
-      "Oral Sessions: Weathering & Erosion",
-      "Poster Session & Coffee Breaks",
+      "Oral & poster presentations",
+      "Coffee breaks & lunches included",
+      "Workshop Dinner (Oct 7)",
     ],
   },
   {
-    day: "Day 2",
-    date: "October 7",
-    title: "Workshop Sessions",
-    items: [
-      "Oral Sessions: Mass Movements",
-      "Oral Sessions: Coastal Processes",
-      "Discussion & Future Collaborations",
-      "Workshop Dinner",
-    ],
-  },
-  {
-    day: "Day 3-4",
+    day: "Days 3-4",
     date: "October 8-9",
     title: "Field Trip",
     items: [
-      "Catchment to Coast Transect",
-      "Erosion & Sediment Transport",
-      "Coastal Geomorphology",
-      "Nature-based Solutions Sites",
+      "Catchment to coast transect",
+      "Naxos geomorphological sites",
+      "Lunches included",
     ],
   },
 ]
@@ -55,12 +42,12 @@ export function Program() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
           {schedule.map((day, index) => (
-            <Card key={day.day} className={index === 2 ? "md:bg-primary/5" : ""}>
+            <Card key={day.day} className={index === 1 ? "md:bg-primary/5" : ""}>
               <CardHeader>
                 <div className="flex items-center gap-2 mb-2">
-                  <Badge variant={index === 2 ? "default" : "secondary"}>
+                  <Badge variant={index === 1 ? "default" : "secondary"}>
                     {day.day}
                   </Badge>
                   <span className="text-sm text-muted-foreground">{day.date}</span>
