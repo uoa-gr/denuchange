@@ -9,6 +9,9 @@ export function Hero() {
           src={`${import.meta.env.BASE_URL}images/hero-naxos-aerial.jpeg`}
           alt="Aerial view of Naxos coastline"
           className="w-full h-full object-cover"
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
       </div>

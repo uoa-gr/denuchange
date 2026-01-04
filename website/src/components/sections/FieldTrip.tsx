@@ -268,6 +268,7 @@ export function FieldTrip() {
                           src={`${import.meta.env.BASE_URL}${currentStop.image.replace(/^\//, '')}`}
                           alt={currentStop.name}
                           className="w-full h-28 object-cover rounded-md mb-2"
+                          loading="lazy"
                         />
                         <div className="font-medium">{currentStop.name}</div>
                         <div className="text-xs opacity-80">{currentStop.description}</div>

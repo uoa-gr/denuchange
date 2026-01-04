@@ -16,6 +16,7 @@ export function Footer() {
               src={`${import.meta.env.BASE_URL}images/logo-iag.jpg`}
               alt="IAG"
               className="h-10 w-10 object-contain flex-shrink-0"
+              loading="lazy"
             />
             <div className="text-left">
               <p className="text-sm font-medium">IAG</p>
@@ -32,6 +33,7 @@ export function Footer() {
               src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`}
               alt="DENUCHANGE"
               className="h-10 w-10 object-contain rounded-full flex-shrink-0"
+              loading="lazy"
             />
             <div className="text-left">
               <p className="text-sm font-medium">DENUCHANGE</p>
@@ -48,6 +50,7 @@ export function Footer() {
               src={`${import.meta.env.BASE_URL}images/logo-nkua.jpg`}
               alt="NKUA"
               className="h-10 w-10 object-contain flex-shrink-0"
+              loading="lazy"
             />
             <div className="text-left">
               <p className="text-sm font-medium">NKUA</p>
