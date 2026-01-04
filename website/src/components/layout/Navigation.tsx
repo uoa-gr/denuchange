@@ -25,7 +25,10 @@ export function Navigation() {
             height={40}
           />
           <span className="font-semibold text-sm tracking-tight">
-            DENUCHANGE 2026
+            <span className="text-[#f1c100]">DENU</span>
+            <span className="text-[#1e40af]">CHANGE</span>
+            {" "}
+            <span className="text-[#f1c100]">2026</span>
           </span>
         </a>
 
