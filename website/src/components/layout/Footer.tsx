@@ -52,6 +52,15 @@ export function Footer() {
           <p className="mt-1">
             5th International Workshop · Naxos, Greece · October 6-9, 2026
           </p>
+          <p className="mt-3 text-xs">
+            Designed by{" "}
+            <a
+              href="mailto:alexliaskos@geol.uoa.gr"
+              className="underline hover:text-foreground transition-colors"
+            >
+              Alexandros Liaskos
+            </a>
+          </p>
         </div>
       </div>
     </footer>
