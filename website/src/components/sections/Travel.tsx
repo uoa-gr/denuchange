@@ -7,14 +7,17 @@ import { Plane, Ship, Hotel, ExternalLink } from "lucide-react"
 const hotels = [
   {
     name: "Princess of Naxos",
+    location: "Agios Georgios Beach, ~800m to town center",
     website: "https://princessofnaxos.com",
   },
   {
     name: "Princess Mare",
+    location: "Agios Georgios Beach, 30m from beach, in Chora",
     website: "https://princessmare.com.gr/",
   },
   {
     name: "Hotel Grotta",
+    location: "Grotta area, 5 min walk to center, sea view",
     website: "https://www.hotelgrotta.gr/",
   },
 ]
@@ -133,8 +136,9 @@ export function Travel() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           {hotels.map((hotel) => (
             <Card key={hotel.name} className="text-center">
-              <CardHeader>
+              <CardHeader className="pb-2">
                 <CardTitle className="text-lg">{hotel.name}</CardTitle>
+                <p className="text-xs text-muted-foreground mt-1">{hotel.location}</p>
               </CardHeader>
               <CardContent>
                 <Button variant="outline" size="sm" asChild>
