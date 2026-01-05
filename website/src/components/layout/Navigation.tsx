@@ -1,11 +1,10 @@
 import { useState } from "react"
 
 const navItems = [
-  { href: "#about", label: "About" },
   { href: "#program", label: "Program" },
   { href: "#field-trip", label: "Field Trip" },
   { href: "#registration", label: "Registration" },
-  { href: "#travel", label: "Travel & Stay" },
+  { href: "#travel", label: "Travel & Accommodation" },
   { href: "#contact", label: "Contact" },
 ]
 
