@@ -7,17 +7,17 @@ import { Plane, Ship, Hotel, ExternalLink } from "lucide-react"
 const hotels = [
   {
     name: "Princess of Naxos",
-    location: "Agios Georgios Beach, ~800m to town center",
+    location: "Agios Georgios Beach, 800m to centre",
     website: "https://princessofnaxos.com",
   },
   {
     name: "Princess Mare",
-    location: "Agios Georgios Beach, 30m from beach, in Chora",
+    location: "Agios Georgios Beach, in the centre",
     website: "https://princessmare.com.gr/",
   },
   {
     name: "Hotel Grotta",
-    location: "Grotta area, 5 min walk to center, sea view",
+    location: "Grotta area, 400m to centre",
     website: "https://www.hotelgrotta.gr/",
   },
 ]
