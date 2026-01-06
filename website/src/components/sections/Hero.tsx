@@ -25,14 +25,12 @@ export function Hero() {
           </p>
 
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground mb-4">
-            IAG Working Group on
-            <br />
-            <span className="text-primary">Denudation</span>
+            IAG <span className="text-primary">DENUCHANGE</span> Workshop
           </h1>
 
           <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto mb-8">
-            5th International Workshop on weathering, erosion, and mass movement
-            processes in coastal and terrestrial environments.
+            5th International Workshop of the IAG Working Group on Denudation
+            and Environmental Changes in Different Morphoclimatic Zones.
           </p>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">

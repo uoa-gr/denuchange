@@ -88,6 +88,9 @@ export function Registration() {
                 Full fee includes materials, coffee breaks, lunches (Oct 6-7),
                 Workshop Dinner (Oct 7), and field trip.
               </p>
+              <p className="mt-2 text-xs text-primary font-medium">
+                Details on the payment process will be announced shortly.
+              </p>
             </CardContent>
           </Card>
 

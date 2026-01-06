@@ -154,7 +154,7 @@ export function Travel() {
         <div className="max-w-4xl mx-auto mt-8 p-4 bg-[#f1c100]/15 border border-[#f1c100]/30 rounded-lg text-center">
           <p className="text-sm font-medium">
             <strong>Discount Code:</strong>{" "}
-            <span className="font-mono bg-[#f1c100]/20 text-foreground px-2 py-1 rounded border border-[#f1c100]/40">DENUCHANGE2027</span>
+            <span className="font-mono bg-[#f1c100]/20 text-foreground px-2 py-1 rounded border border-[#f1c100]/40">DENUCHANGE2026</span>
           </p>
         </div>
       </div>

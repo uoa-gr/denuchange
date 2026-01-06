@@ -284,13 +284,16 @@ export function FieldTrip() {
 
           {/* Themes */}
           <div className="space-y-6">
-            <h3 className="text-xl font-semibold">Research Themes</h3>
+            <h3 className="text-xl font-semibold">Topics Covered</h3>
+            <p className="text-sm text-muted-foreground -mt-4">
+              Thematic areas explored across the 4 field stops
+            </p>
             <div className="grid grid-cols-1 gap-3">
               {themes.map((theme, i) => (
                 <Card key={i} className="p-4 hover:bg-accent/50 transition-colors">
                   <CardContent className="p-0 flex items-center gap-3">
                     <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-medium flex items-center justify-center">
-                      {i + 1}
+                      •
                     </span>
                     <span className="text-sm">{theme}</span>
                   </CardContent>
@@ -300,7 +303,7 @@ export function FieldTrip() {
 
             <div className="mt-6 p-4 bg-[#f1c100]/15 border border-[#f1c100]/25 rounded-lg">
               <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">Route:</strong> From Peritsis Valley
+                <strong className="text-foreground">Route:</strong> 4 stops from Peritsis Valley
                 (mountains) through Alyki Lagoon to the coastal stops at Alyko and Pyrgaki.
               </p>
             </div>
