@@ -105,7 +105,7 @@ export function Travel() {
                 </p>
               </div>
               <Button variant="outline" size="sm" asChild>
-                <a href="https://www.ferryhopper.com/" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.ferryhopper.com/en/" target="_blank" rel="noopener noreferrer">
                   Book Ferries <ExternalLink className="ml-2 h-3 w-3" />
                 </a>
               </Button>
@@ -118,7 +118,7 @@ export function Travel() {
             <strong>Tip:</strong> Ferry schedules increase during summer/early fall.
             Book ferries in advance at{" "}
             <a
-              href="https://www.ferryhopper.com/"
+              href="https://www.ferryhopper.com/en/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline"
