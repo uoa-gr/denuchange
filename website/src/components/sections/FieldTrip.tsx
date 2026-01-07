@@ -235,8 +235,8 @@ export function FieldTrip() {
             Catchment to Coast: October 8-9
           </h2>
           <p className="text-muted-foreground">
-            A two-day excursion exploring the continuum from catchment dynamics
-            to coastal evolution across Naxos Island.
+            A two-day excursion exploring natural hazards, weathering processes,
+            and coastal dynamics from inland Naxos to its coastline.
           </p>
           <p className="text-sm text-muted-foreground mt-3">
             <a href="#travel" className="text-primary hover:underline">
