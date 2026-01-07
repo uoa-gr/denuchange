@@ -27,26 +27,21 @@ export function Contact() {
               </div>
 
               <h3 className="text-lg font-semibold mb-2">
-                Prof. Niki Evelpidou
+                Contact Us
               </h3>
-              <p className="text-muted-foreground mb-1">
-                Workshop Chair
-              </p>
               <p className="text-sm text-muted-foreground mb-6">
                 Faculty of Geology & Geoenvironment<br />
                 National and Kapodistrian University of Athens
               </p>
 
               <Button asChild>
-                <a href="mailto:evliepi@geol.uoa.gr">
+                <a href="mailto:evelpidou@geol.uoa.gr,ekarkani@geol.uoa.gr">
                   <Mail className="mr-2 h-4 w-4" />
-                  Contact Workshop Chair
+                  Send Email
                 </a>
               </Button>
             </CardContent>
           </Card>
-
-
         </div>
       </div>
     </section>
