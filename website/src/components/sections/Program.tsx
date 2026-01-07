@@ -4,7 +4,6 @@ import { Separator } from "@/components/ui/separator"
 
 const schedule = [
   {
-    day: "Days 1-2",
     date: "October 6-7",
     title: "Workshop Sessions",
     items: [
@@ -14,7 +13,6 @@ const schedule = [
     ],
   },
   {
-    day: "Days 3-4",
     date: "October 8-9",
     title: "Field Trip",
     items: [
@@ -43,23 +41,18 @@ export function Program() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-          {schedule.map((day, index) => (
-            <Card key={day.day} className={index === 1 ? "md:bg-primary/5" : ""}>
+          {schedule.map((item, index) => (
+            <Card key={item.title} className={index === 1 ? "md:bg-primary/5" : ""}>
               <CardHeader>
-                <div className="flex items-center gap-2 mb-2">
-                  <Badge variant={index === 1 ? "default" : "secondary"}>
-                    {day.day}
-                  </Badge>
-                  <span className="text-sm text-muted-foreground">{day.date}</span>
-                </div>
-                <CardTitle className="text-lg">{day.title}</CardTitle>
+                <CardTitle className="text-lg">{item.title}</CardTitle>
+                <span className="text-sm text-muted-foreground">{item.date}</span>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2">
-                  {day.items.map((item, i) => (
+                  {item.items.map((listItem, i) => (
                     <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
                       <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>
-                      <span>{item}</span>
+                      <span>{listItem}</span>
                     </li>
                   ))}
                 </ul>
