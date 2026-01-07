@@ -22,22 +22,18 @@ export function About() {
 
           <div className="prose prose-lg max-w-none text-muted-foreground space-y-4">
             <p>
-              The 5th DENUCHANGE International Workshop brings together geoscientists
-              from around the world to advance our understanding of denudation processes
-              including weathering, erosion, and mass movements in both coastal and
-              terrestrial environments.
+              The workshop aims to bring together geoscientists, to contribute to an
+              advanced understanding of denudation processes, such as weathering, erosion
+              and mass movements in both coastal and terrestrial environments, their drivers,
+              rates, diversity and variability around the world, and to facilitate future
+              collaborations.
             </p>
 
             <p>
               Building on the success of previous workshops in Poland (2018),
-              Spain (2019), Israel (2023), and Italy (2024), this year's meeting
-              will focus on understanding drivers, rates, diversity, and variability
-              of denudation processes worldwide.
-            </p>
-
-            <p>
-              The workshop provides an excellent platform to present research findings,
-              exchange ideas, and foster international collaborations.
+              Spain (2019), Israel (2023), and Italy (2024), the 5th International
+              DENUCHANGE Workshop provides an excellent platform to present research
+              findings, exchange ideas, and foster international scientific partnerships.
             </p>
           </div>
 
