@@ -2,9 +2,9 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 const organizingCommittee = [
-  { name: "Prof. Niki Evelpidou", role: "Chair", affiliation: "NKUA, Greece" },
-  { name: "Dr. Anna Karkani", role: "Co-Chair", affiliation: "NKUA, Greece" },
-  { name: "Dr. Giannis Saitis", role: "Member", affiliation: "NKUA, Greece" },
+  { name: "Prof. Niki Evelpidou", affiliation: "NKUA, Greece" },
+  { name: "Dr. Anna Karkani", affiliation: "NKUA, Greece" },
+  { name: "Dr. Giannis Saitis", affiliation: "NKUA, Greece" },
 ]
 
 const scientificCommittee = [
@@ -43,7 +43,7 @@ export function Committees() {
                 <div key={member.name} className="flex flex-col">
                   <span className="font-medium">{member.name}</span>
                   <span className="text-sm text-muted-foreground">
-                    {member.role} · {member.affiliation}
+                    {member.affiliation}
                   </span>
                 </div>
               ))}
@@ -74,4 +74,3 @@ export function Committees() {
     </section>
   )
 }
-
