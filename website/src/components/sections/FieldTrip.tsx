@@ -12,51 +12,109 @@ import {
 import { ThemeProvider } from "@/components/theme-provider"
 
 // Field trip stops on Naxos - verified GPS coordinates
+// Day 1 (Oct 8): Inland - Aplomata, Faneromeni Dam, Kinidaros, Apeiranthos
+// Day 2 (Oct 9): Coastal - Laguna, Stelida, Mikri Vigla, Pyrgaki, Alyko
 const fieldStops = [
+  // Day 1 - Inland
   {
-    name: "Peritsis Valley",
-    lat: 37.1099,
-    lng: 25.4748,
-    description: "Scenic valley, waterfalls & stone bridges",
-    image: "/images/peritsis-valley.jpg",
+    name: "Aplomata",
+    lat: 37.108,
+    lng: 25.377,
+    description: "Landslide hazard area near Grotta",
+    image: "/images/fieldtrip/aplomata.jpeg",
     order: 1,
+    day: 1,
   },
   {
-    name: "Alyki / Peritsis Mouth",
-    lat: 37.082892,
-    lng: 25.361861,
-    description: "River mouth, flash floods & wetland",
-    image: "/images/alyki-lagoon.jpg",
+    name: "Faneromeni Dam",
+    lat: 37.1395,
+    lng: 25.4721,
+    description: "Water management & sediment budgets",
+    image: "/images/fieldtrip/faneromeni-dam-1.jpeg",
     order: 2,
+    day: 1,
   },
   {
-    name: "Alyko Beach",
-    lat: 36.9783,
-    lng: 25.3892,
-    description: "Coastal dunes & cliff retreat",
-    image: "/images/alyko-beach.jpg",
+    name: "Kinidaros",
+    lat: 37.1014,
+    lng: 25.4791,
+    description: "Forest fire impact & erosion processes",
+    image: "/images/fieldtrip/kinidaros-1.jpeg",
     order: 3,
+    day: 1,
+  },
+  {
+    name: "Apeiranthos",
+    lat: 37.0718,
+    lng: 25.5196,
+    description: "Geological Museum & emery mine",
+    image: "/images/fieldtrip/apeiranthos-1.jpeg",
+    order: 4,
+    day: 1,
+  },
+  // Day 2 - Coastal
+  {
+    name: "Laguna",
+    lat: 37.0872,
+    lng: 25.3584,
+    description: "Palaeogeography, tafoni & beachrocks",
+    image: "/images/fieldtrip/laguna.jpeg",
+    order: 5,
+    day: 2,
+  },
+  {
+    name: "Stelida",
+    lat: 37.0832,
+    lng: 25.3441,
+    description: "Tafoni & weathering processes",
+    image: "/images/fieldtrip/laguna.jpeg",
+    order: 6,
+    day: 2,
+  },
+  {
+    name: "Mikri Vigla",
+    lat: 37.0279,
+    lng: 25.3712,
+    description: "Coastal protection & climate change",
+    image: "/images/fieldtrip/pyrgaki.jpeg",
+    order: 7,
+    day: 2,
   },
   {
     name: "Pyrgaki Beach",
-    lat: 36.9752,
-    lng: 25.4042,
-    description: "Beach erosion & NbS sites",
-    image: "/images/pyrgaki-beach.jpg",
-    order: 4,
+    lat: 36.9762,
+    lng: 25.4026,
+    description: "Sand dunes (>5m) & coastal processes",
+    image: "/images/fieldtrip/pyrgaki.jpeg",
+    order: 8,
+    day: 2,
+  },
+  {
+    name: "Alyko Beach",
+    lat: 36.9785,
+    lng: 25.3908,
+    description: "Cliff retreat & GNSS-RTK survey",
+    image: "/images/fieldtrip/alyko.png",
+    order: 9,
+    day: 2,
   },
 ]
 
-// Full route coordinates - each stop corresponds to specific indices:
-// Index 0: Peritsis Valley, Index 3: Alyki, Index 5: Alyko Beach, Index 6: Pyrgaki
+// Full route coordinates for 9 stops across 2 days
+// Day 1: Aplomata -> Faneromeni Dam -> Kinidaros -> Apeiranthos
+// Day 2: Laguna -> Stelida -> Mikri Vigla -> Pyrgaki -> Alyko
 const fullRoute: [number, number][] = [
-  [25.4748, 37.1099],
-  [25.4200, 37.1000],
-  [25.3800, 37.0900],
-  [25.361861, 37.082892],
-  [25.3750, 37.0200],
-  [25.3892, 36.9783],
-  [25.4042, 36.9752],
+  // Day 1 - Inland route
+  [25.377, 37.108],    // 1. Aplomata
+  [25.4721, 37.1395],  // 2. Faneromeni Dam
+  [25.4791, 37.1014],  // 3. Kinidaros
+  [25.5196, 37.0718],  // 4. Apeiranthos
+  // Day 2 - Coastal route
+  [25.3584, 37.0872],  // 5. Laguna
+  [25.3441, 37.0832],  // 6. Stelida
+  [25.3712, 37.0279],  // 7. Mikri Vigla
+  [25.4026, 36.9762],  // 8. Pyrgaki
+  [25.3908, 36.9785],  // 9. Alyko
 ]
 
 const themes = [
@@ -69,11 +127,11 @@ const themes = [
 ]
 
 // Animation timing constants
-const STOP_DISPLAY_TIME = 3000 // Time to show each stop popup (ms)
-const DASH_INTERVAL = 100 // Time between each dash appearing (ms) - slower for Indiana Jones effect
+const STOP_DISPLAY_TIME = 2500 // Time to show each stop popup (ms)
+const DASH_INTERVAL = 80 // Time between each dash appearing (ms)
 
 // Number of interpolated points per original route segment
-const POINTS_PER_SEGMENT = 10
+const POINTS_PER_SEGMENT = 8
 
 // Interpolate points along a path to create more granular segments
 function interpolatePath(coords: [number, number][], pointsPerSegment: number): [number, number][] {
@@ -97,20 +155,15 @@ function interpolatePath(coords: [number, number][], pointsPerSegment: number): 
   return result
 }
 
-// Create detailed path: fullRoute has 7 points (6 segments), each gets 10 interpolated points
-// Result: 1 + 6*10 = 61 points total (indices 0-60)
+// Create detailed path: fullRoute has 9 points (8 segments), each gets 8 interpolated points
+// Result: 1 + 8*8 = 65 points total
 const detailedRoute = interpolatePath(fullRoute, POINTS_PER_SEGMENT)
 
 // Map each field stop to its position in detailedRoute
-// Stop positions in fullRoute: index 0, 3, 5, 6
-// After interpolation: position = 1 + (fullRouteIndex * POINTS_PER_SEGMENT), except index 0 = 1
-// These values represent how many points to show (for slice)
-const stopPointIndices = [
-  1,                              // Stop 1 (Peritsis Valley) - show 1 point
-  1 + 3 * POINTS_PER_SEGMENT,     // Stop 2 (Alyki) - show 31 points
-  1 + 5 * POINTS_PER_SEGMENT,     // Stop 3 (Alyko Beach) - show 51 points
-  detailedRoute.length,           // Stop 4 (Pyrgaki) - show all 61 points
-]
+// Each stop is at index i in fullRoute, which maps to 1 + i * POINTS_PER_SEGMENT in detailedRoute
+const stopPointIndices = fieldStops.map((_, i) =>
+  i === 0 ? 1 : 1 + i * POINTS_PER_SEGMENT
+)
 
 export function FieldTrip() {
   const [activeStop, setActiveStop] = useState(0)
@@ -286,7 +339,7 @@ export function FieldTrip() {
           <div className="space-y-6">
             <h3 className="text-xl font-semibold">Topics Covered</h3>
             <p className="text-sm text-muted-foreground -mt-4">
-              Thematic areas explored across the 4 field stops
+              Thematic areas explored across the 9 field stops
             </p>
             <div className="grid grid-cols-1 gap-3">
               {themes.map((theme, i) => (
@@ -303,8 +356,11 @@ export function FieldTrip() {
 
             <div className="mt-6 p-4 bg-[#f1c100]/15 border border-[#f1c100]/25 rounded-lg">
               <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">Route:</strong> 4 stops from Peritsis Valley
-                (mountains) through Alyki Lagoon to the coastal stops at Alyko and Pyrgaki.
+                <strong className="text-foreground">Day 1 (Oct 8):</strong> Inland route from Aplomata
+                through Faneromeni Dam and Kinidaros to Apeiranthos.
+                <br />
+                <strong className="text-foreground">Day 2 (Oct 9):</strong> Coastal route from Laguna
+                through Stelida and Mikri Vigla to Pyrgaki and Alyko beaches.
               </p>
             </div>
           </div>

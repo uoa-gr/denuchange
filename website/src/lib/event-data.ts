@@ -58,7 +58,10 @@ export const eventData = {
       "Hydro-geomorphological hazards",
       "Nature-based Solutions (NbS) for climate adaptation",
     ],
-    locations: ["Alyko", "Laguna", "Pyrgaki", "Peritsis river"],
+    locations: [
+      "Aplomata", "Faneromeni Dam", "Kinidaros", "Apeiranthos",
+      "Laguna", "Stelida", "Mikri Vigla", "Pyrgaki", "Alyko"
+    ],
   },
   committees: {
     organizing: [
@@ -83,4 +86,3 @@ export const eventData = {
 } as const;
 
 export type EventData = typeof eventData;
-
