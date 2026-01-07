@@ -58,16 +58,24 @@ export function Travel() {
                 </p>
               </div>
               <div>
-                <p className="font-medium">Sky Express</p>
+                <p className="font-medium">Airlines</p>
                 <p className="text-sm text-muted-foreground">
-                  Athens (ATH) → Naxos (JNX)<br />
+                  Aegean Airlines & Sky Express<br />
+                  Athens (ATH) → Naxos (JNX)
                 </p>
               </div>
-              <Button variant="outline" size="sm" asChild>
-                <a href="https://www.skyexpress.gr/en" target="_blank" rel="noopener noreferrer">
-                  Book Flights <ExternalLink className="ml-2 h-3 w-3" />
-                </a>
-              </Button>
+              <div className="flex flex-wrap gap-2">
+                <Button variant="outline" size="sm" asChild>
+                  <a href="https://en.aegeanair.com/" target="_blank" rel="noopener noreferrer">
+                    Aegean <ExternalLink className="ml-2 h-3 w-3" />
+                  </a>
+                </Button>
+                <Button variant="outline" size="sm" asChild>
+                  <a href="https://www.skyexpress.gr/en" target="_blank" rel="noopener noreferrer">
+                    Sky Express <ExternalLink className="ml-2 h-3 w-3" />
+                  </a>
+                </Button>
+              </div>
             </CardContent>
           </Card>
 
