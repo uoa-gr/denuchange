@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react"
 import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
 import {
   Map,
   MapMarker,
@@ -10,95 +9,11 @@ import {
   MapPopup,
 } from "@/components/ui/map"
 import { ThemeProvider } from "@/components/theme-provider"
+import { ChevronDown, Calendar } from "lucide-react"
+import { fieldTripDays, allFieldStops } from "@/lib/fieldtrip-data"
 
-// Field trip stops on Naxos - verified GPS coordinates
-// Day 1 (Oct 8): Inland - Aplomata, Faneromeni Dam, Kinidaros, Apeiranthos
-// Day 2 (Oct 9): Coastal - Laguna, Stelida, Mikri Vigla, Pyrgaki, Alyko
-const fieldStops = [
-  // Day 1 - Inland
-  {
-    name: "Aplomata",
-    lat: 37.108,
-    lng: 25.377,
-    description: "Landslide hazard area near Grotta",
-    image: "/images/fieldtrip/aplomata.jpeg",
-    order: 1,
-    day: 1,
-  },
-  {
-    name: "Faneromeni Dam",
-    lat: 37.1395,
-    lng: 25.4721,
-    description: "Water management & sediment budgets",
-    image: "/images/fieldtrip/faneromeni-dam-1.jpeg",
-    order: 2,
-    day: 1,
-  },
-  {
-    name: "Kinidaros",
-    lat: 37.1014,
-    lng: 25.4791,
-    description: "Forest fire impact & erosion processes",
-    image: "/images/fieldtrip/kinidaros-1.jpeg",
-    order: 3,
-    day: 1,
-  },
-  {
-    name: "Apeiranthos",
-    lat: 37.0718,
-    lng: 25.5196,
-    description: "Geological Museum & emery mine",
-    image: "/images/fieldtrip/apeiranthos-1.jpeg",
-    order: 4,
-    day: 1,
-  },
-  // Day 2 - Coastal
-  {
-    name: "Laguna",
-    lat: 37.0872,
-    lng: 25.3584,
-    description: "Palaeogeography, tafoni & beachrocks",
-    image: "/images/fieldtrip/laguna.jpeg",
-    order: 5,
-    day: 2,
-  },
-  {
-    name: "Stelida",
-    lat: 37.0832,
-    lng: 25.3441,
-    description: "Tafoni & weathering processes",
-    image: "/images/fieldtrip/laguna.jpeg",
-    order: 6,
-    day: 2,
-  },
-  {
-    name: "Mikri Vigla",
-    lat: 37.0279,
-    lng: 25.3712,
-    description: "Coastal protection & climate change",
-    image: "/images/fieldtrip/pyrgaki.jpeg",
-    order: 7,
-    day: 2,
-  },
-  {
-    name: "Pyrgaki Beach",
-    lat: 36.9762,
-    lng: 25.4026,
-    description: "Sand dunes (>5m) & coastal processes",
-    image: "/images/fieldtrip/pyrgaki.jpeg",
-    order: 8,
-    day: 2,
-  },
-  {
-    name: "Alyko Beach",
-    lat: 36.9785,
-    lng: 25.3908,
-    description: "Cliff retreat & GNSS-RTK survey",
-    image: "/images/fieldtrip/alyko.png",
-    order: 9,
-    day: 2,
-  },
-]
+// Use imported data
+const fieldStops = allFieldStops
 
 // Full route coordinates for 9 stops across 2 days
 // Day 1: Aplomata -> Faneromeni Dam -> Kinidaros -> Apeiranthos
@@ -117,14 +32,7 @@ const fullRoute: [number, number][] = [
   [25.3908, 36.9785],  // 9. Alyko
 ]
 
-const themes = [
-  "Land degradation & desertification drivers",
-  "Forest fire geomorphological footprint",
-  "Runoff erosion processes",
-  "Agricultural terraces & dams impact",
-  "Hydro-geomorphological hazards",
-  "Coastal pressures & NbS for climate adaptation",
-]
+
 
 // Animation timing constants
 const STOP_DISPLAY_TIME = 2500 // Time to show each stop popup (ms)
@@ -165,11 +73,89 @@ const stopPointIndices = fieldStops.map((_, i) =>
   i === 0 ? 1 : 1 + i * POINTS_PER_SEGMENT
 )
 
+// Destinations List Component
+function DestinationsList({
+  expandedStop,
+  setExpandedStop
+}: {
+  expandedStop: string | null
+  setExpandedStop: (id: string | null) => void
+}) {
+  return (
+    <div className="space-y-6">
+      {fieldTripDays.map((day) => (
+        <div key={day.day}>
+          <div className="flex items-center gap-2 mb-3">
+            <Calendar className="h-4 w-4 text-primary" />
+            <h3 className="font-semibold">
+              Day {day.day}: {day.theme}
+            </h3>
+            <span className="text-sm text-muted-foreground">
+              ({day.weekday}, {day.date})
+            </span>
+          </div>
+
+          <div className="space-y-2">
+            {day.stops.map((stop) => (
+              <div
+                key={stop.id}
+                className="border rounded-lg overflow-hidden bg-card"
+              >
+                <button
+                  onClick={() => setExpandedStop(expandedStop === stop.id ? null : stop.id)}
+                  className="w-full px-4 py-3 flex items-center justify-between hover:bg-accent/50 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-medium flex items-center justify-center">
+                      {stop.order}
+                    </span>
+                    <div className="text-left">
+                      <div className="font-medium">{stop.name}</div>
+                      <div className="text-sm text-muted-foreground">{stop.shortDescription}</div>
+                    </div>
+                  </div>
+                  <ChevronDown
+                    className={`h-4 w-4 text-muted-foreground transition-transform ${
+                      expandedStop === stop.id ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {expandedStop === stop.id && (
+                  <div className="px-4 pb-4 border-t bg-muted/30">
+                    {stop.images.length > 0 && (
+                      <div className="flex gap-2 mt-3 overflow-x-auto pb-2">
+                        {stop.images.map((img, idx) => (
+                          <img
+                            key={idx}
+                            src={`${import.meta.env.BASE_URL}${img.replace(/^\//, '')}`}
+                            alt={`${stop.name} ${idx + 1}`}
+                            className="h-32 w-auto rounded-md object-cover flex-shrink-0"
+                            loading="lazy"
+                          />
+                        ))}
+                      </div>
+                    )}
+                    <p className="text-sm text-muted-foreground mt-3">
+                      {stop.fullDescription}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export function FieldTrip() {
   const [activeStop, setActiveStop] = useState(0)
   const [visiblePoints, setVisiblePoints] = useState(stopPointIndices[0])
   const [isDrawing, setIsDrawing] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
+  const [expandedStop, setExpandedStop] = useState<string | null>(null)
   const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Dash-by-dash drawing animation
@@ -317,14 +303,16 @@ export function FieldTrip() {
                       closeButton={false}
                     >
                       <div className="w-48">
-                        <img
-                          src={`${import.meta.env.BASE_URL}${currentStop.image.replace(/^\//, '')}`}
-                          alt={currentStop.name}
-                          className="w-full h-28 object-cover rounded-md mb-2"
-                          loading="lazy"
-                        />
+                        {currentStop.images.length > 0 && (
+                          <img
+                            src={`${import.meta.env.BASE_URL}${currentStop.images[0].replace(/^\//, '')}`}
+                            alt={currentStop.name}
+                            className="w-full h-28 object-cover rounded-md mb-2"
+                            loading="lazy"
+                          />
+                        )}
                         <div className="font-medium">{currentStop.name}</div>
-                        <div className="text-xs opacity-80">{currentStop.description}</div>
+                        <div className="text-xs opacity-80">{currentStop.shortDescription}</div>
                       </div>
                     </MapPopup>
                   )}
@@ -335,35 +323,8 @@ export function FieldTrip() {
             </div>
           </div>
 
-          {/* Themes */}
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold">Topics Covered</h3>
-            <p className="text-sm text-muted-foreground -mt-4">
-              Thematic areas explored across the 9 field stops
-            </p>
-            <div className="grid grid-cols-1 gap-3">
-              {themes.map((theme, i) => (
-                <Card key={i} className="p-4 hover:bg-accent/50 transition-colors">
-                  <CardContent className="p-0 flex items-center gap-3">
-                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-medium flex items-center justify-center">
-                      •
-                    </span>
-                    <span className="text-sm">{theme}</span>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            <div className="mt-6 p-4 bg-[#f1c100]/15 border border-[#f1c100]/25 rounded-lg">
-              <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">Day 1 (Oct 8):</strong> Inland route from Aplomata
-                through Faneromeni Dam and Kinidaros to Apeiranthos.
-                <br />
-                <strong className="text-foreground">Day 2 (Oct 9):</strong> Coastal route from Laguna
-                through Stelida and Mikri Vigla to Pyrgaki and Alyko beaches.
-              </p>
-            </div>
-          </div>
+          {/* Destinations by Day */}
+          <DestinationsList expandedStop={expandedStop} setExpandedStop={setExpandedStop} />
         </div>
       </div>
     </section>
