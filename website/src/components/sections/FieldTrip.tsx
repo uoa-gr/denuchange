@@ -35,8 +35,8 @@ const fullRoute: [number, number][] = [
 
 
 // Animation timing constants
-const STOP_DISPLAY_TIME = 2500 // Time to show each stop popup (ms)
-const DASH_INTERVAL = 80 // Time between each dash appearing (ms)
+const STOP_DISPLAY_TIME = 4000 // Time to show each stop popup (ms)
+const DASH_INTERVAL = 150 // Time between each dash appearing (ms)
 
 // Number of interpolated points per original route segment
 const POINTS_PER_SEGMENT = 8
