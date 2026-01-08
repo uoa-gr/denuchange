@@ -24,6 +24,14 @@ const hotels = [
 ]
 
 export function Travel() {
+  const [copied, setCopied] = useState(false)
+
+  const copyDiscountCode = () => {
+    navigator.clipboard.writeText("DENUCHANGE2026")
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
   return (
     <section id="travel" className="py-20">
       <div className="container">
@@ -161,8 +169,15 @@ export function Travel() {
         </div>
 
         <div className="max-w-4xl mx-auto mt-8 p-4 bg-[#f1c100]/15 border border-[#f1c100]/30 rounded-lg text-center">
-          <p className="text-sm text-foreground/80">
+          <p className="text-sm text-foreground/80 inline-flex items-center gap-2 justify-center">
             <span className="font-bold">Discount Code:</span> DENUCHANGE2026
+            <button
+              onClick={copyDiscountCode}
+              className="p-1 hover:bg-[#f1c100]/30 rounded transition-colors"
+              title="Copy code"
+            >
+              {copied ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
+            </button>
           </p>
         </div>
       </div>
