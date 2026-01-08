@@ -65,7 +65,7 @@ export function Program() {
 
         <div className="max-w-3xl mx-auto text-center p-4 bg-[#f1c100]/15 border border-[#f1c100]/25 rounded-lg">
           <p className="text-sm text-foreground/80">
-            <span className="font-medium">Note:</span> Detailed program with session times will be announced after abstract review. Presentations can be oral or poster format.
+            <span className="font-bold">Note:</span> Detailed program with session times will be announced after abstract review. Presentations can be oral or poster format.
           </p>
         </div>
       </div>

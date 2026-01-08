@@ -1,8 +1,9 @@
+import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Plane, Ship, Hotel, ExternalLink } from "lucide-react"
+import { Plane, Ship, Hotel, ExternalLink, Copy, Check } from "lucide-react"
 
 const hotels = [
   {
@@ -160,9 +161,8 @@ export function Travel() {
         </div>
 
         <div className="max-w-4xl mx-auto mt-8 p-4 bg-[#f1c100]/15 border border-[#f1c100]/30 rounded-lg text-center">
-          <p className="text-sm font-medium">
-            <strong>Discount Code:</strong>{" "}
-            <span className="font-mono bg-[#f1c100]/20 text-foreground px-2 py-1 rounded border border-[#f1c100]/40">DENUCHANGE2026</span>
+          <p className="text-sm text-foreground/80">
+            <span className="font-bold">Discount Code:</span> DENUCHANGE2026
           </p>
         </div>
       </div>

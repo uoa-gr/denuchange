@@ -123,7 +123,7 @@ export function Registration() {
         <div className="max-w-5xl mx-auto mt-8">
           <div className="bg-[#f1c100]/15 border border-[#f1c100]/30 rounded-lg p-4 text-center">
             <p className="text-sm text-foreground/80">
-              <span className="font-medium">Note:</span> Details on the payment process will be announced shortly.
+              <span className="font-bold">Note:</span> Details on the payment process will be announced shortly.
             </p>
           </div>
         </div>
