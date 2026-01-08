@@ -73,7 +73,7 @@ export const fieldTripDays: FieldTripDay[] = [
     day: 2,
     date: "October 9, 2026",
     weekday: "Friday",
-    theme: "Coastal processes",
+    theme: "Coastal",
     stops: [
       {
         id: "laguna",
