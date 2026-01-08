@@ -16,16 +16,16 @@ import { fieldTripDays, allFieldStops } from "@/lib/fieldtrip-data"
 const fieldStops = allFieldStops
 
 // Full route coordinates for 9 stops across 2 days
-// Day 1: Aplomata -> Faneromeni Dam -> Kinidaros -> Apeiranthos
-// Day 2: Laguna -> Stelida -> Mikri Vigla -> Pyrgaki -> Alyko
+// Day 1: Apeiranthos -> Faneromeni Dam -> Kinidaros -> Aplomata
+// Day 2: Lagoon/Manto -> Stelida -> Mikri Vigla -> Pyrgaki -> Alyko
 const fullRoute: [number, number][] = [
   // Day 1 - Inland route
-  [25.377, 37.108],    // 1. Aplomata
+  [25.5196, 37.0718],  // 1. Apeiranthos
   [25.4721, 37.1395],  // 2. Faneromeni Dam
   [25.4791, 37.1014],  // 3. Kinidaros
-  [25.5196, 37.0718],  // 4. Apeiranthos
+  [25.377, 37.108],    // 4. Aplomata
   // Day 2 - Coastal route
-  [25.3584, 37.0872],  // 5. Laguna
+  [25.3584, 37.0872],  // 5. Lagoon/Manto
   [25.3441, 37.0832],  // 6. Stelida
   [25.3712, 37.0279],  // 7. Mikri Vigla
   [25.4026, 36.9762],  // 8. Pyrgaki
@@ -237,6 +237,9 @@ export function FieldTrip() {
           <p className="text-muted-foreground">
             A two-day excursion exploring natural hazards, weathering processes,
             and coastal dynamics from inland Naxos to its coastline.
+          </p>
+          <p className="text-sm text-muted-foreground/70 mt-3 italic">
+            The detailed itinerary will be announced closer to the event.
           </p>
           <p className="text-sm text-muted-foreground mt-3">
             <a href="#travel" className="text-primary hover:underline">
