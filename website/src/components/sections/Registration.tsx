@@ -134,15 +134,6 @@ export function Registration() {
             <li>• Submit via Google Form</li>
           </ul>
         </div>
-
-        {/* Note about program */}
-        <div className="max-w-3xl mx-auto mt-6">
-          <div className="bg-[#f1c100]/15 border border-[#f1c100]/30 rounded-lg p-4 text-center">
-            <p className="text-sm text-foreground/80">
-              <span className="font-medium">Note:</span> Detailed program with session times will be announced after abstract review. Presentations can be oral or poster format.
-            </p>
-          </div>
-        </div>
       </div>
     </section>
   )
