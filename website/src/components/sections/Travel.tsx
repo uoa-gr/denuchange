@@ -13,7 +13,7 @@ const hotels = [
   {
     name: "Princess Mare",
     location: "Agios Georgios Beach, in the centre",
-    website: "https://princessmare.com.gr/",
+    website: "https://princessmare.com.gr/en/",
   },
   {
     name: "Hotel Grotta",
