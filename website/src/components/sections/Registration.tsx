@@ -88,9 +88,6 @@ export function Registration() {
                 Full fee includes materials, coffee breaks, lunches (Oct 6-7),
                 Workshop Dinner (Oct 7), and field trip.
               </p>
-              <p className="mt-2 text-xs text-primary font-medium">
-                Details on the payment process will be announced shortly.
-              </p>
             </CardContent>
           </Card>
 
@@ -122,17 +119,13 @@ export function Registration() {
           </Card>
         </div>
 
-        {/* Abstract Guidelines */}
-        <div className="max-w-3xl mx-auto mt-12 p-6 bg-[#f1c100]/15 border border-[#f1c100]/25 rounded-lg">
-          <h3 className="font-semibold mb-3">Abstract Guidelines</h3>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-muted-foreground">
-            <li>• Maximum 500 words (excl. title/authors)</li>
-            <li>• Language: English</li>
-            <li>• Format: Calibri 11pt</li>
-            <li>• File naming: Surname_Name_Topic.docx</li>
-            <li>• Indicate oral or poster preference</li>
-            <li>• Submit via Google Form</li>
-          </ul>
+        {/* Note about payment */}
+        <div className="max-w-5xl mx-auto mt-8">
+          <div className="bg-[#f1c100]/15 border border-[#f1c100]/30 rounded-lg p-4 text-center">
+            <p className="text-sm text-foreground/80">
+              <span className="font-medium">Note:</span> Details on the payment process will be announced shortly.
+            </p>
+          </div>
         </div>
       </div>
     </section>
