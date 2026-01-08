@@ -238,9 +238,6 @@ export function FieldTrip() {
             A two-day excursion exploring natural hazards, weathering processes,
             and coastal dynamics from inland Naxos to its coastline.
           </p>
-          <p className="text-sm text-muted-foreground/70 mt-3 italic">
-            The detailed itinerary will be announced closer to the event.
-          </p>
           <p className="text-sm text-muted-foreground mt-3">
             <a href="#travel" className="text-primary hover:underline">
               View travel & accommodation options →
@@ -328,6 +325,15 @@ export function FieldTrip() {
 
           {/* Destinations by Day */}
           <DestinationsList expandedStop={expandedStop} setExpandedStop={setExpandedStop} />
+        </div>
+
+        {/* Note about itinerary */}
+        <div className="max-w-6xl mx-auto mt-8">
+          <div className="bg-[#f1c100]/15 border border-[#f1c100]/30 rounded-lg p-4 text-center">
+            <p className="text-sm text-foreground/80">
+              <span className="font-medium">Note:</span> The detailed itinerary will be announced closer to the event.
+            </p>
+          </div>
         </div>
       </div>
     </section>
