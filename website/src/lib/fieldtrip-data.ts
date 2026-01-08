@@ -29,8 +29,8 @@ export const fieldTripDays: FieldTripDay[] = [
     stops: [
       {
         id: "apeiranthos",
-        name: "Apeiranthos: Mountains Under the Pressure of Climate",
-        shortDescription: "Geology, geomorphology & climate change",
+        name: "Apeiranthos",
+        shortDescription: "Mountains Under the Pressure of Climate",
         fullDescription: "Examine how geology and geomorphology, together with climate change, transform mountain landscapes and the lives of local communities. The stop includes a visit to the geological museum to connect theory with real-world examples.",
         images: ["/images/fieldtrip/apeiranthos-1.jpeg", "/images/fieldtrip/apeiranthos-2.jpeg"],
         lat: 37.0718,
@@ -39,8 +39,8 @@ export const fieldTripDays: FieldTripDay[] = [
       },
       {
         id: "faneromeni-dam",
-        name: "Faneromeni Dam: Water Balance in a Changing Climate",
-        shortDescription: "Drought, water scarcity & freshwater resources",
+        name: "Faneromeni Dam",
+        shortDescription: "Water Balance in a Changing Climate",
         fullDescription: "Discover the challenges of small watersheds under reduced rainfall and growing water demand in tourist regions. Learn how drought, water scarcity, and climate change shape the availability of freshwater resources.",
         images: ["/images/fieldtrip/faneromeni-dam-1.jpeg", "/images/fieldtrip/faneromeni-dam-2.jpeg"],
         lat: 37.1395,
@@ -49,8 +49,8 @@ export const fieldTripDays: FieldTripDay[] = [
       },
       {
         id: "kinidaros",
-        name: "Kinidaros: How Forest Fires Shape Runoff and Erosion",
-        shortDescription: "Fire, soils, aquifers & flood risk",
+        name: "Kinidaros",
+        shortDescription: "How Forest Fires Shape Runoff and Erosion",
         fullDescription: "Understand why forest fires spread more easily under climate stress and how they trigger a vicious cycle affecting soils, aquifers, and flood risk. See firsthand how fire reshapes the landscape and impacts water flow.",
         images: ["/images/fieldtrip/kinidaros-1.jpeg", "/images/fieldtrip/kinidaros-2.jpeg"],
         lat: 37.1014,
@@ -59,8 +59,8 @@ export const fieldTripDays: FieldTripDay[] = [
       },
       {
         id: "aplomata",
-        name: "Aplomata: Climate Change and Landslide Risk",
-        shortDescription: "Geology, rainfall patterns & hazards",
+        name: "Aplomata",
+        shortDescription: "Climate Change and Landslide Risk",
         fullDescription: "Explore how the local geology and landscape morphology, combined with intensifying rainfall patterns, increase the likelihood of landslides. This stop highlights climate-driven hazards.",
         images: ["/images/fieldtrip/aplomata.jpeg"],
         lat: 37.108,
@@ -77,8 +77,8 @@ export const fieldTripDays: FieldTripDay[] = [
     stops: [
       {
         id: "laguna",
-        name: "Lagoon – Manto: Upstream Forces, Coastal Futures",
-        shortDescription: "Nature-based solutions & dune restoration",
+        name: "Lagoon – Manto",
+        shortDescription: "Upstream Forces, Coastal Futures",
         fullDescription: "Explore how upstream geomorphology and human pressures shape coastal lagoons over time. The session highlights nature-based solutions for beach protection, dune restoration, and CO₂ mitigation, linking sand dynamics to climate change and coastal pressures.",
         images: ["/images/fieldtrip/laguna.jpeg"],
         lat: 37.0872,
@@ -87,8 +87,8 @@ export const fieldTripDays: FieldTripDay[] = [
       },
       {
         id: "stelida",
-        name: "Stelida Tafone: Weathering and Coastal Change",
-        shortDescription: "Rock decay, cliffs & sediments",
+        name: "Stelida Tafone",
+        shortDescription: "Weathering and Coastal Change",
         fullDescription: "Examine how weathering processes in the hinterland drive landscape evolution and affect the adjacent coast. Learn how rock decay shapes cliffs and sediments, connecting geomorphology to coastal dynamics under climate stress.",
         images: [],
         lat: 37.0832,
@@ -97,8 +97,8 @@ export const fieldTripDays: FieldTripDay[] = [
       },
       {
         id: "mikri-vigla",
-        name: "Mikri Vigla Coastal Lagoons: Beaches in a Changing Climate",
-        shortDescription: "Adaptation & sustainable management",
+        name: "Mikri Vigla Coastal Lagoons",
+        shortDescription: "Beaches in a Changing Climate",
         fullDescription: "Discover the vulnerability of coastal lagoons and beaches to rising temperatures, shifting precipitation, and human activity. Discuss strategies for adaptation and sustainable management of fragile coastal ecosystems.",
         images: [],
         lat: 37.0279,
@@ -107,8 +107,8 @@ export const fieldTripDays: FieldTripDay[] = [
       },
       {
         id: "pyrgaki",
-        name: "Pyrgaki Sand Dunes: Rivers, Winds, and Shifting Sands",
-        shortDescription: "Fluvial systems, wind & dune stability",
+        name: "Pyrgaki Sand Dunes",
+        shortDescription: "Rivers, Winds, and Shifting Sands",
         fullDescription: "Explore the interaction of fluvial systems, wind processes, climate change, and human interventions in shaping sand dunes. Understand the dynamic equilibrium of dunes and the pressures threatening their stability.",
         images: ["/images/fieldtrip/pyrgaki.jpeg"],
         lat: 36.9762,
@@ -117,8 +117,8 @@ export const fieldTripDays: FieldTripDay[] = [
       },
       {
         id: "alyko",
-        name: "Alyko Pocket Beach: Cliffs, Retreat, and Coastal Dynamics",
-        shortDescription: "Cliff erosion & sediment transport",
+        name: "Alyko Pocket Beach",
+        shortDescription: "Cliffs, Retreat, and Coastal Dynamics",
         fullDescription: "Observe cliff erosion, sediment transport, and beach retreat in a small pocket beach. Link geological processes, climate-driven changes, and human impact to the evolving coastal landscape.",
         images: ["/images/fieldtrip/alyko.png"],
         lat: 36.9785,
