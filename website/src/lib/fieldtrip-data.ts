@@ -99,7 +99,7 @@ export const fieldTripDays: FieldTripDay[] = [
         id: "mikri-vigla",
         name: "Mikri Vigla",
         shortDescription: "Coastal protection & climate change",
-        fullDescription: "Details coming soon.",
+        fullDescription: "Protection of coastal vulnerable environments. Climate change and sea level rise.",
         images: [],
         lat: 37.0279,
         lng: 25.3712,
