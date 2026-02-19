@@ -1,23 +1,22 @@
-import { useState, useEffect, useCallback, useRef } from "react"
+import { useState, useCallback, useRef, useEffect } from "react"
 import { Badge } from "@/components/ui/badge"
 import {
   Map,
   MapMarker,
   MarkerContent,
+  MarkerPopup,
   MapControls,
   MapRoute,
-  MapPopup,
+  useMap,
 } from "@/components/ui/map"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ChevronDown, Calendar } from "lucide-react"
-import { fieldTripDays, allFieldStops } from "@/lib/fieldtrip-data"
+import { fieldTripDays, allFieldStops, type FieldTripStop } from "@/lib/fieldtrip-data"
 
 // Use imported data
 const fieldStops = allFieldStops
 
 // Full route coordinates for 9 stops across 2 days
-// Day 1: Apeiranthos -> Faneromeni Dam -> Kinidaros -> Aplomata
-// Day 2: Lagoon/Manto -> Stelida -> Mikri Vigla -> Pyrgaki -> Alyko
 const fullRoute: [number, number][] = [
   // Day 1 - Inland route
   [25.5196, 37.0718],  // 1. Apeiranthos
@@ -32,57 +31,16 @@ const fullRoute: [number, number][] = [
   [25.3908, 36.9785],  // 9. Alyko
 ]
 
-
-
-// Animation timing constants
-const STOP_DISPLAY_TIME = 4000 // Time to show each stop popup (ms)
-const DASH_INTERVAL = 150 // Time between each dash appearing (ms)
-
-// Number of interpolated points per original route segment
-const POINTS_PER_SEGMENT = 8
-
-// Interpolate points along a path to create more granular segments
-function interpolatePath(coords: [number, number][], pointsPerSegment: number): [number, number][] {
-  if (coords.length < 2) return coords
-
-  const result: [number, number][] = [coords[0]]
-
-  for (let i = 0; i < coords.length - 1; i++) {
-    const start = coords[i]
-    const end = coords[i + 1]
-
-    for (let j = 1; j <= pointsPerSegment; j++) {
-      const t = j / pointsPerSegment
-      result.push([
-        start[0] + (end[0] - start[0]) * t,
-        start[1] + (end[1] - start[1]) * t,
-      ])
-    }
-  }
-
-  return result
-}
-
-// Create detailed path: fullRoute has 9 points (8 segments), each gets 8 interpolated points
-// Result: 1 + 8*8 = 65 points total
-const detailedRoute = interpolatePath(fullRoute, POINTS_PER_SEGMENT)
-
-// Map each field stop to its position in detailedRoute
-// Each stop is at index i in fullRoute, which maps to 1 + i * POINTS_PER_SEGMENT in detailedRoute
-const stopPointIndices = fieldStops.map((_, i) =>
-  i === 0 ? 1 : 1 + i * POINTS_PER_SEGMENT
-)
-
 // Destinations List Component
 function DestinationsList({
-  expandedStop,
-  setExpandedStop
+  selectedStopId,
+  onStopSelect,
 }: {
-  expandedStop: string | null
-  setExpandedStop: (id: string | null) => void
+  selectedStopId: string | null
+  onStopSelect: (stop: FieldTripStop & { day: number }) => void
 }) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-h-[500px] overflow-y-auto pr-2">
       {fieldTripDays.map((day) => (
         <div key={day.day}>
           <div className="flex items-center gap-2 mb-3">
@@ -96,53 +54,64 @@ function DestinationsList({
           </div>
 
           <div className="space-y-2">
-            {day.stops.map((stop) => (
-              <div
-                key={stop.id}
-                className="border rounded-lg overflow-hidden bg-card"
-              >
-                <button
-                  onClick={() => setExpandedStop(expandedStop === stop.id ? null : stop.id)}
-                  className="w-full px-4 py-3 flex items-center justify-between hover:bg-accent/50 transition-colors"
+            {day.stops.map((stop) => {
+              const isSelected = selectedStopId === stop.id
+              const stopWithDay = { ...stop, day: day.day }
+              
+              return (
+                <div
+                  key={stop.id}
+                  className={`border rounded-lg overflow-hidden bg-card transition-all ${
+                    isSelected ? "ring-2 ring-primary border-primary" : ""
+                  }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-medium flex items-center justify-center">
-                      {stop.order}
-                    </span>
-                    <div className="text-left">
-                      <div className="font-medium">{stop.name}</div>
-                      <div className="text-sm text-muted-foreground">{stop.shortDescription}</div>
-                    </div>
-                  </div>
-                  <ChevronDown
-                    className={`h-4 w-4 text-muted-foreground transition-transform ${
-                      expandedStop === stop.id ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                {expandedStop === stop.id && (
-                  <div className="px-4 pb-4 border-t bg-muted/30">
-                    {stop.images.length > 0 && (
-                      <div className="flex gap-2 mt-3 overflow-x-auto pb-2">
-                        {stop.images.map((img, idx) => (
-                          <img
-                            key={idx}
-                            src={`${import.meta.env.BASE_URL}${img.replace(/^\//, '')}`}
-                            alt={`${stop.name} ${idx + 1}`}
-                            className="h-32 w-auto rounded-md object-cover flex-shrink-0"
-                            loading="lazy"
-                          />
-                        ))}
+                  <button
+                    onClick={() => onStopSelect(stopWithDay)}
+                    className="w-full px-4 py-3 flex items-center justify-between hover:bg-accent/50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className={`flex-shrink-0 w-6 h-6 rounded-full text-xs font-medium flex items-center justify-center transition-colors ${
+                        isSelected 
+                          ? "bg-primary text-primary-foreground" 
+                          : "bg-primary/10 text-primary"
+                      }`}>
+                        {stop.order}
+                      </span>
+                      <div className="text-left">
+                        <div className="font-medium">{stop.name}</div>
+                        <div className="text-sm text-muted-foreground">{stop.shortDescription}</div>
                       </div>
-                    )}
-                    <p className="text-sm text-muted-foreground mt-3">
-                      {stop.fullDescription}
-                    </p>
-                  </div>
-                )}
-              </div>
-            ))}
+                    </div>
+                    <ChevronDown
+                      className={`h-4 w-4 text-muted-foreground transition-transform ${
+                        isSelected ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {isSelected && (
+                    <div className="px-4 pb-4 border-t bg-muted/30">
+                      {stop.images.length > 0 && (
+                        <div className="flex gap-2 mt-3 overflow-x-auto pb-2">
+                          {stop.images.map((img, idx) => (
+                            <img
+                              key={idx}
+                              src={`${import.meta.env.BASE_URL}${img.replace(/^\//, '')}`}
+                              alt={`${stop.name} ${idx + 1}`}
+                              className="h-32 w-auto rounded-md object-cover flex-shrink-0"
+                              loading="lazy"
+                            />
+                          ))}
+                        </div>
+                      )}
+                      <p className="text-sm text-muted-foreground mt-3">
+                        {stop.fullDescription}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )
+            })}
           </div>
         </div>
       ))}
@@ -150,79 +119,103 @@ function DestinationsList({
   )
 }
 
+// Inner map content component that can use the useMap hook
+function FieldTripMapContent({
+  selectedStopId,
+  onStopSelect,
+}: {
+  selectedStopId: string | null
+  onStopSelect: (stop: (typeof fieldStops)[0]) => void
+}) {
+  const { map, isLoaded } = useMap()
+  const lastFlyToRef = useRef<string | null>(null)
+
+  // When selectedStopId changes from the list, fly to that stop
+  useEffect(() => {
+    if (!isLoaded || !map || !selectedStopId) return
+    
+    // Don't fly if we're already there (was selected from marker click)
+    if (lastFlyToRef.current === selectedStopId) return
+    
+    const stop = fieldStops.find(s => s.id === selectedStopId)
+    if (stop) {
+      lastFlyToRef.current = selectedStopId
+      map.flyTo({
+        center: [stop.lng, stop.lat],
+        zoom: 12,
+        duration: 1000,
+      })
+    }
+  }, [selectedStopId, isLoaded, map])
+
+  return (
+    <>
+      {/* Static route trail */}
+      <MapRoute
+        coordinates={fullRoute}
+        color="#1a1a1a"
+        width={2.5}
+        opacity={0.85}
+        dashArray={[4, 6]}
+      />
+
+      {/* Field stop markers with popups */}
+      {fieldStops.map((stop) => {
+        const isSelected = selectedStopId === stop.id
+        
+        return (
+          <MapMarker
+            key={stop.id}
+            longitude={stop.lng}
+            latitude={stop.lat}
+            onClick={() => {
+              lastFlyToRef.current = stop.id
+              onStopSelect(stop)
+            }}
+          >
+            <MarkerContent>
+              <div
+                className={`h-6 w-6 rounded-full border-2 border-white shadow-lg flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 cursor-pointer hover:scale-110 ${
+                  isSelected
+                    ? "bg-primary scale-125"
+                    : "bg-zinc-800"
+                }`}
+              >
+                {stop.order}
+              </div>
+            </MarkerContent>
+            {isSelected && (
+              <MarkerPopup offset={20} closeButton>
+                <div className="w-48">
+                  {stop.images.length > 0 && (
+                    <img
+                      src={`${import.meta.env.BASE_URL}${stop.images[0].replace(/^\//, '')}`}
+                      alt={stop.name}
+                      className="w-full h-28 object-cover rounded-md mb-2"
+                      loading="lazy"
+                    />
+                  )}
+                  <div className="font-medium">{stop.name}</div>
+                  <div className="text-xs text-muted-foreground">{stop.shortDescription}</div>
+                </div>
+              </MarkerPopup>
+            )}
+          </MapMarker>
+        )
+      })}
+
+      <MapControls position="bottom-right" showZoom />
+    </>
+  )
+}
+
 export function FieldTrip() {
-  const [activeStop, setActiveStop] = useState(0)
-  const [visiblePoints, setVisiblePoints] = useState(stopPointIndices[0])
-  const [isDrawing, setIsDrawing] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
-  const [expandedStop, setExpandedStop] = useState<string | null>(null)
-  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [selectedStopId, setSelectedStopId] = useState<string | null>(null)
 
-  // Dash-by-dash drawing animation
-  useEffect(() => {
-    if (!isDrawing || isPaused) return
-
-    const targetPoints = stopPointIndices[activeStop + 1]
-    if (targetPoints === undefined) return
-
-    if (visiblePoints < targetPoints) {
-      const timer = setTimeout(() => {
-        setVisiblePoints((prev) => prev + 1)
-      }, DASH_INTERVAL)
-      return () => clearTimeout(timer)
-    } else {
-      // Drawing complete - move to next stop
-      setIsDrawing(false)
-      setActiveStop((prev) => prev + 1)
-    }
-  }, [isDrawing, visiblePoints, activeStop, isPaused])
-
-  // Main animation loop - cycle through stops
-  useEffect(() => {
-    if (isPaused || isDrawing) return
-
-    const timer = setTimeout(() => {
-      if (activeStop < fieldStops.length - 1) {
-        // Start drawing to next stop
-        setIsDrawing(true)
-      } else {
-        // Last stop reached, reset to beginning
-        setActiveStop(0)
-        setVisiblePoints(stopPointIndices[0])
-      }
-    }, STOP_DISPLAY_TIME)
-
-    return () => clearTimeout(timer)
-  }, [activeStop, isDrawing, isPaused])
-
-  // Cleanup resume timer on unmount
-  useEffect(() => {
-    return () => {
-      if (resumeTimerRef.current) {
-        clearTimeout(resumeTimerRef.current)
-      }
-    }
+  const handleStopSelect = useCallback((stop: (typeof fieldStops)[0]) => {
+    // Toggle off if clicking the same stop
+    setSelectedStopId(prev => prev === stop.id ? null : stop.id)
   }, [])
-
-  const handleMapInteraction = useCallback(() => {
-    // Cancel any pending resume timer
-    if (resumeTimerRef.current) {
-      clearTimeout(resumeTimerRef.current)
-      resumeTimerRef.current = null
-    }
-    setIsPaused(true)
-  }, [])
-
-  const handleMapLeave = useCallback(() => {
-    // Resume animation after a short delay
-    resumeTimerRef.current = setTimeout(() => {
-      setIsPaused(false)
-      resumeTimerRef.current = null
-    }, 1000)
-  }, [])
-
-  const currentStop = fieldStops[activeStop]
-  const drawnRoute = detailedRoute.slice(0, visiblePoints)
 
   return (
     <section id="field-trip" className="py-20 bg-muted/30">
@@ -247,11 +240,7 @@ export function FieldTrip() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto items-stretch">
           {/* Map */}
-          <div
-            className="overflow-hidden rounded-xl border bg-card shadow-sm min-h-[400px] w-full [&_.maplibregl-map]:!h-full [&_.maplibregl-map]:!w-full [&_.maplibregl-canvas-container]:!h-full [&_.maplibregl-canvas]:!h-full"
-            onMouseEnter={handleMapInteraction}
-            onMouseLeave={handleMapLeave}
-          >
+          <div className="overflow-hidden rounded-xl border bg-card shadow-sm min-h-[500px] w-full [&_.maplibregl-map]:!h-full [&_.maplibregl-map]:!w-full [&_.maplibregl-canvas-container]:!h-full [&_.maplibregl-canvas]:!h-full">
             <div className="h-full w-full">
               <ThemeProvider>
                 <Map
@@ -260,71 +249,20 @@ export function FieldTrip() {
                   minZoom={9}
                   maxZoom={15}
                 >
-                  {/* Animated drawn route - black dashed line like Indiana Jones */}
-                  {drawnRoute.length > 1 && (
-                    <MapRoute
-                      coordinates={drawnRoute}
-                      color="#1a1a1a"
-                      width={2.5}
-                      opacity={0.85}
-                      dashArray={[4, 6]}
-                    />
-                  )}
-
-                  {/* Field stop markers */}
-                  {fieldStops.map((stop, index) => (
-                    <MapMarker
-                      key={stop.name}
-                      longitude={stop.lng}
-                      latitude={stop.lat}
-                    >
-                      <MarkerContent>
-                        <div
-                          className={`h-6 w-6 rounded-full border-2 border-white shadow-lg flex items-center justify-center text-[10px] font-bold text-white transition-all duration-300 ${
-                            index === activeStop && !isDrawing
-                              ? "bg-zinc-800 scale-125"
-                              : index <= activeStop
-                                ? "bg-zinc-800"
-                                : "bg-muted-foreground/40"
-                          }`}
-                        >
-                          {stop.order}
-                        </div>
-                      </MarkerContent>
-                    </MapMarker>
-                  ))}
-
-                  {/* Active stop popup - only when not drawing */}
-                  {!isDrawing && currentStop && (
-                    <MapPopup
-                      longitude={currentStop.lng}
-                      latitude={currentStop.lat}
-                      offset={20}
-                      closeButton={false}
-                    >
-                      <div className="w-48">
-                        {currentStop.images.length > 0 && (
-                          <img
-                            src={`${import.meta.env.BASE_URL}${currentStop.images[0].replace(/^\//, '')}`}
-                            alt={currentStop.name}
-                            className="w-full h-28 object-cover rounded-md mb-2"
-                            loading="lazy"
-                          />
-                        )}
-                        <div className="font-medium">{currentStop.name}</div>
-                        <div className="text-xs opacity-80">{currentStop.shortDescription}</div>
-                      </div>
-                    </MapPopup>
-                  )}
-
-                  <MapControls position="bottom-right" showZoom />
+                  <FieldTripMapContent
+                    selectedStopId={selectedStopId}
+                    onStopSelect={handleStopSelect}
+                  />
                 </Map>
               </ThemeProvider>
             </div>
           </div>
 
           {/* Destinations by Day */}
-          <DestinationsList expandedStop={expandedStop} setExpandedStop={setExpandedStop} />
+          <DestinationsList
+            selectedStopId={selectedStopId}
+            onStopSelect={handleStopSelect}
+          />
         </div>
 
         {/* Note about itinerary */}
