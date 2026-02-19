@@ -5,6 +5,7 @@ import { KeyInfo } from "@/components/sections/KeyInfo"
 import { About } from "@/components/sections/About"
 import { Program } from "@/components/sections/Program"
 import { FieldTrip } from "@/components/sections/FieldTrip"
+import { Labs } from "@/components/sections/Labs"
 import { Registration } from "@/components/sections/Registration"
 import { Committees } from "@/components/sections/Committees"
 import { Travel } from "@/components/sections/Travel"
@@ -19,6 +20,7 @@ function App() {
         <KeyInfo />
         <About />
         <Program />
+        <Labs />
         <FieldTrip />
         <Registration />
         <Committees />
