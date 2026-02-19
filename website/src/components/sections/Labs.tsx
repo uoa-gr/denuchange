@@ -70,15 +70,6 @@ export function Labs() {
           ))}
         </div>
 
-        <div className="max-w-4xl mx-auto mt-8">
-          <div className="bg-[#f1c100]/15 border border-[#f1c100]/30 rounded-lg p-4 text-center">
-            <p className="text-sm text-foreground/80">
-              <span className="font-bold">Particularly recommended</span> for early-career
-              geomorphologists — an opportunity to build skills and exchange innovative ideas
-              in a collaborative setting.
-            </p>
-          </div>
-        </div>
       </div>
     </section>
   )
