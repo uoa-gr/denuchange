@@ -85,7 +85,7 @@ function DestinationsList({
                 >
                   <button
                     onClick={() => onStopSelect(stopWithDay)}
-                    className="w-full px-4 py-3 flex items-center justify-between hover:bg-accent/50 transition-colors"
+                    className="w-full px-4 py-3 flex items-center justify-between hover:bg-accent/50 transition-colors focus:outline-none focus-visible:outline-none"
                   >
                     <div className="flex items-center gap-3">
                       <span className={`flex-shrink-0 w-6 h-6 rounded-full text-xs font-medium flex items-center justify-center transition-colors ${
@@ -146,25 +146,32 @@ function FieldTripMapContent({
   onStopSelect: (stop: (typeof fieldStops)[0]) => void
 }) {
   const { map, isLoaded } = useMap()
-  const lastFlyToRef = useRef<string | null>(null)
+  const prevSelectedRef = useRef<string | null>(null)
 
-  // When selectedStopId changes from the list, pan to that stop (no zoom change)
+  // Pan to selected stop with offset to ensure popup is visible
   useEffect(() => {
     if (!isLoaded || !map || !selectedStopId) return
-
-    // Don't pan if we're already there (was selected from marker click)
-    if (lastFlyToRef.current === selectedStopId) return
+    // Skip if same stop already selected (avoid re-panning)
+    if (prevSelectedRef.current === selectedStopId) return
+    prevSelectedRef.current = selectedStopId
 
     const stop = fieldStops.find(s => s.id === selectedStopId)
     if (stop) {
-      lastFlyToRef.current = selectedStopId
-      // Just pan to center, keep current zoom level
+      // Offset pushes marker down in viewport, leaving room for popup above
       map.easeTo({
         center: [stop.lng, stop.lat],
+        offset: [0, 80], // positive y = marker appears lower, popup has room above
         duration: 500,
       })
     }
   }, [selectedStopId, isLoaded, map])
+
+  // Reset ref when selection is cleared
+  useEffect(() => {
+    if (!selectedStopId) {
+      prevSelectedRef.current = null
+    }
+  }, [selectedStopId])
 
   return (
     <>
@@ -187,7 +194,8 @@ function FieldTripMapContent({
             longitude={stop.lng}
             latitude={stop.lat}
             onClick={() => {
-              lastFlyToRef.current = stop.id
+              // Reset ref so clicking marker triggers pan with offset for popup visibility
+              prevSelectedRef.current = null
               onStopSelect(stop)
             }}
           >

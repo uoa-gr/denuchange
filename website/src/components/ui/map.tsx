@@ -359,6 +359,10 @@ function MarkerPopup({
 
     popupRef.current = popup;
     markerRef.current.setPopup(popup);
+    
+    // Auto-open the popup when mounted
+    markerRef.current.togglePopup();
+    
     setMounted(true);
 
     return () => {
