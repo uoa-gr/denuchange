@@ -337,14 +337,14 @@ function MarkerPopup({
   closeButton = false,
   ...popupOptions
 }: MarkerPopupProps) {
-  const { markerRef, isReady } = useMarkerContext();
+  const { markerRef, map, isReady } = useMarkerContext();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const popupRef = useRef<MapLibreGL.Popup | null>(null);
   const [mounted, setMounted] = useState(false);
   const popupOptionsRef = useRef(popupOptions);
 
   useEffect(() => {
-    if (!isReady || !markerRef.current) return;
+    if (!isReady || !markerRef.current || !map) return;
 
     const container = document.createElement("div");
     containerRef.current = container;
@@ -353,16 +353,16 @@ function MarkerPopup({
       offset: 16,
       ...popupOptions,
       closeButton: false,
+      closeOnClick: false,
     })
       .setMaxWidth("none")
       .setDOMContent(container);
 
     popupRef.current = popup;
-    markerRef.current.setPopup(popup);
-    
-    // Auto-open the popup when mounted
-    markerRef.current.togglePopup();
-    
+
+    // Add popup directly to map at marker position (no setPopup to avoid toggle conflicts)
+    popup.setLngLat(markerRef.current.getLngLat()).addTo(map);
+
     setMounted(true);
 
     return () => {
@@ -371,7 +371,7 @@ function MarkerPopup({
       containerRef.current = null;
       setMounted(false);
     };
-  }, [isReady]);
+  }, [isReady, map]);
 
   useEffect(() => {
     if (!popupRef.current) return;

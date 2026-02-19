@@ -211,7 +211,7 @@ function FieldTripMapContent({
               </div>
             </MarkerContent>
             {isSelected && (
-              <MarkerPopup offset={20} closeButton>
+              <MarkerPopup offset={20}>
                 <div className="w-48">
                   {stop.images.length > 0 && (
                     <img
