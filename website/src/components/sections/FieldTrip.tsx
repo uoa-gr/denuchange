@@ -39,7 +39,7 @@ function DestinationsList({
   selectedStopId: string | null
   onStopSelect: (stop: FieldTripStop & { day: number }) => void
 }) {
-  const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map())
+  const itemRefs = useRef(new globalThis.Map<string, HTMLDivElement>())
 
   // Scroll selected item into view
   useEffect(() => {
