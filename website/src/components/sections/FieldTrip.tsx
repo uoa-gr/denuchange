@@ -39,6 +39,21 @@ function DestinationsList({
   selectedStopId: string | null
   onStopSelect: (stop: FieldTripStop & { day: number }) => void
 }) {
+  const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map())
+
+  // Scroll selected item into view
+  useEffect(() => {
+    if (selectedStopId) {
+      const el = itemRefs.current.get(selectedStopId)
+      if (el) {
+        // Small delay to let the expanded content render
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+        }, 50)
+      }
+    }
+  }, [selectedStopId])
+
   return (
     <div className="space-y-6 max-h-[500px] overflow-y-auto pr-2">
       {fieldTripDays.map((day) => (
@@ -57,12 +72,15 @@ function DestinationsList({
             {day.stops.map((stop) => {
               const isSelected = selectedStopId === stop.id
               const stopWithDay = { ...stop, day: day.day }
-              
+
               return (
                 <div
                   key={stop.id}
+                  ref={(el) => {
+                    if (el) itemRefs.current.set(stop.id, el)
+                  }}
                   className={`border rounded-lg overflow-hidden bg-card transition-all ${
-                    isSelected ? "ring-2 ring-primary border-primary" : ""
+                    isSelected ? "border-primary" : ""
                   }`}
                 >
                   <button
@@ -71,8 +89,8 @@ function DestinationsList({
                   >
                     <div className="flex items-center gap-3">
                       <span className={`flex-shrink-0 w-6 h-6 rounded-full text-xs font-medium flex items-center justify-center transition-colors ${
-                        isSelected 
-                          ? "bg-primary text-primary-foreground" 
+                        isSelected
+                          ? "bg-primary text-primary-foreground"
                           : "bg-primary/10 text-primary"
                       }`}>
                         {stop.order}
@@ -130,20 +148,20 @@ function FieldTripMapContent({
   const { map, isLoaded } = useMap()
   const lastFlyToRef = useRef<string | null>(null)
 
-  // When selectedStopId changes from the list, fly to that stop
+  // When selectedStopId changes from the list, pan to that stop (no zoom change)
   useEffect(() => {
     if (!isLoaded || !map || !selectedStopId) return
-    
-    // Don't fly if we're already there (was selected from marker click)
+
+    // Don't pan if we're already there (was selected from marker click)
     if (lastFlyToRef.current === selectedStopId) return
-    
+
     const stop = fieldStops.find(s => s.id === selectedStopId)
     if (stop) {
       lastFlyToRef.current = selectedStopId
-      map.flyTo({
+      // Just pan to center, keep current zoom level
+      map.easeTo({
         center: [stop.lng, stop.lat],
-        zoom: 12,
-        duration: 1000,
+        duration: 500,
       })
     }
   }, [selectedStopId, isLoaded, map])
@@ -162,7 +180,7 @@ function FieldTripMapContent({
       {/* Field stop markers with popups */}
       {fieldStops.map((stop) => {
         const isSelected = selectedStopId === stop.id
-        
+
         return (
           <MapMarker
             key={stop.id}
