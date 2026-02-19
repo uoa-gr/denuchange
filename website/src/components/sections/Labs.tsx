@@ -1,16 +1,37 @@
 import { Badge } from "@/components/ui/badge"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Monitor, Headset, Users, GraduationCap } from "lucide-react"
 
-const highlights = [
-  "Hands-on design and application of Virtual Field Trips for geomorphological research and education",
-  "VR headset demonstrations of immersive Virtual Field Trip examples",
-  "Active collaboration between members of the two Working Groups",
-  "Particularly recommended for early-career geomorphologists",
-  "Opportunities for skill enhancement and exchange of innovative ideas",
+const features = [
+  {
+    icon: Monitor,
+    title: "VFT Design & Application",
+    description:
+      "Practical experience in designing and applying Virtual Field Trips for geomorphological research and education.",
+  },
+  {
+    icon: Headset,
+    title: "VR Immersion",
+    description:
+      "Use VR headsets to explore immersive examples of Virtual Field Trips firsthand.",
+  },
+  {
+    icon: Users,
+    title: "Cross-Working Group Collaboration",
+    description:
+      "Fostering active collaboration between members of the DENUCHANGE and VFT Working Groups.",
+  },
+  {
+    icon: GraduationCap,
+    title: "Skill Enhancement",
+    description:
+      "Exchange of innovative ideas and skill development, with a particular focus on early-career geomorphologists.",
+  },
 ]
 
 export function Labs() {
   return (
-    <section id="labs" className="py-20">
+    <section id="labs" className="py-20 bg-muted/30">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center mb-12">
           <Badge variant="outline" className="mb-4">
@@ -29,25 +50,33 @@ export function Labs() {
             >
               IAG Working Group "Virtual Field Trips in Geomorphology"
             </a>{" "}
-            during the workshop.
+            running alongside the workshop program.
           </p>
         </div>
 
-        <div className="max-w-3xl mx-auto">
-          <div className="rounded-xl border bg-card p-8 shadow-sm">
-            <p className="text-muted-foreground mb-6">
-              These interactive sessions provide participants with practical experience in the design
-              and application of Virtual Field Trips (VFTs) for geomorphological research and education,
-              fostering active collaboration between members of the two Working Groups.
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {features.map((feature) => (
+            <Card key={feature.title}>
+              <CardHeader className="flex flex-row items-center gap-3 pb-2">
+                <div className="p-2 rounded-lg bg-primary/10 shrink-0">
+                  <feature.icon className="h-5 w-5 text-primary" />
+                </div>
+                <CardTitle className="text-base">{feature.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">{feature.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <div className="max-w-4xl mx-auto mt-8">
+          <div className="bg-[#f1c100]/15 border border-[#f1c100]/30 rounded-lg p-4 text-center">
+            <p className="text-sm text-foreground/80">
+              <span className="font-bold">Particularly recommended</span> for early-career
+              geomorphologists — an opportunity to build skills and exchange innovative ideas
+              in a collaborative setting.
             </p>
-            <ul className="space-y-3">
-              {highlights.map((item, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
-                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </div>
