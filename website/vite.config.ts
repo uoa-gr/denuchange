@@ -5,7 +5,8 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/denuchange/',
+  // GitHub Actions sets GITHUB_ACTIONS=true; Vercel leaves it unset → base '/'
+  base: process.env.GITHUB_ACTIONS ? '/denuchange/' : '/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {

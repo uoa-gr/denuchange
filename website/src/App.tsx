@@ -10,10 +10,12 @@ import { Registration } from "@/components/sections/Registration"
 import { Committees } from "@/components/sections/Committees"
 import { Travel } from "@/components/sections/Travel"
 import { Contact } from "@/components/sections/Contact"
+import { Analytics } from "@vercel/analytics/react"
 
 function App() {
   return (
     <div className="min-h-screen flex flex-col">
+      <Analytics />
       <Navigation />
       <main className="flex-1">
         <Hero />
