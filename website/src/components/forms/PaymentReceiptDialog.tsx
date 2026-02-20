@@ -69,7 +69,7 @@ export function PaymentReceiptDialog({ children }: { children: React.ReactNode }
     const { data: reg, error: regError } = await supabase
       .from("registrations")
       .select("email")
-      .eq("email", normalizedEmail)
+      .ilike("email", normalizedEmail)
       .maybeSingle()
 
     if (regError) {

@@ -62,7 +62,7 @@ export function AbstractDialog({ children }: { children: React.ReactNode }) {
     const { data: reg, error: regError } = await supabase
       .from("registrations")
       .select("first_name, last_name, affiliation")
-      .eq("email", normalizedEmail)
+      .ilike("email", normalizedEmail)
       .maybeSingle()
 
     if (regError) {
