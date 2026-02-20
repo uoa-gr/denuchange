@@ -60,7 +60,7 @@ export function Hero() {
           <Button size="lg" asChild>
             <a href="#registration">Register Now</a>
           </Button>
-          <Button size="lg" asChild variant="secondary">
+          <Button size="lg" asChild variant="warning" className="font-bold">
             <a href="#program">View Program</a>
           </Button>
         </div>

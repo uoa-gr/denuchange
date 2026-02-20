@@ -10,16 +10,17 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground font-semibold hover:bg-primary/90 active:bg-primary/80 focus-visible:ring-2 focus-visible:ring-primary/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none",
+          "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         destructive:
-          "bg-destructive text-destructive-foreground font-semibold hover:bg-destructive/90 active:bg-destructive/80 focus-visible:ring-2 focus-visible:ring-destructive/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none",
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
-          "bg-primary text-primary-foreground font-semibold hover:bg-primary/90 active:bg-primary/80 focus-visible:ring-2 focus-visible:ring-primary/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none",
+          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
         secondary:
-          "bg-secondary text-secondary-foreground font-semibold hover:bg-secondary/90 active:bg-secondary/80 focus-visible:ring-2 focus-visible:ring-secondary/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none",
-        ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        warning:
+          "bg-[var(--warning)] text-[var(--warning-foreground)] shadow hover:bg-[var(--warning)]/90",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
