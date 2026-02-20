@@ -30,7 +30,7 @@ export function KeyInfo() {
           {infoItems.map((item) => (
             <Card
               key={item.label}
-              className="p-6 text-center hover:shadow-lg transition-shadow border-2"
+              className="p-6 text-center hover:shadow-lg hover:-translate-y-0.5 transition-all border-2"
             >
               <item.icon className="h-8 w-8 mx-auto mb-3 text-primary" />
               <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase mb-1">

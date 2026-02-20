@@ -1,5 +1,6 @@
 import { Navigation } from "@/components/layout/Navigation"
 import { Footer } from "@/components/layout/Footer"
+import { FadeIn } from "@/components/ui/fade-in"
 import { Hero } from "@/components/sections/Hero"
 import { KeyInfo } from "@/components/sections/KeyInfo"
 import { About } from "@/components/sections/About"
@@ -19,15 +20,15 @@ function App() {
       <Navigation />
       <main className="flex-1">
         <Hero />
-        <KeyInfo />
-        <About />
-        <Program />
-        <Labs />
-        <FieldTrip />
-        <Registration />
-        <Committees />
-        <Travel />
-        <Contact />
+        <FadeIn><KeyInfo /></FadeIn>
+        <FadeIn><About /></FadeIn>
+        <FadeIn><Program /></FadeIn>
+        <FadeIn><Labs /></FadeIn>
+        <FadeIn><FieldTrip /></FadeIn>
+        <FadeIn><Registration /></FadeIn>
+        <FadeIn><Committees /></FadeIn>
+        <FadeIn><Travel /></FadeIn>
+        <FadeIn><Contact /></FadeIn>
       </main>
       <Footer />
     </div>

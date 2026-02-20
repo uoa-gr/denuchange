@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const navItems = [
   { href: "#program", label: "Program" },
@@ -10,8 +10,34 @@ const navItems = [
   { href: "#contact", label: "Contact" },
 ]
 
+function useActiveSection() {
+  const [active, setActive] = useState("")
+
+  useEffect(() => {
+    const ids = navItems.map((i) => i.href.slice(1))
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActive(entry.target.id)
+          }
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px" }
+    )
+    for (const id of ids) {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    }
+    return () => observer.disconnect()
+  }, [])
+
+  return active
+}
+
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
+  const activeSection = useActiveSection()
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -34,7 +60,11 @@ export function Navigation() {
             <a
               key={item.href}
               href={item.href}
-              className="text-sm font-medium text-foreground transition-colors hover:text-muted-foreground cursor-pointer"
+              className={`text-sm font-medium transition-colors cursor-pointer ${
+                activeSection === item.href.slice(1)
+                  ? "text-primary"
+                  : "text-foreground hover:text-muted-foreground"
+              }`}
             >
               {item.label}
             </a>
