@@ -53,45 +53,57 @@ export function Navigation() {
 
   return (
     <nav
-      className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+      className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
       style={{
-        boxShadow: scrolled ? "0 1px 8px rgba(0,0,0,0.08)" : "none",
-        transition: "box-shadow 0.3s ease",
+        borderBottom: scrolled ? "1px solid var(--border)" : "1px solid transparent",
+        boxShadow: scrolled ? "0 1px 12px rgba(0,0,0,0.06)" : "none",
+        transition: "box-shadow 0.4s ease, border-color 0.4s ease",
       }}
     >
       <div className="container flex h-16 items-center justify-between">
-        <a href="#" className="flex items-center gap-3 cursor-pointer">
+        {/* Brand */}
+        <a href="#" className="flex items-center gap-3 cursor-pointer group">
           <img
             src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`}
             alt="DENUCHANGE"
-            className="h-10 w-10 rounded-full object-cover"
-            width={40}
-            height={40}
+            className="h-9 w-9 rounded-full object-cover ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all"
+            width={36}
+            height={36}
           />
-          <span className="font-semibold text-sm tracking-tight">
-            DENUCHANGE 2026
-          </span>
+          <div className="flex flex-col leading-none">
+            <span
+              className="text-sm font-bold tracking-tight"
+              style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif" }}
+            >
+              DENUCHANGE
+            </span>
+            <span className="text-[10px] font-medium text-muted-foreground tracking-widest uppercase">
+              Workshop 2026
+            </span>
+          </div>
         </a>
 
-        <div className="hidden md:flex items-center gap-6">
+        {/* Desktop links */}
+        <div className="hidden md:flex items-center gap-1">
           {navItems.map((item) => {
             const isActive = activeSection === item.href.slice(1)
             return (
               <a
                 key={item.href}
                 href={item.href}
-                className={`relative text-sm font-medium transition-colors duration-300 cursor-pointer ${
+                className={`relative px-3 py-2 text-[13px] font-semibold uppercase tracking-wide transition-colors duration-300 cursor-pointer rounded-md ${
                   isActive
                     ? "text-primary"
-                    : "text-foreground/70 hover:text-foreground"
+                    : "text-foreground/60 hover:text-foreground hover:bg-muted/50"
                 }`}
               >
                 {item.label}
                 <span
-                  className="absolute -bottom-1 left-0 h-0.5 bg-primary rounded-full"
+                  className="absolute bottom-0.5 left-3 right-3 h-[2px] bg-primary rounded-full"
                   style={{
-                    width: isActive ? "100%" : "0%",
-                    transition: "width 0.3s cubic-bezier(0.22,1,0.36,1)",
+                    transform: isActive ? "scaleX(1)" : "scaleX(0)",
+                    transition: "transform 0.3s cubic-bezier(0.22,1,0.36,1)",
+                    transformOrigin: "center",
                   }}
                 />
               </a>
@@ -131,22 +143,34 @@ export function Navigation() {
       </div>
 
       {/* Mobile menu dropdown */}
-      {isOpen && (
-        <div className="md:hidden border-t bg-background">
-          <div className="container py-4 flex flex-col gap-2">
-            {navItems.map((item) => (
+      <div
+        className="md:hidden border-t bg-background overflow-hidden"
+        style={{
+          maxHeight: isOpen ? "400px" : "0",
+          opacity: isOpen ? 1 : 0,
+          transition: "max-height 0.35s cubic-bezier(0.22,1,0.36,1), opacity 0.25s ease",
+        }}
+      >
+        <div className="container py-3 flex flex-col gap-0.5">
+          {navItems.map((item) => {
+            const isActive = activeSection === item.href.slice(1)
+            return (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="text-sm font-medium text-foreground hover:text-muted-foreground py-2 px-2 rounded hover:bg-muted transition-colors cursor-pointer"
+                className={`text-[13px] font-semibold uppercase tracking-wide py-2.5 px-3 rounded-md transition-colors cursor-pointer ${
+                  isActive
+                    ? "text-primary bg-primary/5"
+                    : "text-foreground/70 hover:text-foreground hover:bg-muted"
+                }`}
               >
                 {item.label}
               </a>
-            ))}
-          </div>
+            )
+          })}
         </div>
-      )}
+      </div>
     </nav>
   )
 }

@@ -31,7 +31,7 @@ const BANNER = `
 
 const SUPPORT_MAILTO = `mailto:denuchange.workshop.2026@gmail.com?subject=${encodeURIComponent("DENUCHANGE Workshop – Change Request / Issue")}&body=${encodeURIComponent(`Type of request: [ Registration Change / Abstract Change / Payment Issue / Other ]
 
-Email used for registration: 
+Email used for registration:
 
 Description of change or issue:
 
