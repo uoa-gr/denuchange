@@ -19,10 +19,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select } from "@/components/ui/select"
 
 const schema = z.object({
-  first_name: z.string().min(1, "Required"),
-  last_name: z.string().min(1, "Required"),
   email: z.string().email("Invalid email address"),
-  affiliation: z.string().min(1, "Required"),
   title: z.string().min(3, "Please enter the abstract title"),
   co_authors: z.string().optional(),
   presentation_type: z.enum(["oral", "poster"], { error: "Please select a presentation type" }),
@@ -60,6 +57,18 @@ export function AbstractDialog({ children }: { children: React.ReactNode }) {
   const onSubmit = async (data: FormData) => {
     setServerError(null)
 
+    // Check if user is registered
+    const { data: reg, error: regError } = await supabase
+      .from("registrations")
+      .select("first_name, last_name, affiliation")
+      .eq("email", data.email)
+      .single()
+
+    if (regError || !reg) {
+      setServerError("This email is not registered. Please register first before submitting an abstract.")
+      return
+    }
+
     const hasText = data.abstract_text && data.abstract_text.trim().length > 0
     if (!hasText && !file) {
       setServerError("Please provide abstract text or upload a file.")
@@ -70,7 +79,7 @@ export function AbstractDialog({ children }: { children: React.ReactNode }) {
 
     if (file) {
       const ext = file.name.split(".").pop()
-      const path = `${Date.now()}-${data.last_name}_${data.first_name}.${ext}`
+      const path = `${Date.now()}-${reg.last_name}_${reg.first_name}.${ext}`
       const { error: uploadErr } = await supabase.storage
         .from("abstracts")
         .upload(path, file)
@@ -82,10 +91,10 @@ export function AbstractDialog({ children }: { children: React.ReactNode }) {
     }
 
     const { error } = await supabase.from("abstracts").insert([{
-      first_name: data.first_name,
-      last_name: data.last_name,
+      first_name: reg.first_name,
+      last_name: reg.last_name,
       email: data.email,
-      affiliation: data.affiliation,
+      affiliation: reg.affiliation,
       title: data.title,
       co_authors: data.co_authors ?? "",
       presentation_type: data.presentation_type,
@@ -101,7 +110,13 @@ export function AbstractDialog({ children }: { children: React.ReactNode }) {
     fetch("/api/send-email", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type: "abstract", ...data }),
+      body: JSON.stringify({
+        type: "abstract",
+        first_name: reg.first_name,
+        last_name: reg.last_name,
+        affiliation: reg.affiliation,
+        ...data,
+      }),
     }).catch(() => {})
 
     setSuccess(true)
@@ -141,29 +156,10 @@ export function AbstractDialog({ children }: { children: React.ReactNode }) {
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <Label htmlFor="abs-first_name">First Name *</Label>
-                  <Input id="abs-first_name" {...register("first_name")} aria-invalid={!!errors.first_name} />
-                  {errors.first_name && <p className="text-xs text-destructive">{errors.first_name.message}</p>}
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="abs-last_name">Last Name *</Label>
-                  <Input id="abs-last_name" {...register("last_name")} aria-invalid={!!errors.last_name} />
-                  {errors.last_name && <p className="text-xs text-destructive">{errors.last_name.message}</p>}
-                </div>
-              </div>
-
               <div className="space-y-1.5">
-                <Label htmlFor="abs-email">Email *</Label>
-                <Input id="abs-email" type="email" {...register("email")} aria-invalid={!!errors.email} />
+                <Label htmlFor="abs-email">Registration Email *</Label>
+                <Input id="abs-email" type="email" placeholder="Use the email you registered with" {...register("email")} aria-invalid={!!errors.email} />
                 {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
-              </div>
-
-              <div className="space-y-1.5">
-                <Label htmlFor="abs-affiliation">Affiliation *</Label>
-                <Input id="abs-affiliation" placeholder="University / Institution" {...register("affiliation")} aria-invalid={!!errors.affiliation} />
-                {errors.affiliation && <p className="text-xs text-destructive">{errors.affiliation.message}</p>}
               </div>
 
               <div className="space-y-1.5">

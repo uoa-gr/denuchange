@@ -29,8 +29,23 @@ const BANNER = `
   </div>
 `
 
+const SUPPORT_MAILTO = `mailto:denuchange.workshop.2026@gmail.com?subject=${encodeURIComponent("DENUCHANGE Workshop – Change Request / Issue")}&body=${encodeURIComponent(`Type of request: [ Registration Change / Abstract Change / Payment Issue / Other ]
+
+Email used for registration: 
+
+Description of change or issue:
+
+
+Additional comments:
+
+`)}`
+
 const FOOTER = `
-  <div style="margin-top:32px;padding-top:16px;border-top:1px solid #e5e7eb;color:#9ca3af;font-size:12px;font-family:sans-serif;">
+  <div style="margin-top:24px;padding:14px 16px;background:#f9fafb;border-radius:6px;font-size:13px;font-family:sans-serif;color:#374151;line-height:1.6;">
+    If you notice any issues or wish to make changes to your registration, abstract, or payment,
+    please <a href="${SUPPORT_MAILTO}" style="color:#0a6e84;font-weight:600;">send us an email</a>.
+  </div>
+  <div style="margin-top:16px;padding-top:16px;border-top:1px solid #e5e7eb;color:#9ca3af;font-size:12px;font-family:sans-serif;">
     IAG DENUCHANGE Working Group · National &amp; Kapodistrian University of Athens<br>
     Contact: <a href="mailto:evelpidou@geol.uoa.gr" style="color:#0a6e84;">evelpidou@geol.uoa.gr</a>
   </div>
@@ -196,6 +211,22 @@ export default async function handler(req: any, res: any) {
         <p style="color:#374151;line-height:1.6;">
           If you have any questions, please contact us at
           <a href="mailto:evelpidou@geol.uoa.gr" style="color:#0a6e84;">evelpidou@geol.uoa.gr</a>.
+        </p>
+      `)
+    } else if (type === "verify") {
+      subject = "Email Verification – IAG DENUCHANGE Workshop 2026"
+      html = wrap(`
+        <h2 style="margin:0 0 8px;font-size:16px;color:#111827;">Email Verification</h2>
+        <p style="color:#374151;line-height:1.6;">
+          This email was sent to verify that <strong>${esc(email)}</strong> is the correct address
+          you entered for the <strong>5th IAG DENUCHANGE Workshop</strong> registration.
+        </p>
+        <p style="color:#374151;line-height:1.6;">
+          If you received this message, your email address is correct. You can go back to the
+          registration form and complete your submission.
+        </p>
+        <p style="color:#9ca3af;font-size:13px;line-height:1.6;">
+          If you did not request this verification, you can safely ignore this email.
         </p>
       `)
     } else {

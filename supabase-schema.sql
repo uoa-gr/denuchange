@@ -43,9 +43,13 @@ CREATE INDEX IF NOT EXISTS idx_registrations_email ON public.registrations (emai
 
 ALTER TABLE public.registrations ENABLE ROW LEVEL SECURITY;
 
--- Anonymous users can insert (register) but never read/update/delete
+-- Anonymous users can insert (register) but never update/delete
 CREATE POLICY "anon_insert_registrations"
   ON public.registrations FOR INSERT TO anon WITH CHECK (true);
+
+-- Allow anonymous lookups by email (needed for abstract/payment form validation)
+CREATE POLICY "anon_select_registrations"
+  ON public.registrations FOR SELECT TO anon USING (true);
 
 -- ─────────────────────────────────────────────
 -- 2. Abstracts

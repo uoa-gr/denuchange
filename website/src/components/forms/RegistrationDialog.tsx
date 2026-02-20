@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { CheckCircle2 } from "lucide-react"
+import { CheckCircle2, Mail } from "lucide-react"
 import { supabase } from "@/lib/supabase"
 import {
   Dialog,
@@ -39,6 +39,8 @@ export function RegistrationDialog({ children }: { children: React.ReactNode }) 
   const [open, setOpen] = useState(false)
   const [success, setSuccess] = useState(false)
   const [serverError, setServerError] = useState<string | null>(null)
+  const [emailVerifying, setEmailVerifying] = useState(false)
+  const [emailVerified, setEmailVerified] = useState(false)
 
   const {
     register,
@@ -52,6 +54,25 @@ export function RegistrationDialog({ children }: { children: React.ReactNode }) 
   })
 
   const dietary = watch("dietary")
+  const emailValue = watch("email")
+
+  const verifyEmail = async () => {
+    if (!emailValue || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) return
+    setEmailVerifying(true)
+    setEmailVerified(false)
+    try {
+      await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "verify", email: emailValue }),
+      })
+      setEmailVerified(true)
+    } catch {
+      // silent
+    } finally {
+      setEmailVerifying(false)
+    }
+  }
 
   const onSubmit = async (data: FormData) => {
     setServerError(null)
@@ -80,7 +101,7 @@ export function RegistrationDialog({ children }: { children: React.ReactNode }) 
   }
 
   const handleOpenChange = (val: boolean) => {
-    if (!val) { reset(); setSuccess(false); setServerError(null) }
+    if (!val) { reset(); setSuccess(false); setServerError(null); setEmailVerified(false) }
     setOpen(val)
   }
 
@@ -124,8 +145,27 @@ export function RegistrationDialog({ children }: { children: React.ReactNode }) 
 
               <div className="space-y-1.5">
                 <Label htmlFor="reg-email">Email *</Label>
-                <Input id="reg-email" type="email" {...register("email")} aria-invalid={!!errors.email} />
+                <div className="flex gap-2">
+                  <Input id="reg-email" type="email" className="flex-1" {...register("email")} aria-invalid={!!errors.email} />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="shrink-0 gap-1.5"
+                    disabled={emailVerifying || !emailValue || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)}
+                    onClick={verifyEmail}
+                  >
+                    <Mail className="h-3.5 w-3.5" />
+                    {emailVerifying ? "Sending…" : "Verify"}
+                  </Button>
+                </div>
                 {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
+                {emailVerified && (
+                  <p className="text-xs text-green-600 flex items-center gap-1">
+                    <CheckCircle2 className="h-3.5 w-3.5" />
+                    Verification email sent — check your inbox to make sure you added the correct email.
+                  </p>
+                )}
               </div>
 
               <div className="space-y-1.5">

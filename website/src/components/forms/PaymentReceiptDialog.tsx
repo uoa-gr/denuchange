@@ -64,6 +64,18 @@ export function PaymentReceiptDialog({ children }: { children: React.ReactNode }
       return
     }
 
+    // Check if user is registered
+    const { data: reg, error: regError } = await supabase
+      .from("registrations")
+      .select("email")
+      .eq("email", data.email)
+      .single()
+
+    if (regError || !reg) {
+      setServerError("This email is not registered. Please register first before uploading a receipt.")
+      return
+    }
+
     const ext = file.name.split(".").pop()
     const path = `${Date.now()}-${data.email.replace(/[@.]/g, "_")}.${ext}`
 
