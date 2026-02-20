@@ -5,7 +5,6 @@ const SMTP_PORT = parseInt(process.env.SMTP_PORT ?? "465", 10)
 const SMTP_USER = process.env.SMTP_USER
 const SMTP_PASS = process.env.SMTP_PASS
 const FROM = process.env.SMTP_FROM ?? `DENUCHANGE Workshop <${SMTP_USER}>`
-const ORGANIZER = "evelpidou@geol.uoa.gr"
 
 /** Escape HTML special characters to prevent injection in email templates */
 function esc(str: string | undefined | null): string {
@@ -249,7 +248,7 @@ export default async function handler(req: any, res: any) {
         </table>
         <p style="color:#374151;line-height:1.6;">
           If you have any questions, please contact us at
-          <a href="mailto:evelpidou@geol.uoa.gr" style="color:#0a6e84;">evelpidou@geol.uoa.gr</a>.
+          <a href="mailto:denuchange.workshop.2026@gmail.com" style="color:#0a6e84;">denuchange.workshop.2026@gmail.com</a>.
         </p>
       `)
     } else if (type === "verify") {
@@ -282,7 +281,6 @@ export default async function handler(req: any, res: any) {
     await transporter.sendMail({
       from: FROM,
       to: email,
-      bcc: ORGANIZER,
       subject,
       html,
     })
