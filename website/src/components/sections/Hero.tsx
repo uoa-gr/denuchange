@@ -60,7 +60,7 @@ export function Hero() {
           <Button size="lg" asChild>
             <a href="#registration">Register Now</a>
           </Button>
-          <Button size="lg" asChild className="bg-gradient-to-r from-[#f1c100] via-[#b89200] to-[#f1c100] hover:brightness-110 text-white font-bold border-none shadow-sm hover:shadow-md">
+          <Button size="lg" asChild className="bg-[image:linear-gradient(to_right,#f1c100,#9a7400,#f1c100)] hover:brightness-110 text-white font-bold border-none shadow-[0_1px_3px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.2)] hover:shadow-[0_2px_8px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.25)]">
             <a href="#program">View Program</a>
           </Button>
         </div>
