@@ -58,13 +58,20 @@ export function AbstractDialog({ children }: { children: React.ReactNode }) {
     setServerError(null)
 
     // Check if user is registered
+    const normalizedEmail = data.email.trim().toLowerCase()
     const { data: reg, error: regError } = await supabase
       .from("registrations")
       .select("first_name, last_name, affiliation")
-      .eq("email", data.email)
-      .single()
+      .eq("email", normalizedEmail)
+      .maybeSingle()
 
-    if (regError || !reg) {
+    if (regError) {
+      console.error("Registration lookup error:", regError)
+      setServerError(`Database error: ${regError.message}. Please contact the organizers.`)
+      return
+    }
+
+    if (!reg) {
       setServerError("This email is not registered. Please register first before submitting an abstract.")
       return
     }
@@ -93,7 +100,7 @@ export function AbstractDialog({ children }: { children: React.ReactNode }) {
     const { error } = await supabase.from("abstracts").insert([{
       first_name: reg.first_name,
       last_name: reg.last_name,
-      email: data.email,
+      email: normalizedEmail,
       affiliation: reg.affiliation,
       title: data.title,
       co_authors: data.co_authors ?? "",

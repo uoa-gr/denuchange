@@ -78,6 +78,7 @@ export function RegistrationDialog({ children }: { children: React.ReactNode }) 
     setServerError(null)
     const { error } = await supabase.from("registrations").insert([{
       ...data,
+      email: data.email.trim().toLowerCase(),
       dietary_other: data.dietary === "other" ? (data.dietary_other ?? "") : null,
       special_requirements: data.special_requirements ?? "",
     }])

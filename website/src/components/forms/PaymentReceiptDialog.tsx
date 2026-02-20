@@ -65,19 +65,26 @@ export function PaymentReceiptDialog({ children }: { children: React.ReactNode }
     }
 
     // Check if user is registered
+    const normalizedEmail = data.email.trim().toLowerCase()
     const { data: reg, error: regError } = await supabase
       .from("registrations")
       .select("email")
-      .eq("email", data.email)
-      .single()
+      .eq("email", normalizedEmail)
+      .maybeSingle()
 
-    if (regError || !reg) {
+    if (regError) {
+      console.error("Registration lookup error:", regError)
+      setServerError(`Database error: ${regError.message}. Please contact the organizers.`)
+      return
+    }
+
+    if (!reg) {
       setServerError("This email is not registered. Please register first before uploading a receipt.")
       return
     }
 
     const ext = file.name.split(".").pop()
-    const path = `${Date.now()}-${data.email.replace(/[@.]/g, "_")}.${ext}`
+    const path = `${Date.now()}-${normalizedEmail.replace(/[@.]/g, "_")}.${ext}`
 
     const { error: uploadErr } = await supabase.storage
       .from("payment-receipts")
@@ -89,7 +96,7 @@ export function PaymentReceiptDialog({ children }: { children: React.ReactNode }
     }
 
     const { error } = await supabase.from("payment_receipts").insert([{
-      email: data.email,
+      email: normalizedEmail,
       file_path: path,
       notes: data.notes ?? "",
     }])
