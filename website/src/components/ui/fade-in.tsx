@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from "react"
 
+const prefersReducedMotion =
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
 export function FadeIn({
   children,
   className = "",
@@ -8,9 +12,10 @@ export function FadeIn({
   className?: string
 }) {
   const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(prefersReducedMotion)
 
   useEffect(() => {
+    if (prefersReducedMotion) return
     const el = ref.current
     if (!el) return
     const observer = new IntersectionObserver(
@@ -29,13 +34,16 @@ export function FadeIn({
   return (
     <div
       ref={ref}
-      className={[
-        "motion-safe:transition-all motion-safe:duration-700 motion-safe:ease-out",
-        visible
-          ? "opacity-100 translate-y-0"
-          : "motion-safe:opacity-0 motion-safe:translate-y-5",
-        className,
-      ].join(" ")}
+      className={className}
+      style={
+        prefersReducedMotion
+          ? undefined
+          : {
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(1.25rem)",
+              transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
+            }
+      }
     >
       {children}
     </div>
