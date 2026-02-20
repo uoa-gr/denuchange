@@ -1,21 +1,18 @@
 import { useEffect, useRef, useState } from "react"
 
-const prefersReducedMotion =
-  typeof window !== "undefined" &&
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches
-
 export function FadeIn({
   children,
   className = "",
+  delay = 0,
 }: {
   children: React.ReactNode
   className?: string
+  delay?: number
 }) {
   const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(prefersReducedMotion)
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    if (prefersReducedMotion) return
     const el = ref.current
     if (!el) return
     const observer = new IntersectionObserver(
@@ -25,7 +22,7 @@ export function FadeIn({
           observer.unobserve(el)
         }
       },
-      { threshold: 0.08 },
+      { threshold: 0.05 },
     )
     observer.observe(el)
     return () => observer.disconnect()
@@ -35,15 +32,11 @@ export function FadeIn({
     <div
       ref={ref}
       className={className}
-      style={
-        prefersReducedMotion
-          ? undefined
-          : {
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateY(0)" : "translateY(1.25rem)",
-              transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
-            }
-      }
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(2rem)",
+        transition: `opacity 0.8s ease-out ${delay}ms, transform 0.8s ease-out ${delay}ms`,
+      }}
     >
       {children}
     </div>

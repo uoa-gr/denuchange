@@ -20,8 +20,8 @@ function App() {
       <Navigation />
       <main className="flex-1">
         <Hero />
-        <FadeIn><KeyInfo /></FadeIn>
-        <FadeIn><About /></FadeIn>
+        <FadeIn delay={100}><KeyInfo /></FadeIn>
+        <FadeIn delay={200}><About /></FadeIn>
         <FadeIn><Program /></FadeIn>
         <FadeIn><Labs /></FadeIn>
         <FadeIn><FieldTrip /></FadeIn>
