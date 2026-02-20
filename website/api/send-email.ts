@@ -1,7 +1,10 @@
-import { Resend } from "resend"
+import nodemailer from "nodemailer"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-const FROM = process.env.RESEND_FROM ?? "DENUCHANGE Workshop <noreply@resend.dev>"
+const SMTP_HOST = process.env.SMTP_HOST ?? "smtp.gmail.com"
+const SMTP_PORT = parseInt(process.env.SMTP_PORT ?? "465", 10)
+const SMTP_USER = process.env.SMTP_USER
+const SMTP_PASS = process.env.SMTP_PASS
+const FROM = process.env.SMTP_FROM ?? `DENUCHANGE Workshop <${SMTP_USER}>`
 const ORGANIZER = "evelpidou@geol.uoa.gr"
 
 /** Escape HTML special characters to prevent injection in email templates */
@@ -58,8 +61,8 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: "Method not allowed" })
   }
 
-  if (!process.env.RESEND_API_KEY) {
-    // Graceful skip when not configured
+  if (!SMTP_USER || !SMTP_PASS) {
+    // Graceful skip when SMTP is not configured
     return res.status(200).json({ skipped: true })
   }
 
@@ -145,10 +148,17 @@ export default async function handler(req: any, res: any) {
       return res.status(400).json({ error: "Unknown email type" })
     }
 
-    await resend.emails.send({
+    const transporter = nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: SMTP_PORT,
+      secure: SMTP_PORT === 465,
+      auth: { user: SMTP_USER, pass: SMTP_PASS },
+    })
+
+    await transporter.sendMail({
       from: FROM,
-      to: [email],
-      bcc: [ORGANIZER],
+      to: email,
+      bcc: ORGANIZER,
       subject,
       html,
     })
