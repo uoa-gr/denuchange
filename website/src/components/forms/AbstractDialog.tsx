@@ -36,6 +36,7 @@ export function AbstractDialog({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
   const [success, setSuccess] = useState(false)
   const [serverError, setServerError] = useState<string | null>(null)
+  const [duplicateMailto, setDuplicateMailto] = useState<string | null>(null)
   const [file, setFile] = useState<File | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
 
@@ -73,6 +74,20 @@ export function AbstractDialog({ children }: { children: React.ReactNode }) {
 
     if (!reg) {
       setServerError("This email is not registered. Please register first before submitting an abstract.")
+      return
+    }
+
+    // Check for existing abstract submission
+    const { data: existingAbstract } = await supabase
+      .from("abstracts")
+      .select("id")
+      .ilike("email", normalizedEmail)
+      .maybeSingle()
+
+    if (existingAbstract) {
+      const mailto = "mailto:denuchange.workshop.2026@gmail.com?subject=" + encodeURIComponent("DENUCHANGE Workshop \u2013 Change Request") + "&body=" + encodeURIComponent("Type of request: [ Registration Change / Abstract Change / Payment Issue / Other ]\n\nEmail used for registration:\n\nDescription of change or issue:\n\n")
+      setDuplicateMailto(mailto)
+      setServerError("duplicate")
       return
     }
 
@@ -130,7 +145,7 @@ export function AbstractDialog({ children }: { children: React.ReactNode }) {
   }
 
   const handleOpenChange = (val: boolean) => {
-    if (!val) { reset(); setSuccess(false); setServerError(null); setFile(null) }
+    if (!val) { reset(); setSuccess(false); setServerError(null); setDuplicateMailto(null); setFile(null) }
     setOpen(val)
   }
 
@@ -243,9 +258,15 @@ export function AbstractDialog({ children }: { children: React.ReactNode }) {
               </div>
 
               {serverError && (
-                <p className="text-sm text-destructive bg-destructive/10 border border-destructive/30 rounded-md px-3 py-2">
-                  {serverError}
-                </p>
+                <div className="text-sm text-destructive bg-destructive/10 border border-destructive/30 rounded-md px-3 py-2">
+                  {duplicateMailto ? (
+                    <p>An abstract has already been submitted with this email. If you need to make changes, please{" "}
+                      <a href={duplicateMailto} className="underline font-medium">contact us</a>.
+                    </p>
+                  ) : (
+                    <p>{serverError}</p>
+                  )}
+                </div>
               )}
 
               <Button type="submit" className="w-full" disabled={isSubmitting || overLimit}>

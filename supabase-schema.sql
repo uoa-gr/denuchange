@@ -79,6 +79,9 @@ ALTER TABLE public.abstracts ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "anon_insert_abstracts"
   ON public.abstracts FOR INSERT TO anon WITH CHECK (true);
 
+CREATE POLICY "anon_select_abstracts"
+  ON public.abstracts FOR SELECT TO anon USING (true);
+
 -- ─────────────────────────────────────────────
 -- 3. Payment Receipts
 -- ─────────────────────────────────────────────
@@ -96,6 +99,9 @@ ALTER TABLE public.payment_receipts ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "anon_insert_payment_receipts"
   ON public.payment_receipts FOR INSERT TO anon WITH CHECK (true);
+
+CREATE POLICY "anon_select_payment_receipts"
+  ON public.payment_receipts FOR SELECT TO anon USING (true);
 
 -- ─────────────────────────────────────────────
 -- 4. Storage bucket for abstracts

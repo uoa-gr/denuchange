@@ -31,6 +31,7 @@ export function PaymentReceiptDialog({ children }: { children: React.ReactNode }
   const [open, setOpen] = useState(false)
   const [success, setSuccess] = useState(false)
   const [serverError, setServerError] = useState<string | null>(null)
+  const [duplicateMailto, setDuplicateMailto] = useState<string | null>(null)
   const [file, setFile] = useState<File | null>(null)
   const [fileError, setFileError] = useState<string | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
@@ -83,6 +84,20 @@ export function PaymentReceiptDialog({ children }: { children: React.ReactNode }
       return
     }
 
+    // Check for existing payment receipt
+    const { data: existingReceipt } = await supabase
+      .from("payment_receipts")
+      .select("id")
+      .ilike("email", normalizedEmail)
+      .maybeSingle()
+
+    if (existingReceipt) {
+      const mailto = "mailto:denuchange.workshop.2026@gmail.com?subject=" + encodeURIComponent("DENUCHANGE Workshop \u2013 Change Request") + "&body=" + encodeURIComponent("Type of request: [ Registration Change / Abstract Change / Payment Issue / Other ]\n\nEmail used for registration:\n\nDescription of change or issue:\n\n")
+      setDuplicateMailto(mailto)
+      setServerError("duplicate")
+      return
+    }
+
     const ext = file.name.split(".").pop()
     const path = `${Date.now()}-${normalizedEmail.replace(/[@.]/g, "_")}.${ext}`
 
@@ -116,7 +131,7 @@ export function PaymentReceiptDialog({ children }: { children: React.ReactNode }
   }
 
   const handleOpenChange = (val: boolean) => {
-    if (!val) { reset(); setSuccess(false); setServerError(null); setFile(null); setFileError(null) }
+    if (!val) { reset(); setSuccess(false); setServerError(null); setDuplicateMailto(null); setFile(null); setFileError(null) }
     setOpen(val)
   }
 
@@ -200,9 +215,15 @@ export function PaymentReceiptDialog({ children }: { children: React.ReactNode }
               </div>
 
               {serverError && (
-                <p className="text-sm text-destructive bg-destructive/10 border border-destructive/30 rounded-md px-3 py-2">
-                  {serverError}
-                </p>
+                <div className="text-sm text-destructive bg-destructive/10 border border-destructive/30 rounded-md px-3 py-2">
+                  {duplicateMailto ? (
+                    <p>A payment receipt has already been uploaded with this email. If you need to make changes, please{" "}
+                      <a href={duplicateMailto} className="underline font-medium">contact us</a>.
+                    </p>
+                  ) : (
+                    <p>{serverError}</p>
+                  )}
+                </div>
               )}
 
               <Button type="submit" className="w-full" disabled={isSubmitting}>

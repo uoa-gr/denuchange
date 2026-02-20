@@ -41,6 +41,7 @@ export function RegistrationDialog({ children }: { children: React.ReactNode }) 
   const [serverError, setServerError] = useState<string | null>(null)
   const [emailVerifying, setEmailVerifying] = useState(false)
   const [emailVerified, setEmailVerified] = useState(false)
+  const [duplicateMailto, setDuplicateMailto] = useState<string | null>(null)
 
   const {
     register,
@@ -74,21 +75,33 @@ export function RegistrationDialog({ children }: { children: React.ReactNode }) 
     }
   }
 
+  const SUPPORT_MAILTO = "mailto:denuchange.workshop.2026@gmail.com?subject=" + encodeURIComponent("DENUCHANGE Workshop \u2013 Change Request") + "&body=" + encodeURIComponent("Type of request: [ Registration Change / Abstract Change / Payment Issue / Other ]\n\nEmail used for registration:\n\nDescription of change or issue:\n\n")
+
   const onSubmit = async (data: FormData) => {
     setServerError(null)
+
+    const normalizedEmail = data.email.trim().toLowerCase()
+    const { data: existing } = await supabase
+      .from("registrations")
+      .select("id")
+      .ilike("email", normalizedEmail)
+      .maybeSingle()
+
+    if (existing) {
+      setDuplicateMailto(SUPPORT_MAILTO)
+      setServerError("duplicate")
+      return
+    }
+
     const { error } = await supabase.from("registrations").insert([{
       ...data,
-      email: data.email.trim().toLowerCase(),
+      email: normalizedEmail,
       dietary_other: data.dietary === "other" ? (data.dietary_other ?? "") : null,
       special_requirements: data.special_requirements ?? "",
     }])
 
     if (error) {
-      setServerError(
-        error.code === "23505"
-          ? "This email address is already registered."
-          : "Something went wrong. Please try again."
-      )
+      setServerError("Something went wrong. Please try again.")
       return
     }
 
@@ -102,7 +115,7 @@ export function RegistrationDialog({ children }: { children: React.ReactNode }) 
   }
 
   const handleOpenChange = (val: boolean) => {
-    if (!val) { reset(); setSuccess(false); setServerError(null); setEmailVerified(false) }
+    if (!val) { reset(); setSuccess(false); setServerError(null); setEmailVerified(false); setDuplicateMailto(null) }
     setOpen(val)
   }
 
@@ -235,9 +248,15 @@ export function RegistrationDialog({ children }: { children: React.ReactNode }) 
               </div>
 
               {serverError && (
-                <p className="text-sm text-destructive bg-destructive/10 border border-destructive/30 rounded-md px-3 py-2">
-                  {serverError}
-                </p>
+                <div className="text-sm text-destructive bg-destructive/10 border border-destructive/30 rounded-md px-3 py-2">
+                  {duplicateMailto ? (
+                    <p>A registration with this email already exists. If you need to make changes, please{" "}
+                      <a href={duplicateMailto} className="underline font-medium">contact us</a>.
+                    </p>
+                  ) : (
+                    <p>{serverError}</p>
+                  )}
+                </div>
               )}
 
               <Button type="submit" className="w-full" disabled={isSubmitting}>

@@ -19,14 +19,18 @@ function esc(str: string | undefined | null): string {
 }
 
 const BANNER = `
-  <div style="background:#0a6e84;padding:20px 24px;border-radius:8px 8px 0 0;">
-    <h1 style="margin:0;color:#ffffff;font-size:18px;font-family:sans-serif;font-weight:600;">
-      IAG DENUCHANGE Workshop 2026
-    </h1>
-    <p style="margin:4px 0 0;color:rgba(255,255,255,0.8);font-size:13px;font-family:sans-serif;">
-      6–9 October 2026 · Naxos, Greece
-    </p>
-  </div>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0a6e84;">
+    <tr>
+      <td style="padding:20px 24px;font-family:Arial,Helvetica,sans-serif;">
+        <h1 style="margin:0;color:#ffffff;font-size:18px;font-family:Arial,Helvetica,sans-serif;font-weight:600;">
+          IAG DENUCHANGE Workshop 2026
+        </h1>
+        <p style="margin:4px 0 0;color:#b2dce5;font-size:13px;font-family:Arial,Helvetica,sans-serif;">
+          6&#8211;9 October 2026 &middot; Naxos, Greece
+        </p>
+      </td>
+    </tr>
+  </table>
 `
 
 const SUPPORT_MAILTO = `mailto:denuchange.workshop.2026@gmail.com?subject=${encodeURIComponent("DENUCHANGE Workshop – Change Request / Issue")}&body=${encodeURIComponent(`Type of request: [ Registration Change / Abstract Change / Payment Issue / Other ]
@@ -41,24 +45,60 @@ Additional comments:
 `)}`
 
 const FOOTER = `
-  <div style="margin-top:24px;padding:14px 16px;background:#f9fafb;border-radius:6px;font-size:13px;font-family:sans-serif;color:#374151;line-height:1.6;">
-    If you notice any issues or wish to make changes to your registration, abstract, or payment,
-    please <a href="${SUPPORT_MAILTO}" style="color:#0a6e84;font-weight:600;">send us an email</a>.
-  </div>
-  <div style="margin-top:16px;padding-top:16px;border-top:1px solid #e5e7eb;color:#9ca3af;font-size:12px;font-family:sans-serif;">
-    IAG DENUCHANGE Working Group &middot; National &amp; Kapodistrian University of Athens
-  </div>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:24px;">
+    <tr>
+      <td style="padding:14px 16px;background:#f9fafb;font-size:13px;font-family:Arial,Helvetica,sans-serif;color:#374151;line-height:1.6;">
+        If you notice any issues or wish to make changes to your registration, abstract, or payment,
+        please <a href="${SUPPORT_MAILTO}" style="color:#0a6e84;font-weight:600;">send us an email</a>.
+      </td>
+    </tr>
+  </table>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:16px;">
+    <tr>
+      <td style="padding-top:16px;border-top:1px solid #e5e7eb;color:#9ca3af;font-size:12px;font-family:Arial,Helvetica,sans-serif;">
+        IAG DENUCHANGE Working Group &middot; National &amp; Kapodistrian University of Athens
+      </td>
+    </tr>
+  </table>
 `
 
 function wrap(content: string) {
   return `
-    <div style="font-family:sans-serif;max-width:560px;margin:0 auto;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;word-break:break-word;overflow-wrap:break-word;">
-      ${BANNER}
-      <div style="padding:24px;">
-        ${content}
-        ${FOOTER}
-      </div>
-    </div>
+    <!DOCTYPE html>
+    <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <!--[if mso]>
+      <noscript>
+        <xml>
+          <o:OfficeDocumentSettings>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+          </o:OfficeDocumentSettings>
+        </xml>
+      </noscript>
+      <![endif]-->
+    </head>
+    <body style="margin:0;padding:0;background:#f4f4f5;font-family:Arial,Helvetica,sans-serif;word-break:break-word;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f4f5;">
+        <tr>
+          <td align="center" style="padding:24px 16px;">
+            <!--[if mso]><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="560"><tr><td><![endif]-->
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;background:#ffffff;border:1px solid #e5e7eb;">
+              <tr><td>${BANNER}</td></tr>
+              <tr>
+                <td style="padding:24px;font-family:Arial,Helvetica,sans-serif;">
+                  ${content}
+                  ${FOOTER}
+                </td>
+              </tr>
+            </table>
+            <!--[if mso]></td></tr></table><![endif]-->
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
   `
 }
 
