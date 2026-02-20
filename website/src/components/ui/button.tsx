@@ -10,13 +10,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary bg-[image:linear-gradient(to_bottom,oklch(0.58_0.14_250),oklch(0.48_0.14_250))] text-white border border-[oklch(0.40_0.12_250)] shadow-[0_1px_2px_rgba(0,0,0,0.16),0_1px_0_0_oklch(0.40_0.12_250),inset_0_1px_0_rgba(255,255,255,0.1)] hover:bg-[image:linear-gradient(to_bottom,oklch(0.60_0.14_250),oklch(0.50_0.14_250))] hover:shadow-[0_2px_4px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.12)] active:bg-[image:linear-gradient(to_bottom,oklch(0.45_0.14_250),oklch(0.48_0.14_250))] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.2)]",
+          "bg-primary text-white font-semibold hover:bg-[oklch(0.44_0.14_250)] active:bg-[oklch(0.38_0.14_250)] focus-visible:ring-2 focus-visible:ring-primary/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none",
         destructive:
-          "bg-destructive bg-[image:linear-gradient(to_bottom,oklch(0.63_0.245_27),oklch(0.53_0.245_27))] text-white border border-[oklch(0.45_0.20_27)] shadow-[0_1px_2px_rgba(0,0,0,0.16),inset_0_1px_0_rgba(255,255,255,0.1)] hover:bg-[image:linear-gradient(to_bottom,oklch(0.65_0.245_27),oklch(0.55_0.245_27))] hover:shadow-[0_2px_4px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.12)] active:bg-[image:linear-gradient(to_bottom,oklch(0.50_0.245_27),oklch(0.53_0.245_27))] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.2)] focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
+          "bg-destructive text-white font-semibold hover:bg-[oklch(0.50_0.245_27)] active:bg-[oklch(0.40_0.245_27)] focus-visible:ring-2 focus-visible:ring-destructive/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none",
         outline:
-          "bg-primary bg-[image:linear-gradient(to_bottom,oklch(0.58_0.14_250),oklch(0.48_0.14_250))] text-white border border-[oklch(0.40_0.12_250)] shadow-[0_1px_2px_rgba(0,0,0,0.16),0_1px_0_0_oklch(0.40_0.12_250),inset_0_1px_0_rgba(255,255,255,0.1)] hover:bg-[image:linear-gradient(to_bottom,oklch(0.60_0.14_250),oklch(0.50_0.14_250))] hover:shadow-[0_2px_4px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.12)] active:bg-[image:linear-gradient(to_bottom,oklch(0.45_0.14_250),oklch(0.48_0.14_250))] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.2)]",
+          "bg-primary text-white font-semibold hover:bg-[oklch(0.44_0.14_250)] active:bg-[oklch(0.38_0.14_250)] focus-visible:ring-2 focus-visible:ring-primary/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none",
         secondary:
-          "bg-secondary bg-[image:linear-gradient(to_bottom,white,oklch(0.96_0.01_250))] text-secondary-foreground border border-[oklch(0.88_0.02_250)] shadow-[0_1px_2px_rgba(0,0,0,0.06),inset_0_1px_0_white] hover:bg-[image:linear-gradient(to_bottom,oklch(0.98_0.005_250),oklch(0.94_0.01_250))] hover:shadow-[0_2px_4px_rgba(0,0,0,0.08)] active:bg-[image:linear-gradient(to_bottom,oklch(0.93_0.01_250),oklch(0.96_0.01_250))] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)]",
+          "bg-secondary text-secondary-foreground font-semibold hover:bg-[oklch(0.92_0.01_250)] active:bg-[oklch(0.88_0.01_250)] focus-visible:ring-2 focus-visible:ring-secondary/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none",
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",

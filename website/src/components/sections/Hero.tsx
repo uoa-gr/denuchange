@@ -60,7 +60,7 @@ export function Hero() {
           <Button size="lg" asChild>
             <a href="#registration">Register Now</a>
           </Button>
-          <Button size="lg" asChild className="bg-[#f1c100] bg-[image:linear-gradient(to_bottom,#f7d02e,#d4a800)] text-[#1a1400] font-bold border border-[#b89200] shadow-[0_1px_2px_rgba(0,0,0,0.16),inset_0_1px_0_rgba(255,255,255,0.25)] hover:bg-[image:linear-gradient(to_bottom,#fad940,#ddb200)] hover:shadow-[0_2px_4px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.3)] active:bg-[image:linear-gradient(to_bottom,#c8a000,#d4a800)] active:shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)]">
+          <Button size="lg" asChild className="bg-[#f1c100] text-[#1a1400] font-semibold hover:bg-[#e6b800] active:bg-[#b89200] focus-visible:ring-2 focus-visible:ring-[#f1c100]/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none">
             <a href="#program">View Program</a>
           </Button>
         </div>
