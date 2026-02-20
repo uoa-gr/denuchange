@@ -184,11 +184,6 @@ export default async function handler(req: any, res: any) {
             <td style="padding:8px 12px;border:1px solid #e5e7eb;word-break:break-word;overflow-wrap:break-word;">${esc(data.special_requirements)}</td>
           </tr>` : ""}
         </table>
-        <p style="color:#374151;line-height:1.6;">
-          <strong>Next step:</strong> Please complete your bank transfer and upload your payment
-          receipt on the workshop website. Bank transfer details will be
-          announced on the website.
-        </p>
       `)
     } else if (type === "abstract") {
       subject = "Abstract Received – IAG DENUCHANGE Workshop 2026"

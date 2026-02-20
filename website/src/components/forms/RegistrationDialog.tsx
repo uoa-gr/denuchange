@@ -129,8 +129,6 @@ export function RegistrationDialog({ children }: { children: React.ReactNode }) 
             <DialogTitle>Registration submitted!</DialogTitle>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Thank you for registering. A confirmation email is on its way.
-              Please complete your bank transfer and upload your payment receipt
-              using the button below.
             </p>
             <Button onClick={() => handleOpenChange(false)}>Close</Button>
           </div>
