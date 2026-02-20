@@ -14,7 +14,7 @@ const buttonVariants = cva(
         destructive:
           "bg-[image:linear-gradient(to_right,oklch(0.577_0.245_27),oklch(0.45_0.2_27),oklch(0.577_0.245_27))] text-white shadow-[0_1px_3px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.15)] hover:shadow-[0_2px_8px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.2)] hover:brightness-110 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
         outline:
-          "border bg-[image:linear-gradient(to_right,rgba(0,0,0,0.01),rgba(0,0,0,0.04),rgba(0,0,0,0.01))] shadow-xs hover:shadow-sm hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "border border-primary/30 bg-[image:linear-gradient(to_right,oklch(0.52_0.14_250/0.08),oklch(0.38_0.14_250/0.15),oklch(0.52_0.14_250/0.08))] text-primary shadow-[0_1px_2px_rgba(0,0,0,0.06)] hover:shadow-[0_2px_6px_rgba(0,0,0,0.1)] hover:border-primary/50 hover:brightness-[0.97]",
         secondary:
           "bg-[image:linear-gradient(to_right,oklch(0.97_0.01_250),oklch(0.92_0.02_250),oklch(0.97_0.01_250))] text-secondary-foreground shadow-[0_1px_2px_rgba(0,0,0,0.08)] hover:shadow-[0_2px_6px_rgba(0,0,0,0.12)] hover:brightness-[0.97]",
         ghost:
