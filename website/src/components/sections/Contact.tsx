@@ -35,7 +35,7 @@ export function Contact() {
               </p>
 
               <Button asChild>
-                <a href="mailto:evelpidou@geol.uoa.gr,ekarkani@geol.uoa.gr">
+                <a href={`mailto:denuchange.workshop.2026@gmail.com?subject=${encodeURIComponent('DENUCHANGE Workshop 2026 – Inquiry')}&body=${encodeURIComponent('Topic: [ Registration / Abstract / Field Trip / Travel / Accommodation / Other ]\n\nYour name: \n\nYour email: \n\nMessage:\n\n')}`}>
                   <Mail className="mr-2 h-4 w-4" />
                   Send Email
                 </a>

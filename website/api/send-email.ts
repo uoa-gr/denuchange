@@ -46,8 +46,7 @@ const FOOTER = `
     please <a href="${SUPPORT_MAILTO}" style="color:#0a6e84;font-weight:600;">send us an email</a>.
   </div>
   <div style="margin-top:16px;padding-top:16px;border-top:1px solid #e5e7eb;color:#9ca3af;font-size:12px;font-family:sans-serif;">
-    IAG DENUCHANGE Working Group · National &amp; Kapodistrian University of Athens<br>
-    Contact: <a href="mailto:evelpidou@geol.uoa.gr" style="color:#0a6e84;">evelpidou@geol.uoa.gr</a>
+    IAG DENUCHANGE Working Group &middot; National &amp; Kapodistrian University of Athens
   </div>
 `
 
