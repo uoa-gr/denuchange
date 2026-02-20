@@ -10,13 +10,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary bg-[image:radial-gradient(ellipse_at_center,oklch(0.55_0.14_250)_0%,oklch(0.30_0.12_250)_100%)] text-white shadow-[0_1px_3px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_2px_10px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.18)] hover:brightness-110",
+          "bg-primary bg-[image:radial-gradient(ellipse_at_center,oklch(0.52_0.14_250)_30%,oklch(0.15_0.06_250)_100%)] text-[oklch(0.96_0.015_230)] shadow-[0_1px_3px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_2px_10px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] hover:brightness-110",
         destructive:
-          "bg-destructive bg-[image:radial-gradient(ellipse_at_center,oklch(0.58_0.245_27)_0%,oklch(0.35_0.18_27)_100%)] text-white shadow-[0_1px_3px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_2px_10px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.18)] hover:brightness-110 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
+          "bg-destructive bg-[image:radial-gradient(ellipse_at_center,oklch(0.577_0.245_27)_30%,oklch(0.2_0.08_27)_100%)] text-[oklch(0.96_0.02_60)] shadow-[0_1px_3px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_2px_10px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] hover:brightness-110 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
         outline:
-          "bg-primary bg-[image:radial-gradient(ellipse_at_center,oklch(0.55_0.14_250)_0%,oklch(0.30_0.12_250)_100%)] text-white shadow-[0_1px_3px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.12)] hover:shadow-[0_2px_10px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.18)] hover:brightness-110",
+          "bg-primary bg-[image:radial-gradient(ellipse_at_center,oklch(0.52_0.14_250)_30%,oklch(0.15_0.06_250)_100%)] text-[oklch(0.96_0.015_230)] shadow-[0_1px_3px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_2px_10px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] hover:brightness-110",
         secondary:
-          "bg-secondary bg-[image:radial-gradient(ellipse_at_center,oklch(0.97_0.01_250)_0%,oklch(0.88_0.03_250)_100%)] text-secondary-foreground shadow-[0_1px_2px_rgba(0,0,0,0.08)] hover:shadow-[0_2px_6px_rgba(0,0,0,0.12)] hover:brightness-[0.97]",
+          "bg-secondary bg-[image:radial-gradient(ellipse_at_center,oklch(0.97_0.01_250)_30%,oklch(0.90_0.02_250)_100%)] text-secondary-foreground shadow-[0_1px_2px_rgba(0,0,0,0.08)] hover:shadow-[0_2px_6px_rgba(0,0,0,0.12)] hover:brightness-[0.97]",
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
