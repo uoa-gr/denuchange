@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from "react"
 type Direction = "up" | "left" | "right"
 
 const transforms: Record<Direction, string> = {
-  up: "translateY(2.5rem)",
-  left: "translateX(-2.5rem)",
-  right: "translateX(2.5rem)",
+  up: "translateY(4rem)",
+  left: "translateX(-4rem)",
+  right: "translateX(4rem)",
 }
 
 export function FadeIn({
@@ -32,7 +32,7 @@ export function FadeIn({
           observer.unobserve(el)
         }
       },
-      { threshold: 0.05 },
+      { threshold: 0.03 },
     )
     observer.observe(el)
     return () => observer.disconnect()
@@ -45,7 +45,7 @@ export function FadeIn({
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translate(0)" : transforms[direction],
-        transition: `opacity 0.8s cubic-bezier(0.22,1,0.36,1) ${delay}ms, transform 0.8s cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
+        transition: `opacity 1.2s cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform 1.2s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
       }}
     >
       {children}
