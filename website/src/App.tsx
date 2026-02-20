@@ -21,13 +21,13 @@ function App() {
       <main className="flex-1">
         <Hero />
         <FadeIn delay={100}><KeyInfo /></FadeIn>
-        <FadeIn delay={200}><About /></FadeIn>
-        <FadeIn><Program /></FadeIn>
-        <FadeIn><Labs /></FadeIn>
-        <FadeIn><FieldTrip /></FadeIn>
+        <FadeIn direction="left"><About /></FadeIn>
+        <FadeIn direction="right"><Program /></FadeIn>
+        <FadeIn direction="left"><Labs /></FadeIn>
+        <FadeIn direction="right"><FieldTrip /></FadeIn>
         <FadeIn><Registration /></FadeIn>
-        <FadeIn><Committees /></FadeIn>
-        <FadeIn><Travel /></FadeIn>
+        <FadeIn direction="left"><Committees /></FadeIn>
+        <FadeIn direction="right"><Travel /></FadeIn>
         <FadeIn><Contact /></FadeIn>
       </main>
       <Footer />

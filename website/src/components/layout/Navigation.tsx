@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 
 const navItems = [
   { href: "#program", label: "Program" },
@@ -23,7 +23,7 @@ function useActiveSection() {
           }
         }
       },
-      { rootMargin: "-40% 0px -55% 0px" }
+      { rootMargin: "-30% 0px -65% 0px" }
     )
     for (const id of ids) {
       const el = document.getElementById(id)
@@ -35,12 +35,30 @@ function useActiveSection() {
   return active
 }
 
+function useScrolled() {
+  const [scrolled, setScrolled] = useState(false)
+  const onScroll = useCallback(() => setScrolled(window.scrollY > 20), [])
+  useEffect(() => {
+    window.addEventListener("scroll", onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [onScroll])
+  return scrolled
+}
+
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const activeSection = useActiveSection()
+  const scrolled = useScrolled()
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav
+      className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+      style={{
+        boxShadow: scrolled ? "0 1px 8px rgba(0,0,0,0.08)" : "none",
+        transition: "box-shadow 0.3s ease",
+      }}
+    >
       <div className="container flex h-16 items-center justify-between">
         <a href="#" className="flex items-center gap-3 cursor-pointer">
           <img
@@ -56,19 +74,29 @@ export function Navigation() {
         </a>
 
         <div className="hidden md:flex items-center gap-6">
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className={`text-sm font-medium transition-colors cursor-pointer ${
-                activeSection === item.href.slice(1)
-                  ? "text-primary"
-                  : "text-foreground hover:text-muted-foreground"
-              }`}
-            >
-              {item.label}
-            </a>
-          ))}
+          {navItems.map((item) => {
+            const isActive = activeSection === item.href.slice(1)
+            return (
+              <a
+                key={item.href}
+                href={item.href}
+                className={`relative text-sm font-medium transition-colors duration-300 cursor-pointer ${
+                  isActive
+                    ? "text-primary"
+                    : "text-foreground/70 hover:text-foreground"
+                }`}
+              >
+                {item.label}
+                <span
+                  className="absolute -bottom-1 left-0 h-0.5 bg-primary rounded-full"
+                  style={{
+                    width: isActive ? "100%" : "0%",
+                    transition: "width 0.3s cubic-bezier(0.22,1,0.36,1)",
+                  }}
+                />
+              </a>
+            )
+          })}
         </div>
 
         {/* Mobile menu button */}
