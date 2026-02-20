@@ -186,7 +186,7 @@ export default async function handler(req: any, res: any) {
         </table>
         <p style="color:#374151;line-height:1.6;">
           <strong>Next step:</strong> Please complete your bank transfer and upload your payment
-          receipt (Αποδεικτικό Πληρωμής) on the workshop website. Bank transfer details will be
+          receipt on the workshop website. Bank transfer details will be
           announced on the website.
         </p>
       `)
@@ -232,7 +232,7 @@ export default async function handler(req: any, res: any) {
       subject = "Payment Receipt Received – IAG DENUCHANGE Workshop 2026"
       html = wrap(`
         <p style="color:#374151;line-height:1.6;">
-          We have received your payment receipt (Αποδεικτικό Πληρωμής).
+          We have received your payment receipt.
           Your registration will be confirmed within a few business days.
         </p>
         <table style="width:100%;border-collapse:collapse;margin:20px 0;font-size:14px;table-layout:fixed;">
