@@ -10,13 +10,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-white font-semibold hover:bg-[oklch(0.44_0.14_250)] active:bg-[oklch(0.38_0.14_250)] focus-visible:ring-2 focus-visible:ring-primary/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none",
+          "bg-primary text-primary-foreground font-semibold hover:bg-primary/90 active:bg-primary/80 focus-visible:ring-2 focus-visible:ring-primary/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none",
         destructive:
-          "bg-destructive text-white font-semibold hover:bg-[oklch(0.50_0.245_27)] active:bg-[oklch(0.40_0.245_27)] focus-visible:ring-2 focus-visible:ring-destructive/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none",
+          "bg-destructive text-destructive-foreground font-semibold hover:bg-destructive/90 active:bg-destructive/80 focus-visible:ring-2 focus-visible:ring-destructive/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none",
         outline:
-          "bg-primary text-white font-semibold hover:bg-[oklch(0.44_0.14_250)] active:bg-[oklch(0.38_0.14_250)] focus-visible:ring-2 focus-visible:ring-primary/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none",
+          "bg-primary text-primary-foreground font-semibold hover:bg-primary/90 active:bg-primary/80 focus-visible:ring-2 focus-visible:ring-primary/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none",
         secondary:
-          "bg-secondary text-secondary-foreground font-semibold hover:bg-[oklch(0.92_0.01_250)] active:bg-[oklch(0.88_0.01_250)] focus-visible:ring-2 focus-visible:ring-secondary/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none",
+          "bg-secondary text-secondary-foreground font-semibold hover:bg-secondary/90 active:bg-secondary/80 focus-visible:ring-2 focus-visible:ring-secondary/40 transition-transform hover:scale-[1.03] active:scale-95 border-none shadow-none",
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
