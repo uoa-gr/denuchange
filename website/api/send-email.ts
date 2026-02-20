@@ -55,6 +55,15 @@ const registrationTypeLabel: Record<string, string> = {
   accompanying: "Accompanying Person – Field Trip Only (€300)",
 }
 
+const dietaryLabel: Record<string, string> = {
+  none: "None",
+  vegetarian: "Vegetarian",
+  vegan: "Vegan",
+  kosher: "Kosher",
+  gluten_free: "Gluten-free",
+  other: "Other",
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function handler(req: any, res: any) {
   if (req.method !== "POST") {
@@ -92,8 +101,16 @@ export default async function handler(req: any, res: any) {
             <td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(data.first_name)} ${esc(data.last_name)}</td>
           </tr>
           <tr>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;">Email</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(data.email)}</td>
+          </tr>
+          <tr style="background:#f9fafb;">
             <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;">Affiliation</td>
             <td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(data.affiliation)}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;">Country</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(data.country)}</td>
           </tr>
           <tr style="background:#f9fafb;">
             <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;">Registration</td>
@@ -104,11 +121,20 @@ export default async function handler(req: any, res: any) {
             <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;">Abstract intent</td>
             <td style="padding:8px 12px;border:1px solid #e5e7eb;">${data.abstract_intent === "oral" ? "Oral presentation" : "Poster presentation"}</td>
           </tr>` : ""}
+          <tr${data.abstract_intent !== "none" ? " style=\"background:#f9fafb;\"" : ""}>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;">Dietary</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${data.dietary === "other" ? esc(data.dietary_other) : (dietaryLabel[data.dietary] ?? "None")}</td>
+          </tr>
+          ${data.special_requirements ? `
+          <tr>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;">Special requirements</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(data.special_requirements)}</td>
+          </tr>` : ""}
         </table>
         <p style="color:#374151;line-height:1.6;">
           <strong>Next step:</strong> Please complete your bank transfer and upload your payment
           receipt (Αποδεικτικό Πληρωμής) on the workshop website. Bank transfer details will be
-          communicated separately.
+          announced on the website.
         </p>
       `)
     } else if (type === "abstract") {
@@ -120,9 +146,26 @@ export default async function handler(req: any, res: any) {
         </p>
         <table style="width:100%;border-collapse:collapse;margin:20px 0;font-size:14px;">
           <tr style="background:#f9fafb;">
-            <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;width:40%;">Title</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;width:40%;">Name</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(data.first_name)} ${esc(data.last_name)}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;">Email</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(data.email)}</td>
+          </tr>
+          <tr style="background:#f9fafb;">
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;">Affiliation</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(data.affiliation)}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;">Title</td>
             <td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(data.title)}</td>
           </tr>
+          ${data.co_authors ? `
+          <tr style="background:#f9fafb;">
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;">Co-authors</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(data.co_authors)}</td>
+          </tr>` : ""}
           <tr>
             <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;">Presentation</td>
             <td style="padding:8px 12px;border:1px solid #e5e7eb;">${data.presentation_type === "oral" ? "Oral presentation" : "Poster presentation"}</td>
@@ -139,6 +182,17 @@ export default async function handler(req: any, res: any) {
           We have received your payment receipt (Αποδεικτικό Πληρωμής).
           Your registration will be confirmed within a few business days.
         </p>
+        <table style="width:100%;border-collapse:collapse;margin:20px 0;font-size:14px;">
+          <tr style="background:#f9fafb;">
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;width:40%;">Email</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(data.email)}</td>
+          </tr>
+          ${data.notes ? `
+          <tr>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;">Notes</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(data.notes)}</td>
+          </tr>` : ""}
+        </table>
         <p style="color:#374151;line-height:1.6;">
           If you have any questions, please contact us at
           <a href="mailto:evelpidou@geol.uoa.gr" style="color:#0a6e84;">evelpidou@geol.uoa.gr</a>.

@@ -90,7 +90,7 @@ export function PaymentReceiptDialog({ children }: { children: React.ReactNode }
     fetch("/api/send-email", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type: "payment", email: data.email }),
+      body: JSON.stringify({ type: "payment", email: data.email, notes: data.notes }),
     }).catch(() => {})
 
     setSuccess(true)
