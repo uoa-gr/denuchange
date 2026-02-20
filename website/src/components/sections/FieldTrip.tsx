@@ -85,7 +85,7 @@ function DestinationsList({
                 >
                   <button
                     onClick={() => onStopSelect(stopWithDay)}
-                    className="w-full px-4 py-3 flex items-center justify-between hover:bg-accent/50 transition-colors focus:outline-none focus-visible:outline-none"
+                    className="w-full px-4 py-3 flex items-center justify-between hover:bg-accent/50 transition-colors focus:outline-none focus-visible:outline-none cursor-pointer"
                   >
                     <div className="flex items-center gap-3">
                       <span className={`flex-shrink-0 w-6 h-6 rounded-full text-xs font-medium flex items-center justify-center transition-colors ${
@@ -258,7 +258,7 @@ export function FieldTrip() {
             and coastal dynamics from inland Naxos to its coastline.
           </p>
           <p className="text-sm text-muted-foreground mt-3">
-            <a href="#travel" className="text-primary hover:underline">
+            <a href="#travel" className="text-primary hover:underline cursor-pointer">
               View travel & accommodation options →
             </a>
           </p>

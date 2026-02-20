@@ -4,6 +4,17 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM = process.env.RESEND_FROM ?? "DENUCHANGE Workshop <noreply@resend.dev>"
 const ORGANIZER = "evelpidou@geol.uoa.gr"
 
+/** Escape HTML special characters to prevent injection in email templates */
+function esc(str: string | undefined | null): string {
+  if (!str) return ""
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+}
+
 const BANNER = `
   <div style="background:#0a6e84;padding:20px 24px;border-radius:8px 8px 0 0;">
     <h1 style="margin:0;color:#ffffff;font-size:18px;font-family:sans-serif;font-weight:600;">
@@ -67,7 +78,7 @@ export default async function handler(req: any, res: any) {
     if (type === "registration") {
       subject = "Registration Confirmed – IAG DENUCHANGE Workshop 2026"
       html = wrap(`
-        <h2 style="margin:0 0 8px;font-size:16px;color:#111827;">Hi ${data.first_name},</h2>
+        <h2 style="margin:0 0 8px;font-size:16px;color:#111827;">Hi ${esc(data.first_name)},</h2>
         <p style="color:#374151;line-height:1.6;">
           Thank you for registering for the <strong>5th IAG DENUCHANGE Workshop</strong>.
           Your registration has been recorded.
@@ -75,15 +86,15 @@ export default async function handler(req: any, res: any) {
         <table style="width:100%;border-collapse:collapse;margin:20px 0;font-size:14px;">
           <tr style="background:#f9fafb;">
             <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;width:40%;">Name</td>
-            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${data.first_name} ${data.last_name}</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(data.first_name)} ${esc(data.last_name)}</td>
           </tr>
           <tr>
             <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;">Affiliation</td>
-            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${data.affiliation}</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(data.affiliation)}</td>
           </tr>
           <tr style="background:#f9fafb;">
             <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;">Registration</td>
-            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${registrationTypeLabel[data.registration_type] ?? data.registration_type}</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${registrationTypeLabel[data.registration_type] ?? esc(data.registration_type)}</td>
           </tr>
           ${data.abstract_intent !== "none" ? `
           <tr>
@@ -100,14 +111,14 @@ export default async function handler(req: any, res: any) {
     } else if (type === "abstract") {
       subject = "Abstract Received – IAG DENUCHANGE Workshop 2026"
       html = wrap(`
-        <h2 style="margin:0 0 8px;font-size:16px;color:#111827;">Hi ${data.first_name},</h2>
+        <h2 style="margin:0 0 8px;font-size:16px;color:#111827;">Hi ${esc(data.first_name)},</h2>
         <p style="color:#374151;line-height:1.6;">
           We have received your abstract submission for the <strong>5th IAG DENUCHANGE Workshop</strong>.
         </p>
         <table style="width:100%;border-collapse:collapse;margin:20px 0;font-size:14px;">
           <tr style="background:#f9fafb;">
             <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;width:40%;">Title</td>
-            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${data.title}</td>
+            <td style="padding:8px 12px;border:1px solid #e5e7eb;">${esc(data.title)}</td>
           </tr>
           <tr>
             <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#6b7280;">Presentation</td>

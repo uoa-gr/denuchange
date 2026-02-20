@@ -27,10 +27,7 @@ const schema = z.object({
   co_authors: z.string().optional(),
   presentation_type: z.enum(["oral", "poster"], { error: "Please select a presentation type" }),
   abstract_text: z.string().optional(),
-}).refine(
-  (d) => (d.abstract_text && d.abstract_text.trim().length > 0),
-  { message: "Please provide abstract text or upload a file below", path: ["abstract_text"] }
-)
+})
 
 type FormData = z.infer<typeof schema>
 
@@ -62,6 +59,12 @@ export function AbstractDialog({ children }: { children: React.ReactNode }) {
 
   const onSubmit = async (data: FormData) => {
     setServerError(null)
+
+    const hasText = data.abstract_text && data.abstract_text.trim().length > 0
+    if (!hasText && !file) {
+      setServerError("Please provide abstract text or upload a file.")
+      return
+    }
 
     let file_path: string | null = null
 
@@ -216,7 +219,7 @@ export function AbstractDialog({ children }: { children: React.ReactNode }) {
                     <button
                       type="button"
                       onClick={() => { setFile(null); if (fileRef.current) fileRef.current.value = "" }}
-                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                     >
                       <X className="h-4 w-4" />
                     </button>

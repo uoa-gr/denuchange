@@ -1,5 +1,6 @@
 -- DENUCHANGE 2026 – Registration System
 -- Run this entire file in your Supabase SQL Editor (https://app.supabase.com → SQL Editor)
+-- Safe to re-run: uses IF NOT EXISTS and ON CONFLICT throughout.
 
 -- ─────────────────────────────────────────────
 -- 1. Registrations
@@ -7,6 +8,7 @@
 CREATE TABLE IF NOT EXISTS public.registrations (
   id                   UUID        DEFAULT gen_random_uuid() PRIMARY KEY,
   created_at           TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  updated_at           TIMESTAMPTZ DEFAULT NOW() NOT NULL,
   first_name           TEXT        NOT NULL,
   last_name            TEXT        NOT NULL,
   email                TEXT        NOT NULL UNIQUE,
@@ -23,10 +25,27 @@ CREATE TABLE IF NOT EXISTS public.registrations (
   payment_confirmed    BOOLEAN     NOT NULL DEFAULT FALSE
 );
 
+-- Auto-update updated_at on any change
+CREATE OR REPLACE FUNCTION public.set_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_registrations_updated_at ON public.registrations;
+CREATE TRIGGER trg_registrations_updated_at
+  BEFORE UPDATE ON public.registrations
+  FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
+
+CREATE INDEX IF NOT EXISTS idx_registrations_email ON public.registrations (email);
+
 ALTER TABLE public.registrations ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "public_insert_registrations"
-  ON public.registrations FOR INSERT WITH CHECK (true);
+-- Anonymous users can insert (register) but never read/update/delete
+CREATE POLICY "anon_insert_registrations"
+  ON public.registrations FOR INSERT TO anon WITH CHECK (true);
 
 -- ─────────────────────────────────────────────
 -- 2. Abstracts
@@ -43,13 +62,18 @@ CREATE TABLE IF NOT EXISTS public.abstracts (
   abstract_text     TEXT,
   file_path         TEXT,
   presentation_type TEXT        NOT NULL
-    CHECK (presentation_type IN ('oral', 'poster'))
+    CHECK (presentation_type IN ('oral', 'poster')),
+  -- At least one of abstract_text or file_path must be provided
+  CONSTRAINT abstracts_content_check
+    CHECK (abstract_text IS NOT NULL OR file_path IS NOT NULL)
 );
+
+CREATE INDEX IF NOT EXISTS idx_abstracts_email ON public.abstracts (email);
 
 ALTER TABLE public.abstracts ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "public_insert_abstracts"
-  ON public.abstracts FOR INSERT WITH CHECK (true);
+CREATE POLICY "anon_insert_abstracts"
+  ON public.abstracts FOR INSERT TO anon WITH CHECK (true);
 
 -- ─────────────────────────────────────────────
 -- 3. Payment Receipts
@@ -62,10 +86,12 @@ CREATE TABLE IF NOT EXISTS public.payment_receipts (
   notes      TEXT        NOT NULL DEFAULT ''
 );
 
+CREATE INDEX IF NOT EXISTS idx_payment_receipts_email ON public.payment_receipts (email);
+
 ALTER TABLE public.payment_receipts ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "public_insert_payment_receipts"
-  ON public.payment_receipts FOR INSERT WITH CHECK (true);
+CREATE POLICY "anon_insert_payment_receipts"
+  ON public.payment_receipts FOR INSERT TO anon WITH CHECK (true);
 
 -- ─────────────────────────────────────────────
 -- 4. Storage bucket for abstracts
@@ -83,8 +109,8 @@ VALUES (
   ]
 ) ON CONFLICT (id) DO NOTHING;
 
-CREATE POLICY "public_upload_abstracts"
-  ON storage.objects FOR INSERT
+CREATE POLICY "anon_upload_abstracts"
+  ON storage.objects FOR INSERT TO anon
   WITH CHECK (bucket_id = 'abstracts');
 
 -- ─────────────────────────────────────────────
@@ -99,6 +125,6 @@ VALUES (
   ARRAY['application/pdf', 'image/jpeg', 'image/png', 'image/webp']
 ) ON CONFLICT (id) DO NOTHING;
 
-CREATE POLICY "public_upload_payment_receipts"
-  ON storage.objects FOR INSERT
+CREATE POLICY "anon_upload_payment_receipts"
+  ON storage.objects FOR INSERT TO anon
   WITH CHECK (bucket_id = 'payment-receipts');

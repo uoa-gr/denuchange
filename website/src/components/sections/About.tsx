@@ -14,7 +14,7 @@ export function About() {
               href="https://www.geomorph.org/denuchange-working-group-4/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-primary transition-colors"
+              className="hover:text-primary transition-colors cursor-pointer"
             >
               Advancing Our Understanding of Denudation Processes
             </a>

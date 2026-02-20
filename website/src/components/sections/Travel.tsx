@@ -130,7 +130,7 @@ export function Travel() {
               href="https://www.ferryhopper.com/en/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary hover:underline"
+              className="text-primary hover:underline cursor-pointer"
             >
               ferryhopper.com
             </a>
@@ -173,7 +173,7 @@ export function Travel() {
             <span className="font-bold">Discount Code:</span> DENUCHANGE2026
             <button
               onClick={copyDiscountCode}
-              className="p-1 hover:bg-[#f1c100]/30 rounded transition-colors"
+              className="p-1 hover:bg-[#f1c100]/30 rounded transition-colors cursor-pointer"
               title="Copy code"
             >
               {copied ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}

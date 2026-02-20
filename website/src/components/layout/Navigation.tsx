@@ -16,7 +16,7 @@ export function Navigation() {
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
-        <a href="#" className="flex items-center gap-3">
+        <a href="#" className="flex items-center gap-3 cursor-pointer">
           <img
             src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`}
             alt="DENUCHANGE"
@@ -34,7 +34,7 @@ export function Navigation() {
             <a
               key={item.href}
               href={item.href}
-              className="text-sm font-medium text-foreground transition-colors hover:text-muted-foreground"
+              className="text-sm font-medium text-foreground transition-colors hover:text-muted-foreground cursor-pointer"
             >
               {item.label}
             </a>
@@ -43,7 +43,7 @@ export function Navigation() {
 
         {/* Mobile menu button */}
         <button
-          className="md:hidden p-2"
+          className="md:hidden p-2 cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
         >
@@ -81,7 +81,7 @@ export function Navigation() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="text-sm font-medium text-foreground hover:text-muted-foreground py-2 px-2 rounded hover:bg-muted transition-colors"
+                className="text-sm font-medium text-foreground hover:text-muted-foreground py-2 px-2 rounded hover:bg-muted transition-colors cursor-pointer"
               >
                 {item.label}
               </a>

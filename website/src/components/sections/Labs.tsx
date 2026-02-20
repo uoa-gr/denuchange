@@ -46,7 +46,7 @@ export function Labs() {
               href="https://www.geomorph.org/virtual-trips-in-geomorphology/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary hover:underline"
+              className="text-primary hover:underline cursor-pointer"
             >
               IAG Working Group "Virtual Field Trips in Geomorphology"
             </a>{" "}

@@ -145,7 +145,7 @@ export function PaymentReceiptDialog({ children }: { children: React.ReactNode }
                     <button
                       type="button"
                       onClick={() => { setFile(null); setFileError(null); if (fileRef.current) fileRef.current.value = "" }}
-                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                     >
                       <X className="h-4 w-4" />
                     </button>

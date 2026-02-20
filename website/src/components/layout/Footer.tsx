@@ -10,7 +10,7 @@ export function Footer() {
             href="https://www.geomorph.org/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors"
+            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors cursor-pointer"
           >
             <img
               src={`${import.meta.env.BASE_URL}images/logo-iag.jpg`}
@@ -27,7 +27,7 @@ export function Footer() {
             href="https://www.geomorph.org/denuchange-working-group-4/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors"
+            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors cursor-pointer"
           >
             <img
               src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`}
@@ -44,7 +44,7 @@ export function Footer() {
             href="https://en.uoa.gr/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors"
+            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors cursor-pointer"
           >
             <img
               src={`${import.meta.env.BASE_URL}images/logo-nkua.jpg`}
@@ -71,7 +71,7 @@ export function Footer() {
             Developed by{" "}
             <a
               href="mailto:alexliaskos@geol.uoa.gr"
-              className="underline hover:text-foreground transition-colors"
+              className="underline hover:text-foreground transition-colors cursor-pointer"
             >
               Alexandros Liaskos
             </a>
