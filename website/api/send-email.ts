@@ -241,10 +241,6 @@ export default async function handler(req: any, res: any) {
             <td style="padding:8px 12px;border:1px solid #e5e7eb;word-break:break-word;overflow-wrap:break-word;">${esc(data.notes)}</td>
           </tr>` : ""}
         </table>
-        <p style="color:#374151;line-height:1.6;">
-          If you have any questions, please contact us at
-          <a href="mailto:denuchange.workshop.2026@gmail.com" style="color:#0a6e84;">denuchange.workshop.2026@gmail.com</a>.
-        </p>
       `)
     } else if (type === "verify") {
       subject = "Email Verification – IAG DENUCHANGE Workshop 2026"
