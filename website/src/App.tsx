@@ -8,6 +8,7 @@ import { Program } from "@/components/sections/Program"
 import { FieldTrip } from "@/components/sections/FieldTrip"
 import { Labs } from "@/components/sections/Labs"
 import { Registration } from "@/components/sections/Registration"
+import { AttendeeApp } from "@/components/sections/AttendeeApp"
 import { Committees } from "@/components/sections/Committees"
 import { Travel } from "@/components/sections/Travel"
 import { Contact } from "@/components/sections/Contact"
@@ -26,6 +27,7 @@ function App() {
         <FadeIn direction="left"><Labs /></FadeIn>
         <FadeIn direction="right"><FieldTrip /></FadeIn>
         <FadeIn><Registration /></FadeIn>
+        <FadeIn><AttendeeApp /></FadeIn>
         <FadeIn direction="left"><Committees /></FadeIn>
         <FadeIn direction="right"><Travel /></FadeIn>
         <FadeIn><Contact /></FadeIn>
