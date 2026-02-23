@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { Smartphone } from "lucide-react"
 import { useEffect, useState } from "react"
 
 export function Hero() {
@@ -63,6 +64,17 @@ export function Hero() {
           <Button size="lg" asChild variant="warning" className="font-bold">
             <a href="#program">View Program</a>
           </Button>
+        </div>
+
+        <div className="mt-6 pt-5 border-t border-border/40">
+          <a
+            href="#app"
+            className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 font-medium transition-colors"
+          >
+            <Smartphone className="h-4 w-4" />
+            Attendee App — program, alerts, field trip map &amp; more
+            <span className="text-muted-foreground">→</span>
+          </a>
         </div>
       </div>
 

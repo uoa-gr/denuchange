@@ -109,140 +109,121 @@ export function AttendeeApp() {
             ))}
           </div>
 
-          {/* Install panel */}
-          <Card className="p-6">
+          {/* Action card */}
+          <Card className="p-6 space-y-5">
             {isStandalone ? (
               <div className="text-center py-4">
                 <CheckCircle2 className="h-10 w-10 text-green-500 mx-auto mb-3" />
-                <p className="font-semibold">App already installed</p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  You're running the installed version.
-                </p>
+                <p className="font-semibold">You're using the installed app</p>
+                <p className="text-sm text-muted-foreground mt-1">Everything is ready to go.</p>
               </div>
             ) : (
               <>
-                <p className="text-sm font-semibold mb-4">How to install on your device:</p>
-
-                {/* Platform selector */}
-                <div className="flex gap-1 bg-muted rounded-lg p-1 mb-6">
-                  {(["ios", "android", "desktop"] as Platform[]).map((p) => (
-                    <button
-                      key={p}
-                      onClick={() => setPlatform(p)}
-                      className={`flex-1 text-xs font-medium py-1.5 rounded-md transition-colors ${
-                        platform === p
-                          ? "bg-background shadow-sm text-foreground"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      {p === "ios" ? "iPhone / iPad" : p === "android" ? "Android" : "Desktop"}
-                    </button>
-                  ))}
+                {/* Primary CTA — works on every browser, every device */}
+                <div>
+                  <Button asChild size="lg" className="w-full gap-2">
+                    <a href="/app/">
+                      <Smartphone className="h-4 w-4" />
+                      Open Attendee App
+                    </a>
+                  </Button>
+                  <p className="text-xs text-center text-muted-foreground mt-2">
+                    Works in any browser · no download needed
+                  </p>
                 </div>
 
-                {/* iOS */}
-                {platform === "ios" && (
-                  <ol className="space-y-3 text-sm">
-                    <li className="flex gap-3 items-start">
-                      <Step n={1} />
-                      <span>
-                        Open this page in <strong>Safari</strong>{" "}
-                        <span className="text-muted-foreground">(Chrome on iOS won't work for installation)</span>
-                      </span>
-                    </li>
-                    <li className="flex gap-3 items-start">
-                      <Step n={2} />
-                      <span>
-                        Tap the <strong>Share</strong> button{" "}
-                        <code className="bg-muted px-1.5 py-0.5 rounded text-xs">⎙</code> in
-                        Safari's bottom toolbar
-                      </span>
-                    </li>
-                    <li className="flex gap-3 items-start">
-                      <Step n={3} />
-                      <span>
-                        Scroll down and tap <strong>"Add to Home Screen"</strong>
-                      </span>
-                    </li>
-                    <li className="flex gap-3 items-start">
-                      <Step n={4} />
-                      <span>
-                        Tap <strong>Add</strong> in the top-right corner
-                      </span>
-                    </li>
-                  </ol>
-                )}
+                <div className="border-t pt-4">
+                  <p className="text-sm font-semibold mb-1">Add to your home screen</p>
+                  <p className="text-xs text-muted-foreground mb-4">
+                    For faster access and offline support, save the app like a native one.
+                  </p>
 
-                {/* Android */}
-                {platform === "android" && (
-                  <div className="text-sm">
-                    {installable ? (
-                      <Button className="w-full gap-2" onClick={handleInstall}>
-                        <Smartphone className="h-4 w-4" />
-                        Install App
-                      </Button>
-                    ) : (
-                      <ol className="space-y-3">
-                        <li className="flex gap-3 items-start">
-                          <Step n={1} />
-                          <span>
-                            Open this page in <strong>Chrome</strong>
-                          </span>
-                        </li>
-                        <li className="flex gap-3 items-start">
-                          <Step n={2} />
-                          <span>
-                            Tap the{" "}
-                            <code className="bg-muted px-1.5 py-0.5 rounded text-xs">⋮</code> menu
-                            (top right) then tap <strong>"Add to Home Screen"</strong>
-                          </span>
-                        </li>
-                      </ol>
-                    )}
+                  {/* Platform selector */}
+                  <div className="flex gap-1 bg-muted rounded-lg p-1 mb-5">
+                    {(["ios", "android", "desktop"] as Platform[]).map((p) => (
+                      <button
+                        key={p}
+                        onClick={() => setPlatform(p)}
+                        className={`flex-1 text-xs font-medium py-1.5 rounded-md transition-colors ${
+                          platform === p
+                            ? "bg-background shadow-sm text-foreground"
+                            : "text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        {p === "ios" ? "iPhone / iPad" : p === "android" ? "Android" : "Computer"}
+                      </button>
+                    ))}
                   </div>
-                )}
 
-                {/* Desktop */}
-                {platform === "desktop" && (
-                  <div className="text-sm space-y-4">
-                    {installable ? (
-                      <>
+                  {/* iOS */}
+                  {platform === "ios" && (
+                    <ol className="space-y-3 text-sm">
+                      <li className="flex gap-3 items-start">
+                        <Step n={1} />
+                        <span>Open this page in <strong>Safari</strong></span>
+                      </li>
+                      <li className="flex gap-3 items-start">
+                        <Step n={2} />
+                        <span>
+                          Tap the <strong>Share</strong>{" "}
+                          <code className="bg-muted px-1.5 py-0.5 rounded text-xs">⎙</code>{" "}
+                          button in the toolbar
+                        </span>
+                      </li>
+                      <li className="flex gap-3 items-start">
+                        <Step n={3} />
+                        <span>Tap <strong>"Add to Home Screen"</strong></span>
+                      </li>
+                    </ol>
+                  )}
+
+                  {/* Android */}
+                  {platform === "android" && (
+                    <div className="text-sm space-y-3">
+                      {installable ? (
                         <Button className="w-full gap-2" onClick={handleInstall}>
-                          <Monitor className="h-4 w-4" />
-                          Install App
+                          <Smartphone className="h-4 w-4" />
+                          Add to Home Screen
                         </Button>
-                        <p className="text-xs text-center text-muted-foreground">
-                          For push notifications, also install on your smartphone.
-                        </p>
-                      </>
-                    ) : (
-                      <ol className="space-y-3">
-                        <li className="flex gap-3 items-start">
-                          <Step n={1} />
-                          <span>
-                            Open this page in <strong>Chrome</strong> or <strong>Edge</strong>
-                          </span>
-                        </li>
-                        <li className="flex gap-3 items-start">
-                          <Step n={2} />
-                          <span>
-                            Click the install icon{" "}
-                            <code className="bg-muted px-1.5 py-0.5 rounded text-xs">⊕</code> in
-                            the address bar
-                          </span>
-                        </li>
-                      </ol>
-                    )}
-                    <p className="text-xs text-muted-foreground pt-2 border-t">
-                      For real-time push notifications, install on your <strong>smartphone</strong>.
-                    </p>
-                  </div>
-                )}
+                      ) : (
+                        <ol className="space-y-3">
+                          <li className="flex gap-3 items-start">
+                            <Step n={1} />
+                            <span>Open this page in <strong>Chrome</strong></span>
+                          </li>
+                          <li className="flex gap-3 items-start">
+                            <Step n={2} />
+                            <span>
+                              Tap the menu{" "}
+                              <code className="bg-muted px-1.5 py-0.5 rounded text-xs">⋮</code>{" "}
+                              then <strong>"Add to Home Screen"</strong>
+                            </span>
+                          </li>
+                        </ol>
+                      )}
+                    </div>
+                  )}
 
-                <div className="mt-6 pt-4 border-t">
-                  <a href="/app/" className="text-xs text-primary hover:underline">
-                    → Open app in browser without installing
-                  </a>
+                  {/* Desktop */}
+                  {platform === "desktop" && (
+                    <div className="text-sm space-y-3">
+                      {installable ? (
+                        <>
+                          <Button className="w-full gap-2" onClick={handleInstall}>
+                            <Monitor className="h-4 w-4" />
+                            Install App
+                          </Button>
+                        </>
+                      ) : (
+                        <p className="text-muted-foreground text-xs leading-relaxed">
+                          In <strong>Chrome</strong> or <strong>Edge</strong>, look for the install
+                          icon <code className="bg-muted px-1.5 py-0.5 rounded">⊕</code> in the
+                          address bar after opening the app. On mobile your experience will be
+                          richer — see the Android or iPhone tabs above.
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               </>
             )}
