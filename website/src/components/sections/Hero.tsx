@@ -66,14 +66,14 @@ export function Hero() {
           </Button>
         </div>
 
-        <div className="mt-6 pt-5 border-t border-border/40">
+        <div className="mt-6 pt-5 border-t border-border/40 flex flex-col items-center gap-1">
+          <p className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Registered attendee?</p>
           <a
             href="#app"
-            className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 font-medium transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-primary/40 bg-primary/5 hover:bg-primary/10 text-primary text-sm font-semibold transition-colors"
           >
             <Smartphone className="h-4 w-4" />
-            Attendee App — program, alerts, field trip map &amp; more
-            <span className="text-muted-foreground">→</span>
+            Get the Attendee App
           </a>
         </div>
       </div>
