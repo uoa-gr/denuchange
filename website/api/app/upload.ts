@@ -1,4 +1,4 @@
-import { supabaseAdmin } from "../_lib/supabase-admin"
+import { getSupabaseAdmin } from "../_lib/supabase-admin"
 import { extractJwt } from "../_lib/auth"
 
 // Consolidated upload-URL handler
@@ -16,6 +16,16 @@ const EXT_MIME: Record<AllowedExt, string> = {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function handler(req: any, res: any) {
+  try {
+    return await _handle(req, res)
+  } catch (err) {
+    console.error("[upload]", err)
+    if (!res.headersSent) res.status(500).json({ error: err instanceof Error ? err.message : "Internal server error" })
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function _handle(req: any, res: any) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" })
 
   const action: string = (req.query?.action ?? "").toString()
@@ -32,7 +42,7 @@ export default async function handler(req: any, res: any) {
     const safeName = payload.email.replace(/[^a-z0-9._-]/gi, "_")
     const path = `${safeName}/avatar.${ext}`
 
-    const { data, error } = await supabaseAdmin.storage
+    const { data, error } = await getSupabaseAdmin().storage
       .from("avatars")
       .createSignedUploadUrl(path, { upsert: true })
     if (error || !data) {
@@ -40,9 +50,9 @@ export default async function handler(req: any, res: any) {
       return res.status(500).json({ error: "Could not create upload URL" })
     }
 
-    await supabaseAdmin.from("app_users").update({ avatar_path: path }).eq("email", payload.email)
+    await getSupabaseAdmin().from("app_users").update({ avatar_path: path }).eq("email", payload.email)
 
-    const supabaseUrl = process.env.VITE_SUPABASE_URL!
+    const supabaseUrl = process.env.VITE_SUPABASE_URL as string
     return res.json({
       token: data.token,
       path,
@@ -59,7 +69,7 @@ export default async function handler(req: any, res: any) {
     const randomHex = Math.random().toString(16).slice(2, 10)
     const filePath = `${timestamp}-${randomHex}.${ext}`
 
-    const { data, error } = await supabaseAdmin.storage
+    const { data, error } = await getSupabaseAdmin().storage
       .from("gallery")
       .createSignedUploadUrl(filePath)
     if (error || !data) {
@@ -67,7 +77,7 @@ export default async function handler(req: any, res: any) {
       return res.status(500).json({ error: "Could not create upload URL" })
     }
 
-    const { data: inserted, error: insertErr } = await supabaseAdmin
+    const { data: inserted, error: insertErr } = await getSupabaseAdmin()
       .from("gallery_images")
       .insert({ file_path: filePath, caption, uploaded_by: payload.email })
       .select("id")

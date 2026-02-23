@@ -1,6 +1,6 @@
 import crypto from "crypto"
 import bcrypt from "bcryptjs"
-import { supabaseAdmin } from "../_lib/supabase-admin"
+import { getSupabaseAdmin } from "../_lib/supabase-admin"
 import { signJwt, getSessionCookie, clearSessionCookie, extractJwt } from "../_lib/auth"
 import { esc, sendMail, wrapEmail } from "../_lib/email"
 
@@ -17,6 +17,16 @@ const APP_BASE_URL = process.env.APP_BASE_URL ?? "https://denuchange.vercel.app"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function handler(req: any, res: any) {
+  try {
+    return await _handle(req, res)
+  } catch (err) {
+    console.error("[auth]", err)
+    if (!res.headersSent) res.status(500).json({ error: err instanceof Error ? err.message : "Internal server error" })
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function _handle(req: any, res: any) {
   const action: string = (req.query?.action ?? "").toString()
 
   // ── GET routes ─────────────────────────────────────────────────────────────
@@ -26,12 +36,12 @@ export default async function handler(req: any, res: any) {
     if (!payload) return res.status(401).json({ error: "Unauthorized" })
 
     const [{ data: user }, { data: reg }] = await Promise.all([
-      supabaseAdmin
+      getSupabaseAdmin()
         .from("app_users")
         .select("email, is_admin, avatar_path")
         .eq("email", payload.email)
         .single(),
-      supabaseAdmin
+      getSupabaseAdmin()
         .from("registrations")
         .select("first_name, last_name, affiliation, registration_type")
         .eq("email", payload.email)
@@ -55,7 +65,7 @@ export default async function handler(req: any, res: any) {
     if (!token || token.length !== 64 || !/^[0-9a-f]+$/.test(token)) {
       return res.json({ valid: false, reason: "Invalid token format" })
     }
-    const { data } = await supabaseAdmin
+    const { data } = await getSupabaseAdmin()
       .from("password_setup_tokens")
       .select("email, expires_at, used_at")
       .eq("token", token)
@@ -73,7 +83,7 @@ export default async function handler(req: any, res: any) {
     if (!raw || raw.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) {
       return res.status(400).json({ error: "Invalid email address" })
     }
-    const { data: reg } = await supabaseAdmin
+    const { data: reg } = await getSupabaseAdmin()
       .from("registrations")
       .select("email")
       .ilike("email", raw)
@@ -81,10 +91,10 @@ export default async function handler(req: any, res: any) {
     if (!reg) return res.json({ status: "not_registered" })
 
     const email: string = reg.email
-    await supabaseAdmin
+    await getSupabaseAdmin()
       .from("app_users")
       .upsert({ email }, { onConflict: "email", ignoreDuplicates: true })
-    const { data: appUser } = await supabaseAdmin
+    const { data: appUser } = await getSupabaseAdmin()
       .from("app_users")
       .select("password_hash")
       .eq("email", email)
@@ -96,14 +106,14 @@ export default async function handler(req: any, res: any) {
     const email: string = (req.body?.email ?? "").toString().trim().toLowerCase()
     if (!email || email.length > 254) return res.status(400).json({ error: "Invalid email" })
 
-    const { data: user } = await supabaseAdmin
+    const { data: user } = await getSupabaseAdmin()
       .from("app_users")
       .select("email")
       .eq("email", email)
       .maybeSingle()
     if (!user) return res.status(404).json({ error: "User not found" })
 
-    const { data: recent } = await supabaseAdmin
+    const { data: recent } = await getSupabaseAdmin()
       .from("password_setup_tokens")
       .select("created_at")
       .eq("email", email)
@@ -122,7 +132,7 @@ export default async function handler(req: any, res: any) {
 
     const token = crypto.randomBytes(32).toString("hex")
     const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
-    const { error: insertErr } = await supabaseAdmin
+    const { error: insertErr } = await getSupabaseAdmin()
       .from("password_setup_tokens")
       .insert({ email, token, expires_at: expiresAt })
     if (insertErr) {
@@ -165,7 +175,7 @@ export default async function handler(req: any, res: any) {
     if (!password || password.length < 8) return res.status(400).json({ error: "Password must be at least 8 characters" })
     if (password.length > 128) return res.status(400).json({ error: "Password too long" })
 
-    const { data: tokenRow } = await supabaseAdmin
+    const { data: tokenRow } = await getSupabaseAdmin()
       .from("password_setup_tokens")
       .select("email, expires_at, used_at")
       .eq("token", token)
@@ -176,8 +186,8 @@ export default async function handler(req: any, res: any) {
 
     const passwordHash = await bcrypt.hash(password, 12)
     const [{ error: updateErr }, { error: tokenErr }] = await Promise.all([
-      supabaseAdmin.from("app_users").update({ password_hash: passwordHash }).eq("email", tokenRow.email),
-      supabaseAdmin.from("password_setup_tokens").update({ used_at: new Date().toISOString() }).eq("token", token),
+      getSupabaseAdmin().from("app_users").update({ password_hash: passwordHash }).eq("email", tokenRow.email),
+      getSupabaseAdmin().from("password_setup_tokens").update({ used_at: new Date().toISOString() }).eq("token", token),
     ])
     if (updateErr || tokenErr) {
       console.error("set-password:", updateErr ?? tokenErr)
@@ -191,7 +201,7 @@ export default async function handler(req: any, res: any) {
     const password: string = (req.body?.password ?? "").toString()
     if (!email || !password) return res.status(400).json({ error: "Email and password are required" })
 
-    const { data: user } = await supabaseAdmin
+    const { data: user } = await getSupabaseAdmin()
       .from("app_users")
       .select("email, password_hash, is_admin, avatar_path")
       .eq("email", email)
@@ -203,7 +213,7 @@ export default async function handler(req: any, res: any) {
     const valid = await bcrypt.compare(password, user.password_hash)
     if (!valid) return res.status(401).json({ error: "Invalid credentials" })
 
-    const { data: reg } = await supabaseAdmin
+    const { data: reg } = await getSupabaseAdmin()
       .from("registrations")
       .select("first_name, last_name, affiliation, registration_type")
       .eq("email", email)

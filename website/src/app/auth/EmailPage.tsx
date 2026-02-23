@@ -39,8 +39,13 @@ export function EmailPage() {
       } else {
         navigate("/app/auth/login")
       }
-    } catch {
-      setError("Something went wrong. Please check your connection and try again.")
+    } catch (err) {
+      const apiErr = err as { status?: number; message?: string }
+      if (apiErr?.status && apiErr.status >= 500) {
+        setError("Server error — please try again or contact the organizers.")
+      } else {
+        setError(apiErr?.message ?? "Something went wrong. Please check your connection and try again.")
+      }
     } finally {
       setSubmitting(false)
     }

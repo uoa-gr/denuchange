@@ -1,4 +1,4 @@
-import { supabaseAdmin } from "../_lib/supabase-admin"
+import { getSupabaseAdmin } from "../_lib/supabase-admin"
 import { extractJwt } from "../_lib/auth"
 
 // Consolidated admin handler (all routes require is_admin)
@@ -11,6 +11,16 @@ const SESSION_TYPES: SessionType[] = ["session", "break", "meal", "keynote", "fi
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function handler(req: any, res: any) {
+  try {
+    return await _handle(req, res)
+  } catch (err) {
+    console.error("[admin]", err)
+    if (!res.headersSent) res.status(500).json({ error: err instanceof Error ? err.message : "Internal server error" })
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function _handle(req: any, res: any) {
   const action: string = (req.query?.action ?? "").toString()
 
   const payload = extractJwt(req)
@@ -24,7 +34,7 @@ export default async function handler(req: any, res: any) {
     if (title.length > 200) return res.status(400).json({ error: "Title too long" })
     if (body.length > 5000) return res.status(400).json({ error: "Body too long" })
 
-    const { error } = await supabaseAdmin
+    const { error } = await getSupabaseAdmin()
       .from("notifications")
       .insert({ title, body, created_by: payload.email })
     if (error) {
@@ -56,14 +66,14 @@ export default async function handler(req: any, res: any) {
 
     if (id) {
       if (!/^[0-9a-f-]{36}$/.test(id)) return res.status(400).json({ error: "Invalid id" })
-      const { error } = await supabaseAdmin.from("program_sessions").update(record).eq("id", id)
+      const { error } = await getSupabaseAdmin().from("program_sessions").update(record).eq("id", id)
       if (error) {
         console.error("upsert-session update:", error)
         return res.status(500).json({ error: "Internal server error" })
       }
       return res.json({ id })
     } else {
-      const { data, error } = await supabaseAdmin
+      const { data, error } = await getSupabaseAdmin()
         .from("program_sessions").insert(record).select("id").single()
       if (error || !data) {
         console.error("upsert-session insert:", error)
@@ -76,7 +86,7 @@ export default async function handler(req: any, res: any) {
   if (req.method === "DELETE" && action === "delete-session") {
     const id: string = (req.body?.id ?? "").toString().trim()
     if (!id || !/^[0-9a-f-]{36}$/.test(id)) return res.status(400).json({ error: "Invalid id" })
-    const { error } = await supabaseAdmin.from("program_sessions").delete().eq("id", id)
+    const { error } = await getSupabaseAdmin().from("program_sessions").delete().eq("id", id)
     if (error) {
       console.error("delete-session:", error)
       return res.status(500).json({ error: "Internal server error" })
