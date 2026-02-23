@@ -1,15 +1,41 @@
 import { Button } from "@/components/ui/button"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { Smartphone } from "lucide-react"
+
+interface BeforeInstallPromptEvent extends Event {
+  prompt(): Promise<void>
+  readonly userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
+}
 
 export function Hero() {
   const [imgLoaded, setImgLoaded] = useState(false)
   const [show, setShow] = useState(false)
+  const [installable, setInstallable] = useState(false)
+  const deferredPrompt = useRef<BeforeInstallPromptEvent | null>(null)
 
   useEffect(() => {
     // Small delay so the entrance animation is visible even if image is cached
     const t = setTimeout(() => setShow(true), 100)
     return () => clearTimeout(t)
   }, [])
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault()
+      deferredPrompt.current = e as BeforeInstallPromptEvent
+      setInstallable(true)
+    }
+    window.addEventListener('beforeinstallprompt', handler)
+    return () => window.removeEventListener('beforeinstallprompt', handler)
+  }, [])
+
+  async function handleInstall() {
+    if (!deferredPrompt.current) return
+    await deferredPrompt.current.prompt()
+    await deferredPrompt.current.userChoice
+    deferredPrompt.current = null
+    setInstallable(false)
+  }
 
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
@@ -63,6 +89,12 @@ export function Hero() {
           <Button size="lg" asChild variant="warning" className="font-bold">
             <a href="#program">View Program</a>
           </Button>
+          {installable && (
+            <Button size="lg" variant="outline" onClick={handleInstall} className="gap-2">
+              <Smartphone className="h-4 w-4" />
+              Install App
+            </Button>
+          )}
         </div>
       </div>
 
