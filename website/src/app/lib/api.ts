@@ -50,67 +50,67 @@ export interface SessionInput {
 
 export const api = {
   checkEmail: (email: string) =>
-    apiFetch("/api/app/check-email", {
+    apiFetch("/api/app/auth?action=check", {
       method: "POST",
       body: JSON.stringify({ email }),
     }) as Promise<{ status: EmailStatus }>,
 
   sendSetupEmail: (email: string) =>
-    apiFetch("/api/app/send-setup-email", {
+    apiFetch("/api/app/auth?action=send-setup", {
       method: "POST",
       body: JSON.stringify({ email }),
     }) as Promise<{ sent: true }>,
 
   verifySetupToken: (token: string) =>
-    apiFetch(`/api/app/verify-setup-token?token=${encodeURIComponent(token)}`) as Promise<{
+    apiFetch(`/api/app/auth?action=verify&token=${encodeURIComponent(token)}`) as Promise<{
       valid: boolean
       email?: string
       reason?: string
     }>,
 
   setPassword: (token: string, password: string) =>
-    apiFetch("/api/app/set-password", {
+    apiFetch("/api/app/auth?action=set-password", {
       method: "POST",
       body: JSON.stringify({ token, password }),
     }) as Promise<{ ok: true }>,
 
   login: (email: string, password: string) =>
-    apiFetch("/api/app/login", {
+    apiFetch("/api/app/auth?action=login", {
       method: "POST",
       body: JSON.stringify({ email, password }),
     }) as Promise<AppUser>,
 
-  me: () => apiFetch("/api/app/me") as Promise<AppUser>,
+  me: () => apiFetch("/api/app/auth?action=me") as Promise<AppUser>,
 
   logout: () =>
-    apiFetch("/api/app/logout", { method: "POST" }) as Promise<{ ok: true }>,
+    apiFetch("/api/app/auth?action=logout", { method: "POST" }) as Promise<{ ok: true }>,
 
   getAvatarUploadUrl: (ext: string) =>
-    apiFetch("/api/app/avatar-upload-url", {
+    apiFetch("/api/app/upload?action=avatar", {
       method: "POST",
       body: JSON.stringify({ ext }),
     }) as Promise<{ token: string; path: string; mimeType: string; avatarPublicUrl: string }>,
 
   adminPostNotification: (title: string, body: string) =>
-    apiFetch("/api/app/admin/post-notification", {
+    apiFetch("/api/app/admin?action=notify", {
       method: "POST",
       body: JSON.stringify({ title, body }),
     }) as Promise<{ ok: true }>,
 
   adminGetGalleryUploadUrl: (ext: string, caption: string) =>
-    apiFetch("/api/app/admin/gallery-upload-url", {
+    apiFetch("/api/app/upload?action=gallery", {
       method: "POST",
       body: JSON.stringify({ ext, caption }),
     }) as Promise<{ token: string; path: string; imageId: string; mimeType: string }>,
 
   adminUpsertSession: (session: SessionInput) =>
-    apiFetch("/api/app/admin/upsert-session", {
+    apiFetch("/api/app/admin?action=upsert-session", {
       method: "POST",
       body: JSON.stringify(session),
     }) as Promise<{ id: string }>,
 
   adminDeleteSession: (id: string) =>
-    apiFetch("/api/app/admin/delete-session", {
+    apiFetch("/api/app/admin?action=delete-session", {
       method: "DELETE",
       body: JSON.stringify({ id }),
     }) as Promise<{ ok: true }>,
