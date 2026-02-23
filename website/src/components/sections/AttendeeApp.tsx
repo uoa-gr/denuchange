@@ -86,7 +86,7 @@ export function AttendeeApp() {
             Attendee App
           </Badge>
           <h2 className="text-3xl font-bold tracking-tight mb-4">
-            Your conference companion
+            Your workshop companion
           </h2>
           <p className="text-muted-foreground text-lg max-w-xl mx-auto">
             A free app for registered attendees. Works on all devices — no app store required.
