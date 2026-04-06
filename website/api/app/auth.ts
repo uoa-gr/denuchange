@@ -39,13 +39,13 @@ async function _handle(req: any, res: any) {
       getSupabaseAdmin()
         .from("app_users")
         .select("email, is_admin, avatar_path")
-        .eq("email", payload.email)
-        .single(),
+        .ilike("email", payload.email)
+        .maybeSingle(),
       getSupabaseAdmin()
         .from("registrations")
         .select("first_name, last_name, affiliation, registration_type")
-        .eq("email", payload.email)
-        .single(),
+        .ilike("email", payload.email)
+        .maybeSingle(),
     ])
 
     if (!user) return res.status(401).json({ error: "Unauthorized" })
@@ -90,15 +90,17 @@ async function _handle(req: any, res: any) {
       .maybeSingle()
     if (!reg) return res.json({ status: "not_registered" })
 
-    const email: string = reg.email
+    // Always store app_users.email in lowercase so lookups from all the other
+    // endpoints (which lowercase their input) match unconditionally.
+    const email: string = raw
     await getSupabaseAdmin()
       .from("app_users")
       .upsert({ email }, { onConflict: "email", ignoreDuplicates: true })
     const { data: appUser } = await getSupabaseAdmin()
       .from("app_users")
       .select("password_hash")
-      .eq("email", email)
-      .single()
+      .ilike("email", email)
+      .maybeSingle()
     return res.json({ status: appUser?.password_hash ? "has_password" : "needs_password" })
   }
 
@@ -109,14 +111,14 @@ async function _handle(req: any, res: any) {
     const { data: user } = await getSupabaseAdmin()
       .from("app_users")
       .select("email")
-      .eq("email", email)
+      .ilike("email", email)
       .maybeSingle()
     if (!user) return res.status(404).json({ error: "User not found" })
 
     const { data: recent } = await getSupabaseAdmin()
       .from("password_setup_tokens")
       .select("created_at")
-      .eq("email", email)
+      .ilike("email", email)
       .is("used_at", null)
       .gte("expires_at", new Date().toISOString())
       .order("created_at", { ascending: false })
@@ -186,7 +188,7 @@ async function _handle(req: any, res: any) {
 
     const passwordHash = await bcrypt.hash(password, 12)
     const [{ error: updateErr }, { error: tokenErr }] = await Promise.all([
-      getSupabaseAdmin().from("app_users").update({ password_hash: passwordHash }).eq("email", tokenRow.email),
+      getSupabaseAdmin().from("app_users").update({ password_hash: passwordHash }).ilike("email", tokenRow.email),
       getSupabaseAdmin().from("password_setup_tokens").update({ used_at: new Date().toISOString() }).eq("token", token),
     ])
     if (updateErr || tokenErr) {
@@ -204,7 +206,7 @@ async function _handle(req: any, res: any) {
     const { data: user } = await getSupabaseAdmin()
       .from("app_users")
       .select("email, password_hash, is_admin, avatar_path")
-      .eq("email", email)
+      .ilike("email", email)
       .maybeSingle()
     if (!user || !user.password_hash) {
       await bcrypt.hash("dummy", 12)
@@ -216,10 +218,10 @@ async function _handle(req: any, res: any) {
     const { data: reg } = await getSupabaseAdmin()
       .from("registrations")
       .select("first_name, last_name, affiliation, registration_type")
-      .eq("email", email)
-      .single()
+      .ilike("email", email)
+      .maybeSingle()
 
-    const jwtToken = signJwt({ email: user.email, isAdmin: user.is_admin })
+    const jwtToken = signJwt({ email: user.email.toLowerCase(), isAdmin: user.is_admin })
     res.setHeader("Set-Cookie", getSessionCookie(jwtToken))
     return res.json({
       email: user.email,

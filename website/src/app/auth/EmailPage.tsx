@@ -29,11 +29,22 @@ export function EmailPage() {
           "No registration found for this email. Please register at denuchange.vercel.app first, then try again."
         )
       } else if (status === "needs_password") {
-        // Trigger first setup email automatically
+        // Trigger first setup email automatically. Rate-limit (429) is expected
+        // on quick retries and silently ignored, but any other failure surfaces
+        // to the user so we don't navigate to a page that lies about having
+        // sent an email.
         try {
           await api.sendSetupEmail(normalized)
-        } catch {
-          // ignore rate-limit errors on first send
+        } catch (err) {
+          const apiErr = err as { status?: number; message?: string }
+          if (apiErr?.status !== 429) {
+            console.error("sendSetupEmail failed:", apiErr)
+            setError(
+              apiErr?.message ??
+                "Could not send the setup email. Please try again in a moment or contact the organizers."
+            )
+            return
+          }
         }
         navigate("/app/auth/setup")
       } else {
