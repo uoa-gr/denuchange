@@ -112,5 +112,22 @@ async function _handle(req: any, res: any) {
     })
   }
 
+  if (req.method === "POST" && action === "ops-file-url") {
+    const bucket: string = (req.body?.bucket ?? "").toString()
+    const path: string = (req.body?.path ?? "").toString()
+    const ALLOWED = new Set(["abstracts", "payment-receipts"])
+    if (!ALLOWED.has(bucket)) return res.status(400).json({ error: "Invalid bucket" })
+    if (!path || path.includes("..")) return res.status(400).json({ error: "Invalid path" })
+
+    const { data, error } = await getSupabaseAdmin()
+      .storage.from(bucket)
+      .createSignedUrl(path, 60)
+    if (error || !data) {
+      console.error("ops-file-url:", error)
+      return res.status(500).json({ error: "Failed to sign URL" })
+    }
+    return res.json({ url: data.signedUrl })
+  }
+
   return res.status(404).json({ error: "Unknown action" })
 }
