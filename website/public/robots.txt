@@ -1,0 +1,2 @@
+User-agent: *
+Disallow: /OPS_DATA_EXPORT
