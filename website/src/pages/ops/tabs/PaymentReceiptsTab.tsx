@@ -36,7 +36,7 @@ export function PaymentReceiptsTab({ rows }: Props) {
         <span className="text-xs text-neutral-500">{filtered.length} / {rows.length}</span>
         <button
           onClick={() => exportToExcel(filtered, "PaymentReceipts", "payment-receipts.xlsx")}
-          className="ml-auto bg-neutral-900 text-white text-sm px-3 py-1.5"
+          className="ml-auto bg-neutral-900 text-white text-sm px-3 py-1.5 cursor-pointer"
         >
           Export Excel
         </button>
@@ -60,7 +60,7 @@ export function PaymentReceiptsTab({ rows }: Props) {
                 <td className="px-2 py-1.5">
                   <button
                     onClick={() => download(r.file_path)}
-                    className="text-blue-700 underline"
+                    className="text-blue-700 underline cursor-pointer"
                   >
                     Download
                   </button>

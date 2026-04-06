@@ -41,7 +41,7 @@ export function AbstractsTab({ rows }: Props) {
         <span className="text-xs text-neutral-500">{filtered.length} / {rows.length}</span>
         <button
           onClick={() => exportToExcel(filtered, "Abstracts", "abstracts.xlsx")}
-          className="ml-auto bg-neutral-900 text-white text-sm px-3 py-1.5"
+          className="ml-auto bg-neutral-900 text-white text-sm px-3 py-1.5 cursor-pointer"
         >
           Export Excel
         </button>
@@ -74,7 +74,7 @@ export function AbstractsTab({ rows }: Props) {
                   {r.file_path ? (
                     <button
                       onClick={() => download(r.file_path!)}
-                      className="text-blue-700 underline"
+                      className="text-blue-700 underline cursor-pointer"
                     >
                       Download
                     </button>
