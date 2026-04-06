@@ -1,11 +1,11 @@
 import * as XLSX from "xlsx"
 
-export function exportToExcel<T extends Record<string, unknown>>(
+export function exportToExcel<T>(
   rows: T[],
   sheetName: string,
   fileName: string,
 ): void {
-  const ws = XLSX.utils.json_to_sheet(rows)
+  const ws = XLSX.utils.json_to_sheet(rows as Record<string, unknown>[])
   const wb = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(wb, ws, sheetName.slice(0, 31))
   XLSX.writeFile(wb, fileName)
