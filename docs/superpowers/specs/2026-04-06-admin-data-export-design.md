@@ -1,7 +1,34 @@
 # Hidden Admin Data Export Page — Design Spec
 
 **Date:** 2026-04-06
-**Status:** Approved (pending user spec review)
+**Status:** Approved, revised 2026-04-06 after codebase discovery
+
+## Revision Note (2026-04-06)
+
+Post-approval discovery found that the denuchange website already has substantial
+infrastructure that the original spec proposed to build from scratch. The plan
+reuses this infrastructure instead. Key differences from the sections below:
+
+- **Router:** `react-router-dom` is already wired in `src/main.tsx`. A new
+  `<Route path="/OPS_DATA_EXPORT">` is added instead of a path-check in `main.tsx`.
+- **Auth:** The existing `api/app/auth.ts` (login/logout/me, bcrypt, `HttpOnly`
+  cookie JWT, `app_users.is_admin` flag) is reused verbatim. The new admin page
+  gates on the existing cookie + `isAdmin` instead of a new password+JWT system.
+  `ADMIN_PASSWORD_HASH` and `ADMIN_JWT_SECRET` env vars are NOT added.
+- **Service-role client:** `api/_lib/supabase-admin.ts` already exists and reads
+  `VITE_SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`. Reused as-is.
+- **Endpoints:** New admin actions are added to the existing consolidated
+  `api/app/admin.ts` handler (following its `?action=` pattern), not as new files.
+- **Bulk-zip:** Cookie auth is automatic on `<a href>` downloads, so the
+  `?token=` query-string workaround is no longer needed.
+- **Two-layer security is preserved:** obscure URL for discoverability + existing
+  `is_admin` cookie auth for authorization.
+
+Everything below describes the *original intent*; the plan at
+`docs/superpowers/plans/2026-04-06-admin-data-export.md` is authoritative for
+implementation.
+
+---
 
 ## Purpose
 
