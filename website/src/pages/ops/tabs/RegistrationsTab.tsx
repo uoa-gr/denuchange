@@ -44,7 +44,7 @@ export function RegistrationsTab({ rows, onUpdate }: Props) {
         <span className="text-xs text-neutral-500">{filtered.length} / {rows.length}</span>
         <button
           onClick={() => exportToExcel(filtered, "Registrations", "registrations.xlsx")}
-          className="ml-auto bg-neutral-900 text-white text-sm px-3 py-1.5"
+          className="ml-auto bg-neutral-900 text-white text-sm px-3 py-1.5 cursor-pointer"
         >
           Export Excel
         </button>
@@ -80,6 +80,7 @@ export function RegistrationsTab({ rows, onUpdate }: Props) {
                     type="checkbox"
                     checked={r.payment_confirmed}
                     onChange={(e) => toggle(r.id, e.target.checked)}
+                    className="cursor-pointer"
                   />
                 </td>
               </tr>

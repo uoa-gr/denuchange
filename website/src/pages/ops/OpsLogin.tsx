@@ -61,7 +61,7 @@ export function OpsLogin({ onSuccess }: Props) {
         <button
           type="submit"
           disabled={busy}
-          className="w-full bg-neutral-900 text-white py-2 text-sm disabled:opacity-50"
+          className="w-full bg-neutral-900 text-white py-2 text-sm disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
         >
           {busy ? "Signing in…" : "Sign in"}
         </button>

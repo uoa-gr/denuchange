@@ -53,20 +53,20 @@ export function OpsDashboard({ onLogout }: Props) {
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`px-3 py-1.5 text-sm ${tab === t ? "bg-neutral-900 text-white" : "bg-neutral-100"}`}
+              className={`px-3 py-1.5 text-sm cursor-pointer ${tab === t ? "bg-neutral-900 text-white" : "bg-neutral-100"}`}
             >
               {t === "payments" ? "Payments" : t[0].toUpperCase() + t.slice(1)}
             </button>
           ))}
         </nav>
         <div className="ml-auto flex gap-2">
-          <button onClick={refresh} disabled={loading} className="text-sm px-3 py-1.5 border border-neutral-300">
+          <button onClick={refresh} disabled={loading} className="text-sm px-3 py-1.5 border border-neutral-300 cursor-pointer disabled:cursor-not-allowed">
             {loading ? "Loading…" : "Refresh"}
           </button>
-          <a href={bulkZipUrl()} className="text-sm px-3 py-1.5 bg-blue-700 text-white">
+          <a href={bulkZipUrl()} className="text-sm px-3 py-1.5 bg-blue-700 text-white cursor-pointer">
             Download All (ZIP)
           </a>
-          <button onClick={onLogoutClick} className="text-sm px-3 py-1.5 border border-neutral-300">
+          <button onClick={onLogoutClick} className="text-sm px-3 py-1.5 border border-neutral-300 cursor-pointer">
             Logout
           </button>
         </div>
