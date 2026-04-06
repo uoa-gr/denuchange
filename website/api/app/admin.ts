@@ -94,5 +94,23 @@ async function _handle(req: any, res: any) {
     return res.json({ ok: true })
   }
 
+  if (req.method === "GET" && action === "ops-data") {
+    const sb = getSupabaseAdmin()
+    const [regs, abs, pays] = await Promise.all([
+      sb.from("registrations").select("*").order("created_at", { ascending: false }),
+      sb.from("abstracts").select("*").order("created_at", { ascending: false }),
+      sb.from("payment_receipts").select("*").order("created_at", { ascending: false }),
+    ])
+    if (regs.error || abs.error || pays.error) {
+      console.error("ops-data:", regs.error ?? abs.error ?? pays.error)
+      return res.status(500).json({ error: "Failed to fetch data" })
+    }
+    return res.json({
+      registrations: regs.data ?? [],
+      abstracts: abs.data ?? [],
+      payment_receipts: pays.data ?? [],
+    })
+  }
+
   return res.status(404).json({ error: "Unknown action" })
 }
