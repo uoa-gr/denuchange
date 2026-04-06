@@ -129,5 +129,20 @@ async function _handle(req: any, res: any) {
     return res.json({ url: data.signedUrl })
   }
 
+  if (req.method === "POST" && action === "ops-confirm-payment") {
+    const id: string = (req.body?.registration_id ?? "").toString()
+    const confirmed: boolean = req.body?.confirmed === true
+    if (!/^[0-9a-f-]{36}$/.test(id)) return res.status(400).json({ error: "Invalid id" })
+    const { error } = await getSupabaseAdmin()
+      .from("registrations")
+      .update({ payment_confirmed: confirmed })
+      .eq("id", id)
+    if (error) {
+      console.error("ops-confirm-payment:", error)
+      return res.status(500).json({ error: "Failed to update" })
+    }
+    return res.json({ ok: true })
+  }
+
   return res.status(404).json({ error: "Unknown action" })
 }
