@@ -1,5 +1,6 @@
 import { getSupabaseAdmin } from "../_lib/supabase-admin"
 import { extractJwt } from "../_lib/auth"
+import archiver from "archiver"
 
 // Consolidated admin handler (all routes require is_admin)
 // POST   ?action=notify          → post notification
@@ -8,6 +9,19 @@ import { extractJwt } from "../_lib/auth"
 
 type SessionType = "session" | "break" | "meal" | "keynote" | "field_trip" | "social"
 const SESSION_TYPES: SessionType[] = ["session", "break", "meal", "keynote", "field_trip", "social"]
+
+function rowsToCsv(rows: Record<string, unknown>[]): string {
+  if (rows.length === 0) return ""
+  const headers = Object.keys(rows[0])
+  const esc = (v: unknown) => {
+    if (v === null || v === undefined) return ""
+    const s = typeof v === "string" ? v : JSON.stringify(v)
+    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s
+  }
+  const lines = [headers.join(",")]
+  for (const r of rows) lines.push(headers.map(h => esc(r[h])).join(","))
+  return lines.join("\n")
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function handler(req: any, res: any) {
@@ -142,6 +156,62 @@ async function _handle(req: any, res: any) {
       return res.status(500).json({ error: "Failed to update" })
     }
     return res.json({ ok: true })
+  }
+
+  if (req.method === "GET" && action === "ops-bulk-zip") {
+    const sb = getSupabaseAdmin()
+    const [regs, abs, pays] = await Promise.all([
+      sb.from("registrations").select("*").order("created_at", { ascending: false }),
+      sb.from("abstracts").select("*").order("created_at", { ascending: false }),
+      sb.from("payment_receipts").select("*").order("created_at", { ascending: false }),
+    ])
+    if (regs.error || abs.error || pays.error) {
+      return res.status(500).json({ error: "Failed to fetch data" })
+    }
+
+    const today = new Date().toISOString().slice(0, 10)
+    res.setHeader("Content-Type", "application/zip")
+    res.setHeader("Content-Disposition", `attachment; filename="denuchange-export-${today}.zip"`)
+
+    const archive = archiver("zip", { zlib: { level: 9 } })
+    archive.on("error", (err: Error) => {
+      console.error("archive error:", err)
+      try { res.status(500).end() } catch { /* stream already started */ }
+    })
+    archive.pipe(res)
+
+    archive.append(rowsToCsv(regs.data ?? []), { name: "registrations.csv" })
+    archive.append(rowsToCsv(abs.data ?? []), { name: "abstracts.csv" })
+    archive.append(rowsToCsv(pays.data ?? []), { name: "payment_receipts.csv" })
+
+    const errors: string[] = []
+
+    const pullFile = async (bucket: string, path: string, zipPath: string) => {
+      try {
+        const { data, error } = await sb.storage.from(bucket).download(path)
+        if (error || !data) throw error ?? new Error("no data")
+        const buf = Buffer.from(await data.arrayBuffer())
+        archive.append(buf, { name: zipPath })
+      } catch (e) {
+        errors.push(`${bucket}/${path}: ${e instanceof Error ? e.message : String(e)}`)
+      }
+    }
+
+    for (const row of abs.data ?? []) {
+      const p = (row as { file_path?: string }).file_path
+      if (p) await pullFile("abstracts", p, `abstracts/${p}`)
+    }
+    for (const row of pays.data ?? []) {
+      const p = (row as { file_path?: string }).file_path
+      if (p) await pullFile("payment-receipts", p, `payment-receipts/${p}`)
+    }
+
+    if (errors.length > 0) {
+      archive.append(errors.join("\n"), { name: "README-errors.txt" })
+    }
+
+    await archive.finalize()
+    return
   }
 
   return res.status(404).json({ error: "Unknown action" })
