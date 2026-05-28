@@ -17,7 +17,7 @@ const infoItems = [
   {
     icon: Clock,
     label: "Abstract Deadline",
-    value: "May 30, 2026",
+    value: "June 13, 2026",
     detail: "Registration by July 15",
   },
 ]

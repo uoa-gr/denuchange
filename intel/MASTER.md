@@ -38,7 +38,7 @@
 **Full fee covers**: materials, coffee breaks, lunches (Oct 6-7), Workshop Dinner (Oct 7), field trip
 
 ## DEADLINES
-- **30 May 2026**: Abstract submission
+- **13 June 2026**: Abstract submission
 - **15 June 2026**: Author notifications
 - **15 July 2026**: Registration
 

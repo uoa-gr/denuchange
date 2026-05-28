@@ -38,7 +38,7 @@ const fees = [
 ]
 
 const deadlines = [
-  { date: "May 30, 2026", event: "Abstract submission deadline" },
+  { date: "June 13, 2026", event: "Abstract submission deadline" },
   { date: "June 15, 2026", event: "Author notifications" },
   { date: "July 15, 2026", event: "Registration deadline" },
 ]
@@ -57,7 +57,7 @@ const actions = [
     icon: FileText,
     step: "Step 2",
     title: "Submit Abstract",
-    description: "Submit your abstract (max 500 words) as text or a .docx file. Deadline: May 30, 2026.",
+    description: "Submit your abstract (max 500 words) as text or a .docx file. Deadline: June 13, 2026.",
     dialog: AbstractDialog,
     label: "Submit Abstract",
     variant: "outline" as const,
