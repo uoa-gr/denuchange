@@ -168,7 +168,7 @@ export function AbstractDialog({ children }: { children: React.ReactNode }) {
             <DialogHeader>
               <DialogTitle>Submit Your Abstract</DialogTitle>
               <DialogDescription>
-                Max 500 words · English · Deadline: May 30, 2026
+                Max 500 words · English · Deadline: June 13, 2026
               </DialogDescription>
             </DialogHeader>
 

@@ -15,7 +15,7 @@ export const eventData = {
     region: "Cyclades, Aegean Sea",
   },
   deadlines: [
-    { label: "Abstract Submission", date: "30 May 2026" },
+    { label: "Abstract Submission", date: "13 June 2026" },
     { label: "Author Notifications", date: "15 June 2026" },
     { label: "Registration Deadline", date: "15 July 2026" },
   ],
