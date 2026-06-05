@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { ClipboardList, FileText, Receipt } from "lucide-react"
+import { ClipboardList, FileText, Receipt, Landmark } from "lucide-react"
 import { RegistrationDialog } from "@/components/forms/RegistrationDialog"
 import { AbstractDialog } from "@/components/forms/AbstractDialog"
 import { PaymentReceiptDialog } from "@/components/forms/PaymentReceiptDialog"
@@ -165,14 +165,49 @@ export function Registration() {
           ))}
         </div>
 
-        {/* Note about payment */}
+        {/* Bank account details */}
         <div className="max-w-5xl mx-auto mt-8">
-          <div className="bg-[#f1c100]/15 border border-[#f1c100]/30 rounded-lg p-4 text-center">
-            <p className="text-sm text-foreground/80">
-              <span className="font-bold">Note:</span> Bank transfer details will be communicated
-              by email after registration. Steps 2 and 3 can be completed in any order or at a later date.
-            </p>
-          </div>
+          <Card className="border-[#f1c100]/40">
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-[#f1c100]/15 shrink-0">
+                  <Landmark className="h-4 w-4 text-[#f1c100]" />
+                </div>
+                <CardTitle className="text-base">Bank Account Details</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Payment of the registration fee should be made to the following account:
+              </p>
+              <dl className="space-y-3 text-sm">
+                <div className="sm:grid sm:grid-cols-[7rem_1fr] sm:gap-x-6">
+                  <dt className="font-medium text-muted-foreground">Name</dt>
+                  <dd className="text-foreground">
+                    Special Account for Research Grants of the National and Kapodistrian University of Athens
+                  </dd>
+                </div>
+                <div className="sm:grid sm:grid-cols-[7rem_1fr] sm:gap-x-6">
+                  <dt className="font-medium text-muted-foreground">Bank</dt>
+                  <dd className="text-foreground">ALPHA BANK S.A.</dd>
+                </div>
+                <div className="sm:grid sm:grid-cols-[7rem_1fr] sm:gap-x-6">
+                  <dt className="font-medium text-muted-foreground">IBAN</dt>
+                  <dd className="font-mono text-foreground">GR16 0140 8020 8020 0200 1001 836</dd>
+                </div>
+                <div className="sm:grid sm:grid-cols-[7rem_1fr] sm:gap-x-6">
+                  <dt className="font-medium text-muted-foreground">Swift/BIC</dt>
+                  <dd className="font-mono text-foreground">CRBAGRAA</dd>
+                </div>
+              </dl>
+              <div className="bg-[#f1c100]/15 border border-[#f1c100]/30 rounded-lg p-3">
+                <p className="text-sm text-foreground/80">
+                  <span className="font-bold">Note:</span> Your bank transfer receipt should include
+                  your surname and registration type (e.g. Regular, Student, etc.).
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </section>
