@@ -3,10 +3,10 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 const organizingCommittee = [
   { name: "Prof. Niki Evelpidou", affiliation: "NKUA, Greece" },
-  { name: "Prof. Assimina Antonarakou", affiliation: "NKUA, Athens" },
+  { name: "Prof. Assimina Antonarakou", affiliation: "NKUA, Greece" },
   { name: "Dr. Anna Karkani", affiliation: "NKUA, Greece" },
   { name: "Dr. Giannis Saitis", affiliation: "NKUA, Greece" },
-  { name: "Alexandros Liaskos", affiliation: "NKUA, Athens" },
+  { name: "Alexandros Liaskos", affiliation: "NKUA, Greece" },
 ]
 
 const scientificCommittee = [
