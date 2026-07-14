@@ -66,8 +66,10 @@ export const eventData = {
   committees: {
     organizing: [
       { name: "Prof. Niki Evelpidou", affiliation: "Department of Geology & Geoenvironment, NKUA" },
+      { name: "Prof. Assimina Antonarakou", affiliation: "Department of Geology & Geoenvironment, NKUA" },
       { name: "Dr. Anna Karkani", affiliation: "Department of Geology & Geoenvironment, NKUA" },
       { name: "Dr. Giannis Saitis", affiliation: "Department of Geology & Geoenvironment, NKUA" },
+      { name: "Alexandros Liaskos", affiliation: "Department of Geology & Geoenvironment, NKUA" },
     ],
     scientific: [
       { name: "Dr. Achim A. Beylich", affiliation: "Geomorphological Field Laboratory (GFL), Norway" },
