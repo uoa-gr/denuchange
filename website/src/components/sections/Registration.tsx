@@ -66,7 +66,7 @@ const actions = [
     icon: Receipt,
     step: "Step 3",
     title: "Upload Payment Receipt",
-    description: "After completing your bank transfer, upload your Αποδεικτικό Πληρωμής here.",
+    description: "After completing your bank transfer, upload your proof of payment here.",
     dialog: PaymentReceiptDialog,
     label: "Upload Receipt",
     variant: "outline" as const,

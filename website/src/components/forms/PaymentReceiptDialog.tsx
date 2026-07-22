@@ -144,7 +144,7 @@ export function PaymentReceiptDialog({ children }: { children: React.ReactNode }
             <CheckCircle2 className="h-14 w-14 text-green-500 mx-auto" />
             <DialogTitle>Receipt received!</DialogTitle>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Your payment receipt (Αποδεικτικό Πληρωμής) has been uploaded successfully.
+              Your payment receipt has been uploaded successfully.
               We will confirm your payment within a few business days.
             </p>
             <Button onClick={() => handleOpenChange(false)}>Close</Button>
@@ -154,7 +154,7 @@ export function PaymentReceiptDialog({ children }: { children: React.ReactNode }
             <DialogHeader>
               <DialogTitle>Upload Payment Receipt</DialogTitle>
               <DialogDescription>
-                Αποδεικτικό Πληρωμής · PDF or image · max 10 MB
+                Proof of payment · PDF or image · max 10 MB
               </DialogDescription>
             </DialogHeader>
 
