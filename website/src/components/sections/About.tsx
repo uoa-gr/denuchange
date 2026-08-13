@@ -2,36 +2,107 @@ import { Badge } from "@/components/ui/badge"
 
 export function CoOrganiser() {
   return (
-    <section aria-labelledby="co-organiser-heading" className="border-y bg-background">
-      <div className="container py-6 sm:py-7">
-        <div className="mx-auto flex max-w-4xl flex-col items-center justify-center gap-3 sm:flex-row sm:gap-5">
+    <section aria-labelledby="co-organiser-heading" className="border-y bg-muted/30">
+      <div className="container py-12 sm:py-14">
+        <div className="mx-auto max-w-5xl">
           <h2
             id="co-organiser-heading"
-            className="text-sm font-medium text-muted-foreground"
+            className="mb-7 text-center text-xl font-semibold tracking-tight sm:text-2xl"
           >
             Co-organised with:
           </h2>
-          <span className="hidden h-8 w-px bg-border sm:block" aria-hidden="true" />
-          <a
-            href="https://lagunacoast.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Visit the Laguna Coast Foundation website"
-            className="inline-flex min-h-11 flex-col items-center gap-2 rounded-md px-3 py-1 transition-opacity hover:opacity-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:flex-row sm:gap-4"
-          >
-            <img
-              src={`${import.meta.env.BASE_URL}images/laguna-coast-foundation.png`}
-              alt=""
-              aria-hidden="true"
-              className="h-8 w-auto sm:h-9"
-              width="1083"
-              height="217"
-              loading="lazy"
-            />
-            <span className="text-sm font-semibold tracking-tight text-foreground">
-              Laguna Coast Foundation
-            </span>
-          </a>
+
+          <div className="grid auto-rows-fr grid-cols-1 gap-4 md:grid-cols-6">
+            <a
+              href="https://www.geomorph.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex min-h-24 items-center gap-4 rounded-lg border bg-background p-5 transition-colors hover:bg-muted/50 md:col-span-2"
+            >
+              <img
+                src={`${import.meta.env.BASE_URL}images/logo-iag.jpg`}
+                alt="IAG"
+                className="h-12 w-16 flex-shrink-0 object-contain"
+                loading="lazy"
+              />
+              <div className="text-left">
+                <p className="font-medium">IAG</p>
+                <p className="text-sm text-muted-foreground">International Association of Geomorphologists</p>
+              </div>
+            </a>
+
+            <a
+              href="https://www.geomorph.org/denuchange-working-group-4/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex min-h-24 items-center gap-4 rounded-lg border bg-background p-5 transition-colors hover:bg-muted/50 md:col-span-2"
+            >
+              <img
+                src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`}
+                alt="DENUCHANGE"
+                className="h-12 w-12 flex-shrink-0 rounded-full object-contain"
+                loading="lazy"
+              />
+              <div className="text-left">
+                <p className="font-medium">DENUCHANGE</p>
+                <p className="text-sm text-muted-foreground">IAG Working Group</p>
+              </div>
+            </a>
+
+            <a
+              href="https://en.uoa.gr/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex min-h-24 items-center gap-4 rounded-lg border bg-background p-5 transition-colors hover:bg-muted/50 md:col-span-2"
+            >
+              <img
+                src={`${import.meta.env.BASE_URL}images/logo-nkua.jpg`}
+                alt="NKUA"
+                className="h-12 w-16 flex-shrink-0 object-contain"
+                loading="lazy"
+              />
+              <div className="text-left">
+                <p className="font-medium">NKUA</p>
+                <p className="text-sm text-muted-foreground">National &amp; Kapodistrian University of Athens</p>
+              </div>
+            </a>
+
+            <a
+              href="https://www.geomorph.org/virtual-trips-in-geomorphology/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex min-h-24 items-center gap-4 rounded-lg border bg-background p-5 transition-colors hover:bg-muted/50 md:col-span-2 md:col-start-2"
+            >
+              <img
+                src={`${import.meta.env.BASE_URL}images/virtual-trips-in-geomorphology.jpg`}
+                alt="Virtual Trips in Geomorphology"
+                className="h-12 w-12 flex-shrink-0 rounded-md object-cover"
+                loading="lazy"
+              />
+              <div className="text-left">
+                <p className="font-medium">Virtual Trips in Geomorphology</p>
+                <p className="text-sm text-muted-foreground">IAG Working Group</p>
+              </div>
+            </a>
+
+            <a
+              href="https://lagunacoast.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex min-h-24 items-center gap-4 rounded-lg border bg-background p-5 transition-colors hover:bg-muted/50 md:col-span-2"
+            >
+              <img
+                src={`${import.meta.env.BASE_URL}images/laguna-coast-foundation.png`}
+                alt="Laguna Coast Foundation"
+                className="h-12 w-24 flex-shrink-0 object-contain"
+                loading="lazy"
+              />
+              <div className="text-left">
+                <p className="font-medium">Laguna Coast Foundation</p>
+                <p className="text-sm text-muted-foreground">Workshop co-organiser</p>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
     </section>
