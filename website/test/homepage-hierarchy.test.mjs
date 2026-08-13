@@ -42,29 +42,44 @@ test("homepage presents the approved workshop hierarchy", async (context) => {
     assert.match(markup, /<dd[^>]*>\s*Closed\s*<\/dd>/)
   })
 
-  await context.test("moves every organisation card immediately before About", () => {
+  await context.test("groups organisers and supporters immediately before About", () => {
     assert.equal(typeof CoOrganiser, "function", "CoOrganiser section is missing")
 
     const markup = renderToStaticMarkup(React.createElement(About))
     const creditPosition = markup.indexOf("Co-organised with:")
+    const supportPosition = markup.indexOf("Supported by:")
     const aboutPosition = markup.indexOf("About the Workshop")
     const organisations = [
       ["IAG", "https://www.geomorph.org/", "/images/logo-iag.jpg"],
       ["DENUCHANGE", "https://www.geomorph.org/denuchange-working-group-4/", "/images/logo-denuchange.jpg"],
       ["NKUA", "https://en.uoa.gr/", "/images/logo-nkua.jpg"],
-      ["Virtual Trips in Geomorphology", "https://www.geomorph.org/virtual-trips-in-geomorphology/", "/images/virtual-trips-in-geomorphology.jpg"],
+      ["Virtual Trips in Geomorphology", "https://www.geomorph.org/virtual-trips-in-geomorphology/", "/images/logo-vft-working-group.png"],
       ["Laguna Coast Foundation", "https://lagunacoast.org/", "/images/laguna-coast-foundation.png"],
     ]
 
     assert.ok(creditPosition >= 0, "co-organiser credit is missing")
+    assert.ok(supportPosition >= 0, "supporter credit is missing")
     assert.ok(aboutPosition >= 0, "About heading is missing")
-    assert.ok(creditPosition < aboutPosition, "co-organiser credit should precede About")
+    assert.ok(creditPosition < supportPosition, "co-organisers should precede supporters")
+    assert.ok(supportPosition < aboutPosition, "supporters should precede About")
 
     for (const [title, href, image] of organisations) {
       assert.ok(markup.includes(`href="${href}"`), `${title} link is missing before About`)
       assert.ok(markup.includes(`src="${image}"`), `${title} image is missing before About`)
       assert.ok(markup.includes(title), `${title} title is missing before About`)
     }
+
+    assert.equal(
+      markup.split('href="https://www.geomorph.org/virtual-trips-in-geomorphology/"').length - 1,
+      2,
+      "VFT should appear as both an organiser and a supporter",
+    )
+    assert.equal(
+      markup.split('src="/images/logo-vft-working-group.png"').length - 1,
+      2,
+      "both VFT entries should use the programme logo",
+    )
+    assert.ok(!markup.includes("/images/virtual-trips-in-geomorphology.jpg"))
   })
 
   await context.test("keeps organisation cards out of the footer", () => {
