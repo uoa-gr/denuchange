@@ -1,5 +1,4 @@
 import { Badge } from "@/components/ui/badge"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Monitor, Headset, Users, GraduationCap } from "lucide-react"
 
 const features = [
@@ -31,45 +30,48 @@ const features = [
 
 export function Labs() {
   return (
-    <section id="labs" className="py-20 bg-muted/30">
+    <section id="labs" aria-labelledby="labs-heading" className="bg-muted/30 py-20 lg:py-24">
       <div className="container">
-        <div className="max-w-3xl mx-auto text-center mb-12">
-          <Badge variant="outline" className="mb-4">
-            Labs
-          </Badge>
-          <h2 className="text-3xl font-bold tracking-tight mb-4">
-            Virtual Field Trip Laboratories
-          </h2>
-          <p className="text-muted-foreground">
-            Hands-on interactive sessions offered by the{" "}
-            <a
-              href="https://www.geomorph.org/virtual-trips-in-geomorphology/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline cursor-pointer"
-            >
-              IAG Working Group "Virtual Field Trips in Geomorphology"
-            </a>{" "}
-            running alongside the workshop program.
-          </p>
-        </div>
+        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] lg:items-center lg:gap-14">
+          <div className="text-center lg:text-left">
+            <Badge variant="outline" className="mb-4">
+              Labs
+            </Badge>
+            <h2 id="labs-heading" className="mb-4 text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+              Virtual Field Trip Laboratories
+            </h2>
+            <p className="text-pretty leading-relaxed text-muted-foreground">
+              Hands-on interactive sessions offered by the{" "}
+              <a
+                href="https://www.geomorph.org/virtual-trips-in-geomorphology/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cursor-pointer font-medium text-primary underline decoration-primary/30 underline-offset-4 transition-colors hover:decoration-primary focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+              >
+                IAG Working Group "Virtual Field Trips in Geomorphology"
+              </a>{" "}
+              running alongside the workshop program.
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <ul
+            aria-label="Laboratory focus areas"
+            className="grid overflow-hidden rounded-2xl border border-border/90 bg-card shadow-[0_16px_44px_-32px_rgba(15,42,68,0.6)] sm:grid-cols-2"
+          >
           {features.map((feature) => (
-            <Card key={feature.title}>
-              <CardHeader className="flex flex-row items-center gap-3 pb-2">
-                <div className="p-2 rounded-lg bg-primary/10 shrink-0">
-                  <feature.icon className="h-5 w-5 text-primary" />
+              <li
+                key={feature.title}
+                className="group border-b border-border/80 p-6 last:border-b-0 sm:min-h-52 sm:p-7 sm:[&:nth-child(odd)]:border-r sm:[&:nth-child(3)]:border-b-0"
+              >
+                <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors duration-200 group-hover:bg-primary group-hover:text-primary-foreground">
+                  <feature.icon className="h-5 w-5" aria-hidden="true" />
                 </div>
-                <CardTitle className="text-base">{feature.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">{feature.description}</p>
-              </CardContent>
-            </Card>
+                <h3 className="mb-2.5 text-base font-bold leading-snug text-foreground">{feature.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">{feature.description}</p>
+              </li>
           ))}
+          </ul>
         </div>
-
       </div>
     </section>
   )
