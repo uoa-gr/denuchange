@@ -2,51 +2,50 @@ import { Badge } from "@/components/ui/badge"
 
 type Organisation = {
   title: string
-  subtitle: string
   href: string
   image: string
   imageClassName: string
 }
 
-const vftOrganisation: Organisation = {
-  title: "Virtual Trips in Geomorphology",
-  subtitle: "IAG Working Group",
-  href: "https://www.geomorph.org/virtual-trips-in-geomorphology/",
-  image: "images/logo-vft-working-group.png",
-  imageClassName: "h-10 w-10 rounded-full",
-}
-
 const organisations: Organisation[] = [
   {
-    title: "IAG",
-    subtitle: "International Association of Geomorphologists",
+    title: "National and Kapodistrian University of Athens",
+    href: "https://en.uoa.gr/",
+    image: "images/logo-nkua.jpg",
+    imageClassName: "h-10 w-10",
+  },
+  {
+    title: "Laguna Coast Foundation",
+    href: "https://lagunacoast.org/",
+    image: "images/laguna-coast-foundation.png",
+    imageClassName: "h-10 w-20",
+  },
+  {
+    title: "International Association of Geomorphologists",
     href: "https://www.geomorph.org/",
     image: "images/logo-iag.jpg",
     imageClassName: "h-10 w-10",
   },
   {
-    title: "DENUCHANGE",
-    subtitle: "IAG Working Group",
+    title: "IAG Working Group Denudation and Environmental Changes in Different Morphoclimatic Zones (DENUCHANGE)",
     href: "https://www.geomorph.org/denuchange-working-group-4/",
     image: "images/logo-denuchange.jpg",
     imageClassName: "h-10 w-10 rounded-full",
   },
   {
-    title: "NKUA",
-    subtitle: "National & Kapodistrian University of Athens",
-    href: "https://en.uoa.gr/",
-    image: "images/logo-nkua.jpg",
-    imageClassName: "h-10 w-10",
-  },
-  vftOrganisation,
-  {
-    title: "Laguna Coast Foundation",
-    subtitle: "Workshop co-organiser",
-    href: "https://lagunacoast.org/",
-    image: "images/laguna-coast-foundation.png",
-    imageClassName: "h-10 w-20",
+    title: "IAG Working Group Virtual Trips in Geomorphology",
+    href: "https://www.geomorph.org/virtual-trips-in-geomorphology/",
+    image: "images/logo-vft-working-group.png",
+    imageClassName: "h-10 w-10 rounded-full",
   },
 ]
+
+const supporter: Organisation = {
+  title: "Municipality of Naxos and Small Cyclades",
+  href: "https://e-naxos.eu/",
+  image: "images/municipality-naxos-small-cyclades.png",
+  imageClassName: "h-12 w-16",
+}
 
 function OrganisationCard({
   organisation,
@@ -60,7 +59,7 @@ function OrganisationCard({
       href={organisation.href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`flex items-center gap-3 rounded-lg border bg-background p-4 transition-colors hover:bg-muted/50 ${className}`}
+      className={`flex items-center gap-3 rounded-lg border bg-background p-3.5 transition-colors hover:bg-muted/50 ${className}`}
     >
       <img
         src={`${import.meta.env.BASE_URL}${organisation.image}`}
@@ -69,8 +68,7 @@ function OrganisationCard({
         loading="lazy"
       />
       <div className="min-w-0 text-left">
-        <p className="text-sm font-medium">{organisation.title}</p>
-        <p className="text-xs text-muted-foreground">{organisation.subtitle}</p>
+        <p className="text-sm font-medium leading-snug">{organisation.title}</p>
       </div>
     </a>
   )
@@ -88,7 +86,7 @@ export function CoOrganiser() {
             Co-organised with:
           </h2>
 
-          <div className="grid auto-rows-fr grid-cols-1 gap-4 md:grid-cols-6">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-6">
             {organisations.map((organisation, index) => (
               <OrganisationCard
                 key={organisation.href}
@@ -103,7 +101,7 @@ export function CoOrganiser() {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-6">
             <OrganisationCard
-              organisation={vftOrganisation}
+              organisation={supporter}
               className="md:col-span-2 md:col-start-3"
             />
           </div>
