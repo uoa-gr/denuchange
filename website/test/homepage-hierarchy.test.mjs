@@ -15,31 +15,46 @@ test("homepage presents the approved workshop hierarchy", async (context) => {
     server: { middlewareMode: true },
     appType: "custom",
     optimizeDeps: { noDiscovery: true },
+    define: {
+      "import.meta.env.VITE_SUPABASE_URL": JSON.stringify("https://example.supabase.co"),
+      "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify("test-publishable-key"),
+    },
   })
 
   context.after(async () => {
     await vite.close()
   })
 
-  const [heroModule, aboutModule, footerModule] = await Promise.all([
+  const [heroModule, aboutModule, footerModule, registrationModule] = await Promise.all([
     vite.ssrLoadModule("/src/components/sections/Hero.tsx"),
     vite.ssrLoadModule("/src/components/sections/About.tsx"),
     vite.ssrLoadModule("/src/components/layout/Footer.tsx"),
+    vite.ssrLoadModule("/src/components/sections/Registration.tsx"),
   ])
   const { Hero } = heroModule
   const { About, CoOrganiser } = aboutModule
   const { Footer } = footerModule
+  const { Registration } = registrationModule
 
-  await context.test("keeps the three essential facts inside the hero", () => {
+  await context.test("keeps only the current event facts inside the hero", () => {
     const markup = renderToStaticMarkup(React.createElement(Hero))
 
     assert.match(markup, />Date</)
     assert.match(markup, /6(?:–|‑|-)9 October 2026/)
     assert.match(markup, />Location</)
     assert.match(markup, />Naxos, Greece</)
-    assert.match(markup, />Abstracts</)
-    assert.match(markup, />Closed</)
-    assert.match(markup, /<dd[^>]*>\s*Closed\s*<\/dd>/)
+    assert.doesNotMatch(markup, />Abstracts</)
+    assert.doesNotMatch(markup, /<dd[^>]*>\s*Closed\s*<\/dd>/)
+  })
+
+  await context.test("presents abstract submission as a closed status, not an action", () => {
+    const markup = renderToStaticMarkup(React.createElement(Registration))
+
+    assert.match(markup, /Abstract Submission Closed/)
+    assert.match(markup, /role="status"/)
+    assert.match(markup, />Submissions Closed</)
+    assert.doesNotMatch(markup, />Submit Abstract<\/button>/)
+    assert.doesNotMatch(markup, /plan to submit an abstract/i)
   })
 
   await context.test("gives the refreshed hero one clear accessible hierarchy", () => {

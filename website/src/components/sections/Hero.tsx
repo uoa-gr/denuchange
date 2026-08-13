@@ -5,7 +5,6 @@ import { useEffect, useState } from "react"
 const workshopFacts = [
   { label: "Date", value: "6–9 October 2026" },
   { label: "Location", value: "Naxos, Greece" },
-  { label: "Abstracts", value: "Closed" },
 ]
 
 export function Hero() {
@@ -69,7 +68,7 @@ export function Hero() {
 
         <dl
           aria-label="Workshop details"
-          className="mb-6 grid overflow-hidden rounded-xl border border-primary/15 bg-secondary/65 sm:grid-cols-3"
+          className="mb-6 grid overflow-hidden rounded-xl border border-primary/15 bg-secondary/65 sm:grid-cols-2"
         >
           {workshopFacts.map((fact, index) => (
             <div
