@@ -9,9 +9,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { ClipboardList, FileText, Receipt, Landmark } from "lucide-react"
+import { ClipboardList, FileText, Landmark, LockKeyhole, Receipt } from "lucide-react"
 import { RegistrationDialog } from "@/components/forms/RegistrationDialog"
-import { AbstractDialog } from "@/components/forms/AbstractDialog"
 import { PaymentReceiptDialog } from "@/components/forms/PaymentReceiptDialog"
 
 const fees = [
@@ -48,19 +47,21 @@ const actions = [
     icon: ClipboardList,
     step: "Step 1",
     title: "Register",
-    description: "Fill in your personal details, select your registration type, and indicate whether you plan to submit an abstract.",
+    description: "Fill in your personal details, select your registration type, and provide your workshop attendance information.",
     dialog: RegistrationDialog,
     label: "Register Now",
     variant: "default" as const,
+    closed: false,
   },
   {
     icon: FileText,
     step: "Step 2",
-    title: "Submit Abstract",
-    description: "Submit your abstract (max 500 words) as text or a .docx file. Deadline: June 13, 2026.",
-    dialog: AbstractDialog,
-    label: "Submit Abstract",
+    title: "Abstract Submission Closed",
+    description: "The abstract submission period ended on June 13, 2026. New submissions are no longer accepted.",
+    dialog: null,
+    label: "Submissions Closed",
     variant: "outline" as const,
+    closed: true,
   },
   {
     icon: Receipt,
@@ -70,6 +71,7 @@ const actions = [
     dialog: PaymentReceiptDialog,
     label: "Upload Receipt",
     variant: "outline" as const,
+    closed: false,
   },
 ]
 
@@ -85,7 +87,7 @@ export function Registration() {
             Join Us in Naxos
           </h2>
           <p className="text-muted-foreground">
-            Register, submit your abstract, and complete your payment in three simple steps.
+            Register for the workshop and complete your payment. Abstract submission is now closed.
           </p>
         </div>
 
@@ -140,11 +142,14 @@ export function Registration() {
 
         {/* Action cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mt-8">
-          {actions.map(({ icon: Icon, step, title, description, dialog: DialogComponent, label, variant }) => (
-            <Card key={title} className="flex flex-col">
+          {actions.map(({ icon: Icon, step, title, description, dialog: DialogComponent, label, variant, closed }) => (
+            <Card
+              key={title}
+              className={`flex flex-col ${closed ? "border-primary/20 bg-secondary/35 shadow-none" : ""}`}
+            >
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-3 mb-1">
-                  <div className="p-2 rounded-lg bg-primary/10 shrink-0">
+                  <div className={`p-2 rounded-lg shrink-0 ${closed ? "bg-primary/15" : "bg-primary/10"}`}>
                     <Icon className="h-4 w-4 text-primary" />
                   </div>
                   <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
@@ -157,9 +162,19 @@ export function Registration() {
                 <p className="text-sm text-muted-foreground">{description}</p>
               </CardContent>
               <CardFooter>
-                <DialogComponent>
-                  <Button variant={variant} className="w-full">{label}</Button>
-                </DialogComponent>
+                {closed ? (
+                  <div
+                    role="status"
+                    className="flex min-h-9 w-full items-center justify-center gap-2 rounded-md border border-primary/20 bg-primary/[0.06] px-4 py-2 text-sm font-semibold text-primary"
+                  >
+                    <LockKeyhole className="h-4 w-4" aria-hidden="true" />
+                    {label}
+                  </div>
+                ) : DialogComponent ? (
+                  <DialogComponent>
+                    <Button variant={variant} className="w-full">{label}</Button>
+                  </DialogComponent>
+                ) : null}
               </CardFooter>
             </Card>
           ))}
