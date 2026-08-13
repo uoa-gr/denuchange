@@ -9,7 +9,7 @@ import { createServer } from "vite"
 const testDirectory = path.dirname(fileURLToPath(import.meta.url))
 const projectRoot = path.resolve(testDirectory, "..")
 
-test("footer renders the Virtual Trips and Laguna Coast partner links", async (context) => {
+test("footer contains only the workshop credits", async (context) => {
   const vite = await createServer({
     root: projectRoot,
     server: { middlewareMode: true },
@@ -24,22 +24,9 @@ test("footer renders the Virtual Trips and Laguna Coast partner links", async (c
   const { Footer } = await vite.ssrLoadModule("/src/components/layout/Footer.tsx")
   const markup = renderToStaticMarkup(React.createElement(Footer))
 
-  const partners = [
-    {
-      title: "Virtual Trips in Geomorphology",
-      href: "https://www.geomorph.org/virtual-trips-in-geomorphology/",
-      image: "/images/virtual-trips-in-geomorphology.jpg",
-    },
-    {
-      title: "Laguna Coast Foundation",
-      href: "https://lagunacoast.org/",
-      image: "/images/laguna-coast-foundation.png",
-    },
-  ]
-
-  for (const partner of partners) {
-    assert.ok(markup.includes(`href="${partner.href}"`), `${partner.title} link is missing`)
-    assert.ok(markup.includes(`src="${partner.image}"`), `${partner.title} image is missing`)
-    assert.ok(markup.includes(partner.title), `${partner.title} title is missing`)
-  }
+  assert.ok(markup.includes("© 2026 IAG DENUCHANGE Working Group"))
+  assert.ok(markup.includes("5th International Workshop"))
+  assert.ok(markup.includes("Developed by"))
+  assert.ok(!markup.includes("Organization Cards"))
+  assert.ok(!markup.includes("https://lagunacoast.org/"))
 })
