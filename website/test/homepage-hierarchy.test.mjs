@@ -42,6 +42,16 @@ test("homepage presents the approved workshop hierarchy", async (context) => {
     assert.match(markup, /<dd[^>]*>\s*Closed\s*<\/dd>/)
   })
 
+  await context.test("gives the refreshed hero one clear accessible hierarchy", () => {
+    const markup = renderToStaticMarkup(React.createElement(Hero))
+
+    assert.match(markup, /<section[^>]*aria-labelledby="hero-heading"/)
+    assert.match(markup, /<h1[^>]*id="hero-heading"/)
+    assert.match(markup, /<nav[^>]*aria-label="Workshop actions"/)
+    assert.match(markup, /<a[^>]*href="#registration"[^>]*>Register Now<\/a>/)
+    assert.match(markup, /<a[^>]*href="#program"[^>]*>View Program<\/a>/)
+  })
+
   await context.test("groups organisers and supporters immediately before About", () => {
     assert.equal(typeof CoOrganiser, "function", "CoOrganiser section is missing")
 

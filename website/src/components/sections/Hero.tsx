@@ -19,18 +19,18 @@ export function Hero() {
   }, [])
 
   return (
-    <section className="relative flex min-h-[calc(100svh-4rem)] items-center justify-center overflow-hidden py-10 sm:py-16 lg:py-20">
+    <section
+      aria-labelledby="hero-heading"
+      className="relative flex min-h-[calc(100svh-4rem)] items-center justify-center overflow-hidden px-4 py-10 sm:px-6 sm:py-16 lg:py-20"
+    >
       {/* Background Image */}
       <div className="absolute inset-0 z-0 bg-slate-800">
         <img
           src={`${import.meta.env.BASE_URL}images/hero-naxos-aerial.jpeg`}
           alt="Aerial view of Naxos coastline"
-          className="w-full h-full object-cover"
-          style={{
-            opacity: imgLoaded ? 1 : 0,
-            transform: imgLoaded ? "scale(1)" : "scale(1.05)",
-            transition: "opacity 1.2s ease-out, transform 1.8s ease-out",
-          }}
+          className={`h-full w-full object-cover transition-[opacity,transform] duration-[1600ms] ease-out motion-reduce:transition-none ${
+            imgLoaded ? "scale-100 opacity-100" : "scale-[1.03] opacity-0"
+          }`}
           width={1920}
           height={1080}
           fetchPriority="high"
@@ -38,66 +38,79 @@ export function Hero() {
           decoding="sync"
           onLoad={() => setImgLoaded(true)}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-slate-950/15 to-slate-950/70" />
       </div>
 
       {/* Content Container */}
       <div
-        className="relative z-10 mx-4 w-full max-w-3xl rounded-xl bg-white/95 px-5 py-8 text-center shadow-2xl backdrop-blur-sm sm:px-8 sm:py-10 lg:px-10"
-        style={{
-          opacity: show ? 1 : 0,
-          transform: show ? "translateY(0)" : "translateY(1.5rem)",
-          transition: "opacity 0.9s ease-out 0.3s, transform 0.9s ease-out 0.3s",
-        }}
+        className={`relative z-20 w-full max-w-4xl overflow-hidden rounded-2xl border border-white/70 bg-white/[0.96] px-5 py-8 text-center shadow-[0_24px_80px_-24px_rgba(2,32,52,0.68)] ring-1 ring-slate-950/5 transition-[opacity,transform] duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:transition-none sm:px-9 sm:py-9 lg:px-12 ${
+          show ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+        }`}
       >
-        <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-primary">
+        <div className="absolute inset-x-0 top-0 h-1 bg-primary" aria-hidden="true">
+          <span className="mx-auto block h-full w-20 bg-[var(--iag-yellow)]" />
+        </div>
+
+        <p className="mb-3 text-[0.7rem] font-bold uppercase tracking-[0.18em] text-primary">
           IAG Working Group
         </p>
 
-        <h1 className="mb-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+        <h1
+          id="hero-heading"
+          className="mb-4 text-balance text-[clamp(2rem,5vw,3.35rem)] font-bold leading-[1.08] tracking-[-0.035em] text-foreground"
+        >
           IAG <span className="text-primary">DENUCHANGE</span> Workshop
         </h1>
 
-        <p className="mx-auto mb-7 max-w-xl text-base text-muted-foreground md:text-lg">
+        <p className="mx-auto mb-6 max-w-2xl text-pretty text-[0.95rem] leading-relaxed text-muted-foreground sm:text-base md:text-lg">
           5th International Workshop of the IAG Working Group on Denudation
           and Environmental Changes in Different Morphoclimatic Zones.
         </p>
 
         <dl
           aria-label="Workshop details"
-          className="mb-7 grid overflow-hidden rounded-lg border border-border/80 bg-muted/40 sm:grid-cols-3"
+          className="mb-6 grid overflow-hidden rounded-xl border border-primary/15 bg-secondary/65 sm:grid-cols-3"
         >
           {workshopFacts.map((fact, index) => (
             <div
               key={fact.label}
-              className={`flex items-center justify-between gap-4 px-4 py-3 text-left sm:block sm:px-5 sm:py-4 sm:text-center ${
-                index > 0 ? "border-t sm:border-l sm:border-t-0" : ""
+              className={`flex items-center justify-between gap-4 px-4 py-3 text-left sm:block sm:px-5 sm:py-3.5 sm:text-center ${
+                index > 0 ? "border-t border-primary/10 sm:border-l sm:border-t-0" : ""
               }`}
             >
-              <dt className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <dt className="text-[0.67rem] font-bold uppercase tracking-[0.16em] text-primary/80">
                 {fact.label}
               </dt>
-              <dd className="flex items-center justify-end gap-2 text-right text-sm font-semibold tracking-tight text-foreground sm:mt-1.5 sm:justify-center sm:text-center">
+              <dd className="flex items-center justify-end gap-2 text-right text-sm font-semibold tracking-tight text-foreground sm:mt-1.5 sm:justify-center sm:text-center sm:text-[0.95rem]">
                 {fact.value}
               </dd>
             </div>
           ))}
         </dl>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Button size="lg" asChild className="h-11 px-7">
+        <nav aria-label="Workshop actions" className="flex flex-col justify-center gap-3 sm:flex-row">
+          <Button
+            size="lg"
+            asChild
+            className="h-11 rounded-lg px-7 shadow-md hover:-translate-y-0.5 hover:shadow-lg motion-reduce:transform-none"
+          >
             <a href="#registration">Register Now</a>
           </Button>
-          <Button size="lg" asChild variant="warning" className="h-11 px-7 font-bold">
+          <Button
+            size="lg"
+            asChild
+            variant="warning"
+            className="h-11 rounded-lg px-7 font-bold shadow-md hover:-translate-y-0.5 hover:shadow-lg motion-reduce:transform-none"
+          >
             <a href="#program">View Program</a>
           </Button>
-        </div>
+        </nav>
 
-        <div className="mt-6 pt-5 border-t border-border/40 flex flex-col items-center gap-1">
-          <p className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Registered attendee?</p>
+        <div className="mt-6 flex flex-col items-center justify-center gap-2 border-t border-border/60 pt-5 sm:flex-row sm:gap-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">Registered attendee?</p>
           <a
             href="#app"
-            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-primary/40 bg-primary/5 px-5 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/10"
+            className="inline-flex min-h-10 items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-5 py-2 text-sm font-semibold text-primary transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 motion-reduce:transform-none"
           >
             <Smartphone className="h-4 w-4" />
             Get the Attendee App
