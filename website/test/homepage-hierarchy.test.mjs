@@ -50,11 +50,16 @@ test("homepage presents the approved workshop hierarchy", async (context) => {
     const supportPosition = markup.indexOf("Supported by:")
     const aboutPosition = markup.indexOf("About the Workshop")
     const organisations = [
-      ["IAG", "https://www.geomorph.org/", "/images/logo-iag.jpg"],
-      ["DENUCHANGE", "https://www.geomorph.org/denuchange-working-group-4/", "/images/logo-denuchange.jpg"],
-      ["NKUA", "https://en.uoa.gr/", "/images/logo-nkua.jpg"],
-      ["Virtual Trips in Geomorphology", "https://www.geomorph.org/virtual-trips-in-geomorphology/", "/images/logo-vft-working-group.png"],
+      ["National and Kapodistrian University of Athens", "https://en.uoa.gr/", "/images/logo-nkua.jpg"],
       ["Laguna Coast Foundation", "https://lagunacoast.org/", "/images/laguna-coast-foundation.png"],
+      ["International Association of Geomorphologists", "https://www.geomorph.org/", "/images/logo-iag.jpg"],
+      ["IAG Working Group Denudation and Environmental Changes in Different Morphoclimatic Zones (DENUCHANGE)", "https://www.geomorph.org/denuchange-working-group-4/", "/images/logo-denuchange.jpg"],
+      ["IAG Working Group Virtual Trips in Geomorphology", "https://www.geomorph.org/virtual-trips-in-geomorphology/", "/images/logo-vft-working-group.png"],
+    ]
+    const supporter = [
+      "Municipality of Naxos and Small Cyclades",
+      "https://e-naxos.eu/",
+      "/images/municipality-naxos-small-cyclades.png",
     ]
 
     assert.ok(creditPosition >= 0, "co-organiser credit is missing")
@@ -69,15 +74,28 @@ test("homepage presents the approved workshop hierarchy", async (context) => {
       assert.ok(markup.includes(title), `${title} title is missing before About`)
     }
 
+    const organisationPositions = organisations.map(([title]) => markup.indexOf(title))
+    assert.deepEqual(
+      organisationPositions,
+      [...organisationPositions].sort((a, b) => a - b),
+      "co-organisers should follow the order in the programme",
+    )
+
+    const [supporterTitle, supporterHref, supporterImage] = supporter
+    assert.ok(markup.includes(`href="${supporterHref}"`), `${supporterTitle} link is missing`)
+    assert.ok(markup.includes(`src="${supporterImage}"`), `${supporterTitle} image is missing`)
+    assert.ok(markup.includes(supporterTitle), `${supporterTitle} title is missing`)
+    assert.ok(!markup.includes("Workshop co-organiser"), "programme names should not have invented subtitles")
+
     assert.equal(
       markup.split('href="https://www.geomorph.org/virtual-trips-in-geomorphology/"').length - 1,
-      2,
-      "VFT should appear as both an organiser and a supporter",
+      1,
+      "VFT should appear only as an organising body",
     )
     assert.equal(
       markup.split('src="/images/logo-vft-working-group.png"').length - 1,
-      2,
-      "both VFT entries should use the programme logo",
+      1,
+      "the VFT logo should appear only once",
     )
     assert.ok(!markup.includes("/images/virtual-trips-in-geomorphology.jpg"))
   })
