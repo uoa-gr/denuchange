@@ -83,12 +83,12 @@ export function Footer() {
             <img
               src={`${import.meta.env.BASE_URL}images/laguna-coast-foundation.png`}
               alt="Laguna Coast Foundation"
-              className="h-10 w-16 object-contain flex-shrink-0"
+              className="h-10 w-24 object-contain flex-shrink-0"
               loading="lazy"
             />
             <div className="text-left">
               <p className="text-sm font-medium">Laguna Coast Foundation</p>
-              <p className="text-xs text-muted-foreground">Naxos sustainability initiative</p>
+              <p className="text-xs text-muted-foreground">Workshop co-organiser</p>
             </div>
           </a>
         </div>

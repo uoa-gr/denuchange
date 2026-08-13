@@ -2,7 +2,6 @@ import { Navigation } from "@/components/layout/Navigation"
 import { Footer } from "@/components/layout/Footer"
 import { FadeIn } from "@/components/ui/fade-in"
 import { Hero } from "@/components/sections/Hero"
-import { KeyInfo } from "@/components/sections/KeyInfo"
 import { About } from "@/components/sections/About"
 import { Program } from "@/components/sections/Program"
 import { FieldTrip } from "@/components/sections/FieldTrip"
@@ -21,8 +20,7 @@ function App() {
       <Navigation />
       <main className="flex-1">
         <Hero />
-        <FadeIn delay={100}><KeyInfo /></FadeIn>
-        <FadeIn direction="left"><About /></FadeIn>
+        <FadeIn delay={100}><About /></FadeIn>
         <FadeIn direction="right"><Program /></FadeIn>
         <FadeIn direction="left"><Labs /></FadeIn>
         <FadeIn direction="right"><FieldTrip /></FadeIn>
