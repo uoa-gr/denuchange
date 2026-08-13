@@ -5,12 +5,12 @@ export function Footer() {
     <footer className="border-t bg-muted/30">
       <div className="container py-12">
         {/* Organization Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 max-w-4xl mx-auto">
+        <div className="grid auto-rows-fr grid-cols-1 md:grid-cols-6 gap-4 mb-8 max-w-4xl mx-auto">
           <a
             href="https://www.geomorph.org/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors cursor-pointer"
+            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors cursor-pointer md:col-span-2"
           >
             <img
               src={`${import.meta.env.BASE_URL}images/logo-iag.jpg`}
@@ -27,7 +27,7 @@ export function Footer() {
             href="https://www.geomorph.org/denuchange-working-group-4/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors cursor-pointer"
+            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors cursor-pointer md:col-span-2"
           >
             <img
               src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`}
@@ -44,7 +44,7 @@ export function Footer() {
             href="https://en.uoa.gr/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors cursor-pointer"
+            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors cursor-pointer md:col-span-2"
           >
             <img
               src={`${import.meta.env.BASE_URL}images/logo-nkua.jpg`}
@@ -55,6 +55,40 @@ export function Footer() {
             <div className="text-left">
               <p className="text-sm font-medium">NKUA</p>
               <p className="text-xs text-muted-foreground">National & Kapodistrian University of Athens</p>
+            </div>
+          </a>
+          <a
+            href="https://www.geomorph.org/virtual-trips-in-geomorphology/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors cursor-pointer md:col-span-2 md:col-start-2"
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}images/virtual-trips-in-geomorphology.jpg`}
+              alt="Virtual Trips in Geomorphology"
+              className="h-10 w-10 rounded-md object-cover flex-shrink-0"
+              loading="lazy"
+            />
+            <div className="text-left">
+              <p className="text-sm font-medium">Virtual Trips in Geomorphology</p>
+              <p className="text-xs text-muted-foreground">IAG Working Group</p>
+            </div>
+          </a>
+          <a
+            href="https://lagunacoast.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors cursor-pointer md:col-span-2"
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}images/laguna-coast-foundation.png`}
+              alt="Laguna Coast Foundation"
+              className="h-10 w-16 object-contain flex-shrink-0"
+              loading="lazy"
+            />
+            <div className="text-left">
+              <p className="text-sm font-medium">Laguna Coast Foundation</p>
+              <p className="text-xs text-muted-foreground">Naxos sustainability initiative</p>
             </div>
           </a>
         </div>
