@@ -67,6 +67,20 @@ test("homepage presents the approved workshop hierarchy", async (context) => {
     assert.ok(aboutPosition >= 0, "About heading is missing")
     assert.ok(creditPosition < supportPosition, "co-organisers should precede supporters")
     assert.ok(supportPosition < aboutPosition, "supporters should precede About")
+    assert.match(
+      markup,
+      /<ol[^>]*aria-label="Co-organising institutions and working groups"/,
+      "co-organisers should use one semantic institutional register",
+    )
+    assert.equal(
+      markup.match(/<li/g)?.length,
+      organisations.length,
+      "each co-organiser should occupy one register row",
+    )
+    assert.ok(
+      !markup.includes("grid grid-cols-1 gap-4 md:grid-cols-6"),
+      "co-organisers should not use the oversized card grid",
+    )
 
     for (const [title, href, image] of organisations) {
       assert.ok(markup.includes(`href="${href}"`), `${title} link is missing before About`)

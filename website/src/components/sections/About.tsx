@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge"
+import { ArrowUpRight } from "lucide-react"
 
 type Organisation = {
   title: string
@@ -12,31 +13,31 @@ const organisations: Organisation[] = [
     title: "National and Kapodistrian University of Athens",
     href: "https://en.uoa.gr/",
     image: "images/logo-nkua.jpg",
-    imageClassName: "h-10 w-10",
+    imageClassName: "h-9 w-24",
   },
   {
     title: "Laguna Coast Foundation",
     href: "https://lagunacoast.org/",
     image: "images/laguna-coast-foundation.png",
-    imageClassName: "h-10 w-20",
+    imageClassName: "h-9 w-28",
   },
   {
     title: "International Association of Geomorphologists",
     href: "https://www.geomorph.org/",
     image: "images/logo-iag.jpg",
-    imageClassName: "h-10 w-10",
+    imageClassName: "h-10 w-20",
   },
   {
     title: "IAG Working Group Denudation and Environmental Changes in Different Morphoclimatic Zones (DENUCHANGE)",
     href: "https://www.geomorph.org/denuchange-working-group-4/",
     image: "images/logo-denuchange.jpg",
-    imageClassName: "h-10 w-10 rounded-full",
+    imageClassName: "h-11 w-11 rounded-full",
   },
   {
     title: "IAG Working Group Virtual Trips in Geomorphology",
     href: "https://www.geomorph.org/virtual-trips-in-geomorphology/",
     image: "images/logo-vft-working-group.png",
-    imageClassName: "h-10 w-10 rounded-full",
+    imageClassName: "h-11 w-11 rounded-full",
   },
 ]
 
@@ -44,66 +45,73 @@ const supporter: Organisation = {
   title: "Municipality of Naxos and Small Cyclades",
   href: "https://e-naxos.eu/",
   image: "images/municipality-naxos-small-cyclades.png",
-  imageClassName: "h-12 w-16",
+  imageClassName: "h-14 w-24",
 }
 
-function OrganisationCard({
+function OrganisationRow({
   organisation,
-  className = "",
 }: {
   organisation: Organisation
-  className?: string
 }) {
   return (
     <a
       href={organisation.href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`flex items-center gap-3 rounded-lg border bg-background p-3.5 transition-colors hover:bg-muted/50 ${className}`}
+      className="group grid min-h-16 grid-cols-[6rem_minmax(0,1fr)_1.25rem] items-center gap-4 px-2 py-3 transition-colors duration-200 ease-out hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:grid-cols-[8rem_minmax(0,1fr)_1.25rem] sm:px-4"
     >
-      <img
-        src={`${import.meta.env.BASE_URL}${organisation.image}`}
-        alt={organisation.title}
-        className={`${organisation.imageClassName} flex-shrink-0 object-contain`}
-        loading="lazy"
+      <span className="flex h-14 items-center justify-center">
+        <img
+          src={`${import.meta.env.BASE_URL}${organisation.image}`}
+          alt=""
+          className={`${organisation.imageClassName} object-contain`}
+          loading="lazy"
+        />
+      </span>
+      <span className="text-pretty text-sm font-medium leading-snug sm:text-[0.9375rem]">
+        {organisation.title}
+      </span>
+      <ArrowUpRight
+        aria-hidden="true"
+        className="h-4 w-4 text-muted-foreground transition-[color,transform] duration-200 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary"
       />
-      <div className="min-w-0 text-left">
-        <p className="text-sm font-medium leading-snug">{organisation.title}</p>
-      </div>
+      <span className="sr-only">Opens in a new tab</span>
     </a>
   )
 }
 
 export function CoOrganiser() {
   return (
-    <section aria-labelledby="co-organiser-heading" className="border-y bg-muted/30">
-      <div className="container py-8 sm:py-10">
-        <div className="mx-auto max-w-4xl">
-          <h2
-            id="co-organiser-heading"
-            className="mb-5 text-center text-base font-semibold tracking-tight"
-          >
-            Co-organised with:
-          </h2>
+    <section aria-labelledby="co-organiser-heading" className="border-y bg-background">
+      <div className="container py-10 sm:py-12">
+        <div className="mx-auto max-w-5xl space-y-8">
+          <div className="grid gap-5 md:grid-cols-[11rem_minmax(0,1fr)] md:gap-10">
+            <h2
+              id="co-organiser-heading"
+              className="text-lg font-semibold leading-tight tracking-tight md:pt-5"
+            >
+              Co-organised with:
+            </h2>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-6">
-            {organisations.map((organisation, index) => (
-              <OrganisationCard
-                key={organisation.href}
-                organisation={organisation}
-                className={`md:col-span-2 ${index === 3 ? "md:col-start-2" : ""}`}
-              />
-            ))}
+            <ol
+              aria-label="Co-organising institutions and working groups"
+              className="border-y border-border/90"
+            >
+              {organisations.map((organisation) => (
+                <li key={organisation.href} className="border-t first:border-t-0">
+                  <OrganisationRow organisation={organisation} />
+                </li>
+              ))}
+            </ol>
           </div>
 
-          <h3 className="mb-4 mt-7 text-center text-sm font-semibold text-muted-foreground">
-            Supported by:
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-6">
-            <OrganisationCard
-              organisation={supporter}
-              className="md:col-span-2 md:col-start-3"
-            />
+          <div className="grid gap-5 md:grid-cols-[11rem_minmax(0,1fr)] md:gap-10">
+            <h3 className="text-sm font-semibold text-muted-foreground md:pt-5">
+              Supported by:
+            </h3>
+            <div className="border-y border-border/90">
+              <OrganisationRow organisation={supporter} />
+            </div>
           </div>
         </div>
       </div>
