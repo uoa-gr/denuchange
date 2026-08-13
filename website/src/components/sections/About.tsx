@@ -1,107 +1,111 @@
 import { Badge } from "@/components/ui/badge"
 
+type Organisation = {
+  title: string
+  subtitle: string
+  href: string
+  image: string
+  imageClassName: string
+}
+
+const vftOrganisation: Organisation = {
+  title: "Virtual Trips in Geomorphology",
+  subtitle: "IAG Working Group",
+  href: "https://www.geomorph.org/virtual-trips-in-geomorphology/",
+  image: "images/logo-vft-working-group.png",
+  imageClassName: "h-10 w-10 rounded-full",
+}
+
+const organisations: Organisation[] = [
+  {
+    title: "IAG",
+    subtitle: "International Association of Geomorphologists",
+    href: "https://www.geomorph.org/",
+    image: "images/logo-iag.jpg",
+    imageClassName: "h-10 w-10",
+  },
+  {
+    title: "DENUCHANGE",
+    subtitle: "IAG Working Group",
+    href: "https://www.geomorph.org/denuchange-working-group-4/",
+    image: "images/logo-denuchange.jpg",
+    imageClassName: "h-10 w-10 rounded-full",
+  },
+  {
+    title: "NKUA",
+    subtitle: "National & Kapodistrian University of Athens",
+    href: "https://en.uoa.gr/",
+    image: "images/logo-nkua.jpg",
+    imageClassName: "h-10 w-10",
+  },
+  vftOrganisation,
+  {
+    title: "Laguna Coast Foundation",
+    subtitle: "Workshop co-organiser",
+    href: "https://lagunacoast.org/",
+    image: "images/laguna-coast-foundation.png",
+    imageClassName: "h-10 w-20",
+  },
+]
+
+function OrganisationCard({
+  organisation,
+  className = "",
+}: {
+  organisation: Organisation
+  className?: string
+}) {
+  return (
+    <a
+      href={organisation.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`flex items-center gap-3 rounded-lg border bg-background p-4 transition-colors hover:bg-muted/50 ${className}`}
+    >
+      <img
+        src={`${import.meta.env.BASE_URL}${organisation.image}`}
+        alt={organisation.title}
+        className={`${organisation.imageClassName} flex-shrink-0 object-contain`}
+        loading="lazy"
+      />
+      <div className="min-w-0 text-left">
+        <p className="text-sm font-medium">{organisation.title}</p>
+        <p className="text-xs text-muted-foreground">{organisation.subtitle}</p>
+      </div>
+    </a>
+  )
+}
+
 export function CoOrganiser() {
   return (
     <section aria-labelledby="co-organiser-heading" className="border-y bg-muted/30">
-      <div className="container py-12 sm:py-14">
-        <div className="mx-auto max-w-5xl">
+      <div className="container py-8 sm:py-10">
+        <div className="mx-auto max-w-4xl">
           <h2
             id="co-organiser-heading"
-            className="mb-7 text-center text-xl font-semibold tracking-tight sm:text-2xl"
+            className="mb-5 text-center text-base font-semibold tracking-tight"
           >
             Co-organised with:
           </h2>
 
           <div className="grid auto-rows-fr grid-cols-1 gap-4 md:grid-cols-6">
-            <a
-              href="https://www.geomorph.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex min-h-24 items-center gap-4 rounded-lg border bg-background p-5 transition-colors hover:bg-muted/50 md:col-span-2"
-            >
-              <img
-                src={`${import.meta.env.BASE_URL}images/logo-iag.jpg`}
-                alt="IAG"
-                className="h-12 w-16 flex-shrink-0 object-contain"
-                loading="lazy"
+            {organisations.map((organisation, index) => (
+              <OrganisationCard
+                key={organisation.href}
+                organisation={organisation}
+                className={`md:col-span-2 ${index === 3 ? "md:col-start-2" : ""}`}
               />
-              <div className="text-left">
-                <p className="font-medium">IAG</p>
-                <p className="text-sm text-muted-foreground">International Association of Geomorphologists</p>
-              </div>
-            </a>
+            ))}
+          </div>
 
-            <a
-              href="https://www.geomorph.org/denuchange-working-group-4/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex min-h-24 items-center gap-4 rounded-lg border bg-background p-5 transition-colors hover:bg-muted/50 md:col-span-2"
-            >
-              <img
-                src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`}
-                alt="DENUCHANGE"
-                className="h-12 w-12 flex-shrink-0 rounded-full object-contain"
-                loading="lazy"
-              />
-              <div className="text-left">
-                <p className="font-medium">DENUCHANGE</p>
-                <p className="text-sm text-muted-foreground">IAG Working Group</p>
-              </div>
-            </a>
-
-            <a
-              href="https://en.uoa.gr/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex min-h-24 items-center gap-4 rounded-lg border bg-background p-5 transition-colors hover:bg-muted/50 md:col-span-2"
-            >
-              <img
-                src={`${import.meta.env.BASE_URL}images/logo-nkua.jpg`}
-                alt="NKUA"
-                className="h-12 w-16 flex-shrink-0 object-contain"
-                loading="lazy"
-              />
-              <div className="text-left">
-                <p className="font-medium">NKUA</p>
-                <p className="text-sm text-muted-foreground">National &amp; Kapodistrian University of Athens</p>
-              </div>
-            </a>
-
-            <a
-              href="https://www.geomorph.org/virtual-trips-in-geomorphology/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex min-h-24 items-center gap-4 rounded-lg border bg-background p-5 transition-colors hover:bg-muted/50 md:col-span-2 md:col-start-2"
-            >
-              <img
-                src={`${import.meta.env.BASE_URL}images/virtual-trips-in-geomorphology.jpg`}
-                alt="Virtual Trips in Geomorphology"
-                className="h-12 w-12 flex-shrink-0 rounded-md object-cover"
-                loading="lazy"
-              />
-              <div className="text-left">
-                <p className="font-medium">Virtual Trips in Geomorphology</p>
-                <p className="text-sm text-muted-foreground">IAG Working Group</p>
-              </div>
-            </a>
-
-            <a
-              href="https://lagunacoast.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex min-h-24 items-center gap-4 rounded-lg border bg-background p-5 transition-colors hover:bg-muted/50 md:col-span-2"
-            >
-              <img
-                src={`${import.meta.env.BASE_URL}images/laguna-coast-foundation.png`}
-                alt="Laguna Coast Foundation"
-                className="h-12 w-24 flex-shrink-0 object-contain"
-                loading="lazy"
-              />
-              <div className="text-left">
-                <p className="font-medium">Laguna Coast Foundation</p>
-                <p className="text-sm text-muted-foreground">Workshop co-organiser</p>
-              </div>
-            </a>
+          <h3 className="mb-4 mt-7 text-center text-sm font-semibold text-muted-foreground">
+            Supported by:
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-6">
+            <OrganisationCard
+              organisation={vftOrganisation}
+              className="md:col-span-2 md:col-start-3"
+            />
           </div>
         </div>
       </div>
