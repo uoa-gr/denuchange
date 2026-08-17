@@ -3,6 +3,8 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { TravelMap } from "@/components/sections/TravelMap"
+import { BUS_DEPARTURE_URL } from "@/lib/travel-map-data"
 import { Plane, Ship, Hotel, ExternalLink, Copy, Check } from "lucide-react"
 
 const hotels = [
@@ -33,13 +35,13 @@ export function Travel() {
   }
 
   return (
-    <section id="travel" className="py-20">
+    <section id="travel" aria-labelledby="travel-heading" className="py-20">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center mb-12">
           <Badge variant="outline" className="mb-4">
             Travel & Accommodation
           </Badge>
-          <h2 className="text-3xl font-bold tracking-tight mb-4">
+          <h2 id="travel-heading" className="text-3xl font-bold tracking-tight mb-4">
             Getting to Naxos
           </h2>
           <p className="text-muted-foreground">
@@ -137,7 +139,9 @@ export function Travel() {
           </p>
         </div>
 
-        <Separator className="my-12 max-w-4xl mx-auto" />
+        <TravelMap />
+
+        <Separator className="my-14 max-w-4xl mx-auto" />
 
         {/* Accommodation */}
         <div className="max-w-3xl mx-auto text-center mb-8">
@@ -145,8 +149,17 @@ export function Travel() {
             <Hotel className="h-5 w-5 text-primary" />
             <h3 className="text-2xl font-bold tracking-tight">Accommodation</h3>
           </div>
-          <p className="text-muted-foreground">
-            Suggested hotels for your stay in Naxos.
+          <p className="text-muted-foreground leading-relaxed">
+            Suggested hotels for your stay in Naxos. For convenient access to the dedicated workshop bus,
+            consider staying within walking distance of the{" "}
+            <a
+              href={BUS_DEPARTURE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              central bus station
+            </a>.
           </p>
         </div>
 

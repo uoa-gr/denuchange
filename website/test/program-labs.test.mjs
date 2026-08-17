@@ -24,7 +24,7 @@ const programCopy = [
   "Naxos geomorphological sites",
   "Lunches included",
   "Note:",
-  "Detailed program with session times will be announced closer to the event.",
+  "Detailed program will be announced closer to the event.",
 ]
 
 const labsCopy = [

@@ -266,7 +266,10 @@ export function FieldTrip() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto items-stretch">
           {/* Map */}
-          <div className="overflow-hidden rounded-xl border bg-card shadow-sm min-h-[500px] w-full [&_.maplibregl-map]:!h-full [&_.maplibregl-map]:!w-full [&_.maplibregl-canvas-container]:!h-full [&_.maplibregl-canvas]:!h-full">
+          <div
+            id="field-trip-map"
+            className="scroll-mt-24 overflow-hidden rounded-xl border bg-card shadow-sm min-h-[500px] w-full [&_.maplibregl-map]:!h-full [&_.maplibregl-map]:!w-full [&_.maplibregl-canvas-container]:!h-full [&_.maplibregl-canvas]:!h-full"
+          >
             <div className="h-full w-full">
               <ThemeProvider>
                 <Map

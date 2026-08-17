@@ -57,13 +57,26 @@ test("homepage presents the approved workshop hierarchy", async (context) => {
     assert.doesNotMatch(markup, /plan to submit an abstract/i)
   })
 
+  await context.test("presents registration as a closed status, not an action", () => {
+    const registrationMarkup = renderToStaticMarkup(React.createElement(Registration))
+    const heroMarkup = renderToStaticMarkup(React.createElement(Hero))
+
+    assert.match(registrationMarkup, /Registration Closed/)
+    assert.match(registrationMarkup, /The registration period ended on July 15, 2026/)
+    assert.match(registrationMarkup, /Registration and abstract submission are now closed\./)
+    assert.doesNotMatch(registrationMarkup, />Register Now<\/button>/)
+    assert.doesNotMatch(heroMarkup, /href="#registration"/)
+    assert.doesNotMatch(heroMarkup, />Register Now<\/a>/)
+    assert.match(heroMarkup, /role="status"[^>]*>[\s\S]*?Registration Closed/)
+  })
+
   await context.test("gives the refreshed hero one clear accessible hierarchy", () => {
     const markup = renderToStaticMarkup(React.createElement(Hero))
 
     assert.match(markup, /<section[^>]*aria-labelledby="hero-heading"/)
     assert.match(markup, /<h1[^>]*id="hero-heading"/)
     assert.match(markup, /<nav[^>]*aria-label="Workshop actions"/)
-    assert.match(markup, /<a[^>]*href="#registration"[^>]*>Register Now<\/a>/)
+    assert.match(markup, /role="status"[^>]*>[\s\S]*?Registration Closed/)
     assert.match(markup, /<a[^>]*href="#program"[^>]*>View Program<\/a>/)
   })
 

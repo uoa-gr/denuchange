@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { ClipboardList, FileText, Landmark, LockKeyhole, Receipt } from "lucide-react"
-import { RegistrationDialog } from "@/components/forms/RegistrationDialog"
 import { PaymentReceiptDialog } from "@/components/forms/PaymentReceiptDialog"
 
 const fees = [
@@ -46,12 +45,12 @@ const actions = [
   {
     icon: ClipboardList,
     step: "Step 1",
-    title: "Register",
-    description: "Fill in your personal details, select your registration type, and provide your workshop attendance information.",
-    dialog: RegistrationDialog,
-    label: "Register Now",
-    variant: "default" as const,
-    closed: false,
+    title: "Registration Closed",
+    description: "The registration period ended on July 15, 2026. New registrations are no longer accepted.",
+    dialog: null,
+    label: "Registration Closed",
+    variant: "outline" as const,
+    closed: true,
   },
   {
     icon: FileText,
@@ -87,7 +86,7 @@ export function Registration() {
             Join Us in Naxos
           </h2>
           <p className="text-muted-foreground">
-            Register for the workshop and complete your payment. Abstract submission is now closed.
+            Registration and abstract submission are now closed.
           </p>
         </div>
 

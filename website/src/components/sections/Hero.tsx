@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Smartphone } from "lucide-react"
+import { LockKeyhole, Smartphone } from "lucide-react"
 import { useEffect, useState } from "react"
 
 const workshopFacts = [
@@ -88,13 +88,13 @@ export function Hero() {
         </dl>
 
         <nav aria-label="Workshop actions" className="flex flex-col justify-center gap-3 sm:flex-row">
-          <Button
-            size="lg"
-            asChild
-            className="h-11 rounded-lg px-7 shadow-md hover:-translate-y-0.5 hover:shadow-lg motion-reduce:transform-none"
+          <div
+            role="status"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-primary/20 bg-primary/[0.06] px-7 text-sm font-semibold text-primary"
           >
-            <a href="#registration">Register Now</a>
-          </Button>
+            <LockKeyhole className="h-4 w-4" aria-hidden="true" />
+            Registration Closed
+          </div>
           <Button
             size="lg"
             asChild
