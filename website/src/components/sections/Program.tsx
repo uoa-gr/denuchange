@@ -1,5 +1,16 @@
 import { Badge } from "@/components/ui/badge"
-import { CalendarDays, Check, Info, MapPinned, Presentation } from "lucide-react"
+import { VENUE_URL } from "@/lib/travel-map-data"
+import {
+  ArrowDown,
+  BusFront,
+  CalendarDays,
+  Check,
+  ExternalLink,
+  Info,
+  MapPin,
+  MapPinned,
+  Presentation,
+} from "lucide-react"
 
 const schedule = [
   {
@@ -10,6 +21,12 @@ const schedule = [
       "Coffee breaks & lunches included",
       "Workshop Dinner (Oct 7)",
     ],
+    location: {
+      label: "Laguna Coast Resort",
+      externalUrl: VENUE_URL,
+      mapHref: "#travel-map",
+      mapLabel: "View map below",
+    },
   },
   {
     date: "October 8-9",
@@ -19,6 +36,10 @@ const schedule = [
       "Naxos geomorphological sites",
       "Lunches included",
     ],
+    location: {
+      mapHref: "#field-trip-map",
+      mapLabel: "View map below",
+    },
   },
 ]
 
@@ -41,14 +62,14 @@ export function Program() {
 
         <ol
           aria-label="Workshop schedule"
-          className="mx-auto grid max-w-5xl overflow-hidden rounded-2xl border border-border/90 bg-card shadow-[0_16px_44px_-32px_rgba(15,42,68,0.6)] md:grid-cols-2"
+          className="mx-auto grid max-w-5xl overflow-hidden rounded-2xl border border-border/90 bg-card shadow-[0_16px_44px_-32px_rgba(15,42,68,0.6)] lg:grid-cols-2"
         >
           {schedule.map((item, index) => (
             <li
               key={item.title}
               className={`relative flex min-h-full flex-col p-6 sm:p-8 ${
                 index === 1
-                  ? "border-t border-border/90 bg-secondary/40 md:border-l md:border-t-0"
+                  ? "border-t border-border/90 bg-secondary/40 lg:border-l lg:border-t-0"
                   : "bg-card"
               }`}
             >
@@ -69,26 +90,83 @@ export function Program() {
                 </div>
               </div>
 
-              <ul className="mt-auto space-y-3 border-t border-border/70 pt-5">
-                  {item.items.map((listItem, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                        <Check className="h-3 w-3" aria-hidden="true" />
-                      </span>
-                      <span className="pt-px">{listItem}</span>
-                    </li>
-                  ))}
+              <ul className="space-y-3 border-t border-border/70 pt-5">
+                {item.items.map((listItem, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <Check className="h-3 w-3" aria-hidden="true" />
+                    </span>
+                    <span className="pt-px">{listItem}</span>
+                  </li>
+                ))}
               </ul>
+
+              <div className="mt-5 border-t border-border/70 pt-5">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  Location
+                </p>
+                <div
+                  aria-label={`${item.title} location links`}
+                  className="flex flex-wrap items-center gap-x-4 gap-y-0"
+                >
+                  {"externalUrl" in item.location && item.location.externalUrl && (
+                    <a
+                      href={item.location.externalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex min-h-11 items-center gap-1.5 rounded-sm text-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    >
+                      <MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />
+                      <span>{item.location.label}</span>
+                      <ExternalLink
+                        className="h-3.5 w-3.5 shrink-0 opacity-65 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                        aria-hidden="true"
+                      />
+                    </a>
+                  )}
+                  <a
+                    href={item.location.mapHref}
+                    className="group inline-flex min-h-11 items-center gap-1.5 rounded-sm text-sm font-semibold text-primary underline decoration-primary underline-offset-4 hover:decoration-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  >
+                    {item.location.mapLabel}
+                    <ArrowDown
+                      className="h-3.5 w-3.5 shrink-0 transition-transform group-hover:translate-y-0.5 motion-reduce:transform-none"
+                      aria-hidden="true"
+                    />
+                  </a>
+                </div>
+              </div>
             </li>
           ))}
         </ol>
 
-        <div className="mx-auto mt-8 flex max-w-5xl items-start gap-3 rounded-xl border border-[#f1c100]/30 bg-[#f1c100]/12 px-5 py-4 sm:items-center sm:justify-center">
-          <Info className="mt-0.5 h-4 w-4 shrink-0 text-foreground/70 sm:mt-0" aria-hidden="true" />
-          <p className="text-sm leading-relaxed text-foreground/80">
-            <span className="font-bold">Note:</span> Detailed program with session times will be announced closer to the event.
-          </p>
-        </div>
+        <aside
+          aria-label="Practical information"
+          className="mx-auto mt-8 grid max-w-5xl overflow-hidden rounded-xl border border-[#f1c100]/30 bg-[#f1c100]/10 sm:grid-cols-2"
+        >
+          <div className="flex items-start gap-3 px-5 py-4 sm:px-6">
+            <Info className="mt-0.5 h-4 w-4 shrink-0 text-foreground/70" aria-hidden="true" />
+            <p className="text-sm leading-relaxed text-foreground/80">
+              <span className="font-bold">Note:</span> Detailed program will be announced closer to the event.
+            </p>
+          </div>
+          <div className="flex items-start gap-3 border-t border-[#f1c100]/30 px-5 py-4 sm:border-l sm:border-t-0 sm:px-6">
+            <BusFront className="mt-0.5 h-4 w-4 shrink-0 text-foreground/70" aria-hidden="true" />
+            <div className="text-sm leading-relaxed text-foreground/80">
+              <p className="font-bold text-foreground">Workshop transport</p>
+              <p>
+                A dedicated workshop bus will provide transport during the field trip and transfers between the
+                central bus station and the venue.{" "}
+                <a
+                  href="#travel-map"
+                  className="font-semibold text-primary underline decoration-primary underline-offset-4 hover:decoration-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  (View map below)
+                </a>
+              </p>
+            </div>
+          </div>
+        </aside>
       </div>
     </section>
   )
