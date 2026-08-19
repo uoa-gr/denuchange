@@ -1,16 +1,19 @@
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { BUS_DEPARTURE_URL, VENUE_URL } from "@/lib/travel-map-data"
 import {
   ArrowDown,
   BusFront,
   CalendarDays,
   Check,
+  Download,
   ExternalLink,
-  Info,
   MapPin,
   MapPinned,
   Presentation,
 } from "lucide-react"
+
+const detailedProgramUrl = `${import.meta.env.BASE_URL}DENUCHANGE_Program.pdf`
 
 const schedule = [
   {
@@ -142,62 +145,98 @@ export function Program() {
 
         <section
           aria-labelledby="workshop-transport-heading"
-          className="mx-auto mt-8 max-w-5xl rounded-2xl border border-border/90 bg-card px-5 py-6 shadow-[0_16px_44px_-32px_rgba(15,42,68,0.6)] sm:px-7 sm:py-7"
+          className="mx-auto mt-8 max-w-5xl overflow-hidden rounded-2xl border border-primary/15 bg-card shadow-[0_18px_48px_-34px_rgba(15,42,68,0.65)]"
         >
-          <div className="flex items-start gap-4">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <BusFront className="h-5 w-5" aria-hidden="true" />
+          <div className="grid md:grid-cols-[minmax(0,1.35fr)_minmax(15rem,0.65fr)]">
+            <div className="p-5 sm:p-7">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <BusFront className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <h3 id="workshop-transport-heading" className="text-lg font-bold text-foreground">
+                  Workshop transport
+                </h3>
+              </div>
+
+              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+                On both days of the workshop, a single bus service to the venue will be provided in the morning,
+                departing from the central bus station in Naxos Town. The journey takes approximately 10 minutes.
+                Return transfer will also be provided at the end of the day’s activities.
+              </p>
+
+              <div
+                aria-label="Workshop bus location links"
+                className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-0"
+              >
+                <a
+                  href={BUS_DEPARTURE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex min-h-11 items-center gap-1.5 rounded-sm text-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  <MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />
+                  <span>Central bus station</span>
+                  <ExternalLink
+                    className="h-3.5 w-3.5 shrink-0 opacity-65 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  />
+                </a>
+                <a
+                  href="#travel-map"
+                  className="group inline-flex min-h-11 items-center gap-1.5 rounded-sm text-sm font-semibold text-primary underline decoration-primary underline-offset-4 hover:decoration-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  View map below
+                  <ArrowDown
+                    className="h-3.5 w-3.5 shrink-0 transition-transform group-hover:translate-y-0.5 motion-reduce:transform-none"
+                    aria-hidden="true"
+                  />
+                </a>
+              </div>
+
+              <p className="mt-3 border-t border-border/70 pt-4 text-sm leading-relaxed text-muted-foreground">
+                Please note that this is the only scheduled morning departure on each day. Participants are kindly
+                asked to arrive at the departure point a few minutes in advance.
+              </p>
             </div>
-            <div className="min-w-0">
-              <h3 id="workshop-transport-heading" className="text-lg font-bold text-foreground">
-                Workshop transport
-              </h3>
-              <div className="mt-3 space-y-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                <p>
-                  On both days of the workshop, a single bus service to the venue will be provided in the morning,
-                  departing from the central bus station in Naxos Town ({" "}
-                  <a
-                    href={BUS_DEPARTURE_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-semibold text-primary underline decoration-primary underline-offset-4 hover:decoration-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  >
-                    Google Maps
-                  </a>{" "}
-                  ·{" "}
-                  <a
-                    href="#travel-map"
-                    className="font-semibold text-primary underline decoration-primary underline-offset-4 hover:decoration-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  >
-                    View map below
-                  </a>
-                  ). The journey takes approximately 10 minutes. Return transfer will also be provided at the end of
-                  the day’s activities.
-                </p>
-                <p className="rounded-xl border border-primary/15 bg-primary/5 px-4 py-3 text-foreground">
-                  <span className="font-bold">Departures:</span> Tuesday 6 October at 08:15&nbsp; · &nbsp;Wednesday 7
-                  October at 09:00
-                </p>
-                <p>
-                  Please note that this is the only scheduled morning departure on each day. Participants are kindly
-                  asked to arrive at the departure point a few minutes in advance.
-                </p>
+
+            <div className="border-t border-primary/15 bg-primary/[0.045] p-5 sm:p-6 md:border-l md:border-t-0">
+              <p className="text-sm font-bold text-foreground">Morning departures</p>
+              <div className="mt-4 divide-y divide-primary/15">
+                <div className="flex items-center justify-between gap-5 pb-4">
+                  <div>
+                    <p className="font-semibold text-foreground">Tuesday</p>
+                    <p className="mt-0.5 text-sm text-muted-foreground">6 October</p>
+                  </div>
+                  <time dateTime="2026-10-06T08:15" className="text-xl font-bold tabular-nums text-primary">
+                    08:15
+                  </time>
+                </div>
+                <div className="flex items-center justify-between gap-5 pt-4">
+                  <div>
+                    <p className="font-semibold text-foreground">Wednesday</p>
+                    <p className="mt-0.5 text-sm text-muted-foreground">7 October</p>
+                  </div>
+                  <time dateTime="2026-10-07T09:00" className="text-xl font-bold tabular-nums text-primary">
+                    09:00
+                  </time>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        <aside
-          aria-label="Practical information"
-          className="mx-auto mt-4 max-w-5xl overflow-hidden rounded-xl border border-[#f1c100]/30 bg-[#f1c100]/10"
-        >
-          <div className="flex items-start gap-3 px-5 py-4 sm:px-6">
-            <Info className="mt-0.5 h-4 w-4 shrink-0 text-foreground/70" aria-hidden="true" />
-            <p className="text-sm leading-relaxed text-foreground/80">
-              <span className="font-bold">Note:</span> Detailed program will be announced closer to the event.
-            </p>
+        <div className="mx-auto mt-4 flex max-w-5xl flex-col items-start justify-between gap-4 rounded-xl border border-primary/15 bg-primary/[0.045] px-5 py-4 sm:flex-row sm:items-center sm:px-6">
+          <div>
+            <p className="font-bold text-foreground">Detailed workshop program</p>
+            <p className="mt-1 text-sm text-muted-foreground">Download the complete schedule for all workshop days.</p>
           </div>
-        </aside>
+          <Button asChild className="shrink-0 font-bold">
+            <a href={detailedProgramUrl} download="DENUCHANGE_Program.pdf">
+              <Download className="h-4 w-4" aria-hidden="true" />
+              Download Detailed Program
+            </a>
+          </Button>
+        </div>
       </div>
     </section>
   )
