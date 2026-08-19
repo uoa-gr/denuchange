@@ -69,19 +69,21 @@ export function Program() {
           aria-labelledby="ice-breaker-heading"
           className="mx-auto mb-4 max-w-5xl scroll-mt-24 overflow-hidden rounded-2xl border border-primary/15 bg-card shadow-[0_14px_38px_-32px_rgba(15,42,68,0.65)]"
         >
-          <div className="grid md:grid-cols-[10.5rem_minmax(0,1fr)] lg:grid-cols-[10.5rem_minmax(0,1fr)_19rem]">
-            <div className="flex items-center justify-between gap-5 border-b border-primary/10 bg-primary/[0.065] px-5 py-4 md:block md:border-b-0 md:border-r md:px-6 md:py-6">
-              <div>
-                <p className="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-primary">Pre-workshop</p>
-                <p className="mt-1.5 text-sm font-semibold text-foreground">Monday, 5 October</p>
+          <div className="grid lg:grid-cols-[minmax(0,1fr)_19rem]">
+            <div className="px-5 py-5 sm:px-7 sm:py-6">
+              <div className="flex flex-wrap items-center gap-3">
+                <time
+                  dateTime="2026-10-05T20:00"
+                  className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/[0.06] px-3 py-1.5 text-xs font-semibold text-primary"
+                >
+                  <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
+                  October 5 · 20:00
+                </time>
+                <span className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                  Pre-workshop event
+                </span>
               </div>
-              <time dateTime="2026-10-05T20:00" className="text-xl font-bold tabular-nums text-primary md:mt-3 md:block">
-                20:00
-              </time>
-            </div>
-
-            <div className="px-5 py-5 sm:px-6 md:py-6 lg:px-7">
-              <h3 id="ice-breaker-heading" className="text-xl font-bold tracking-tight text-foreground">
+              <h3 id="ice-breaker-heading" className="mt-3 text-xl font-bold tracking-tight text-foreground">
                 Ice Breaker
               </h3>
               <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
@@ -89,7 +91,7 @@ export function Program() {
               </p>
             </div>
 
-            <div className="border-t border-border/80 px-5 py-5 sm:px-6 md:col-span-2 lg:col-span-1 lg:flex lg:flex-col lg:justify-center lg:border-l lg:border-t-0 lg:py-5">
+            <div className="border-t border-border/80 px-5 py-5 sm:px-6 lg:flex lg:flex-col lg:justify-center lg:border-l lg:border-t-0 lg:py-5">
               <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Venue</p>
               <div className="mt-2 flex flex-col items-start gap-0.5">
                 <a
