@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { ArrowDown, FileText, PartyPopper, Smartphone } from "lucide-react"
+import { ArrowDown, CalendarPlus, FileText, Smartphone } from "lucide-react"
 import { useEffect, useState } from "react"
 
 const detailedProgramUrl = `${import.meta.env.BASE_URL}DENUCHANGE_Program.pdf`
@@ -89,14 +89,13 @@ export function Hero() {
                     href="#ice-breaker"
                     aria-label="View Ice Breaker details for 5 October at 20:00"
                     title="Ice Breaker · 5 October at 20:00"
-                    className="group relative inline-flex min-h-7 items-center gap-1.5 rounded-full border border-[#f1c100]/55 bg-[#f1c100]/15 px-2.5 text-[0.68rem] font-bold tracking-normal text-foreground transition-[background-color,border-color,transform] hover:-translate-y-0.5 hover:border-[#f1c100]/80 hover:bg-[#f1c100]/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transform-none"
+                    className="group inline-flex min-h-7 items-center gap-1.5 border-l border-primary/20 pl-2.5 text-[0.68rem] font-bold tracking-normal text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   >
-                    <span
-                      className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-[#f1c100] motion-safe:animate-[ping_2.6s_ease-out_infinite]"
+                    <CalendarPlus
+                      className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 motion-reduce:transform-none"
                       aria-hidden="true"
                     />
-                    <PartyPopper className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
-                    Ice Breaker · 5 Oct
+                    Pre-event · 5 Oct
                   </a>
                 )}
               </dd>
