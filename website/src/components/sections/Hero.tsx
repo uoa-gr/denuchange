@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { CalendarPlus, ChevronDown, FileText, Smartphone } from "lucide-react"
+import { CalendarPlus, ChevronsDown, FileText, Smartphone } from "lucide-react"
 import { useEffect, useState } from "react"
 
 const detailedProgramUrl = `${import.meta.env.BASE_URL}DENUCHANGE_Program.pdf`
@@ -127,13 +127,13 @@ export function Hero() {
         <a
           href="#program"
           aria-label="View more details below"
-          className="group mx-auto mt-4 flex w-fit flex-col items-center text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-transparent"
+          className="group mx-auto mt-4 flex w-fit flex-col items-center gap-0.5 text-white drop-shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-transparent"
         >
-          <span className="flex h-8 w-5 items-start justify-center rounded-full border border-white/75 bg-slate-950/15 pt-1.5 shadow-sm backdrop-blur-sm">
-            <span className="h-1.5 w-1 rounded-full bg-white transition-transform duration-300 group-hover:translate-y-2.5 motion-reduce:transform-none" />
+          <span className="text-[0.62rem] font-bold uppercase tracking-[0.2em]">
+            View more
           </span>
-          <ChevronDown
-            className="-mt-0.5 h-4 w-4 drop-shadow-sm transition-transform duration-300 group-hover:translate-y-0.5 motion-reduce:transform-none"
+          <ChevronsDown
+            className="h-5 w-5 transition-transform duration-300 group-hover:translate-y-1 motion-reduce:transform-none"
             aria-hidden="true"
           />
         </a>
