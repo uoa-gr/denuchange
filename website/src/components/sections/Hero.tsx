@@ -133,7 +133,7 @@ export function Hero() {
         <div className="mt-5 flex justify-center">
           <a
             href="#app"
-            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/45 bg-slate-950/45 px-6 py-2.5 text-sm font-semibold text-white shadow-[0_10px_30px_-18px_rgba(2,20,34,0.9)] backdrop-blur-sm transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-white/65 hover:bg-slate-950/60 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-white/60 motion-reduce:transform-none"
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#f1c100] bg-[#f1c100] px-6 py-2.5 text-sm font-bold text-slate-950 shadow-[0_12px_32px_-16px_rgba(2,20,34,0.95)] transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#ffda2e] hover:bg-[#ffda2e] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-white/70 motion-reduce:transform-none"
           >
             <Smartphone className="h-4 w-4" aria-hidden="true" />
             Get the Attendee App
