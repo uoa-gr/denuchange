@@ -10,7 +10,6 @@ import {
   ExternalLink,
   MapPin,
   MapPinned,
-  Music2,
   Presentation,
 } from "lucide-react"
 
@@ -71,35 +70,27 @@ export function Program() {
         >
           <li
             id="ice-breaker"
-            className="scroll-mt-24 border-b border-[#f1c100]/35 bg-[#f1c100]/[0.075] p-6 sm:p-8 lg:col-span-2"
+            className="scroll-mt-24 border-b border-border/90 bg-secondary/30 p-6 sm:p-8 lg:col-span-2"
           >
-            <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(15rem,0.38fr)] lg:items-center lg:gap-8">
-              <div className="flex items-start gap-4 sm:gap-5">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#f1c100]/25 text-foreground shadow-sm">
-                  <Music2 className="h-5 w-5" aria-hidden="true" />
-                </div>
-                <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
-                    <span className="rounded-full border border-[#f1c100]/50 bg-card/70 px-3 py-1.5 text-foreground">
-                      Pre-workshop event
-                    </span>
-                    <time
-                      dateTime="2026-10-05T20:00"
-                      className="inline-flex items-center gap-1.5 text-muted-foreground"
-                    >
-                      <CalendarDays className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
-                      Monday, 5 October 2026 · 20:00
-                    </time>
-                  </div>
-                  <h3 className="mt-3 text-xl font-bold tracking-tight text-foreground">Ice Breaker</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                    A welcome evening with light dinner and drinks. Live music to be announced.
-                  </p>
-                </div>
+            <div className="grid gap-5 md:grid-cols-[8.5rem_minmax(0,1fr)] md:gap-7 lg:grid-cols-[8.5rem_minmax(0,1fr)_17rem] lg:items-center">
+              <div className="border-b border-border/80 pb-5 md:border-b-0 md:border-r md:pb-0 md:pr-7">
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-primary">Pre-workshop</p>
+                <p className="mt-3 text-sm font-semibold text-foreground">Monday</p>
+                <p className="text-sm text-muted-foreground">5 October 2026</p>
+                <time dateTime="2026-10-05T20:00" className="mt-2 block text-xl font-bold tabular-nums text-primary">
+                  20:00
+                </time>
               </div>
 
-              <div className="border-t border-[#f1c100]/35 pt-5 lg:border-l lg:border-t-0 lg:pl-7 lg:pt-0">
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Location</p>
+              <div>
+                <h3 className="text-xl font-bold tracking-tight text-foreground">Ice Breaker</h3>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+                  A welcome evening with light dinner and drinks. Live music to be announced.
+                </p>
+              </div>
+
+              <div className="border-t border-border/80 pt-5 md:col-span-2 lg:col-span-1 lg:border-l lg:border-t-0 lg:pl-7 lg:pt-0">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Venue</p>
                 <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-0">
                   <a
                     href={iceBreakerLocationUrl}
