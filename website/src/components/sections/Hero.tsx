@@ -44,13 +44,14 @@ export function Hero() {
 
       {/* Content Container */}
       <div
-        className={`relative z-20 w-full max-w-4xl overflow-hidden rounded-2xl border border-white/70 bg-white/[0.96] px-5 py-8 text-center shadow-[0_24px_80px_-24px_rgba(2,32,52,0.68)] ring-1 ring-slate-950/5 transition-[opacity,transform] duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:transition-none sm:px-9 sm:py-9 lg:px-12 ${
+        className={`relative z-20 w-full max-w-4xl transition-[opacity,transform] duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:transition-none ${
           show ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
         }`}
       >
-        <div className="absolute inset-x-0 top-0 h-1 bg-primary" aria-hidden="true">
-          <span className="mx-auto block h-full w-20 bg-[var(--iag-yellow)]" />
-        </div>
+        <div className="relative overflow-hidden rounded-2xl border border-white/70 bg-white/[0.96] px-5 py-8 text-center shadow-[0_24px_80px_-24px_rgba(2,32,52,0.68)] ring-1 ring-slate-950/5 sm:px-9 sm:py-9 lg:px-12">
+          <div className="absolute inset-x-0 top-0 h-1 bg-primary" aria-hidden="true">
+            <span className="mx-auto block h-full w-20 bg-[var(--iag-yellow)]" />
+          </div>
 
         <p className="mb-3 text-[0.7rem] font-bold uppercase tracking-[0.18em] text-primary">
           IAG Working Group
@@ -124,13 +125,14 @@ export function Hero() {
           </a>
         </nav>
 
-        <div className="mt-6 flex flex-col items-center justify-center gap-2 border-t border-border/60 pt-5 sm:flex-row sm:gap-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">Registered attendee?</p>
+        </div>
+
+        <div className="mt-5 flex justify-center">
           <a
             href="#app"
-            className="inline-flex min-h-10 items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-5 py-2 text-sm font-semibold text-primary transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 motion-reduce:transform-none"
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/45 bg-slate-950/45 px-6 py-2.5 text-sm font-semibold text-white shadow-[0_10px_30px_-18px_rgba(2,20,34,0.9)] backdrop-blur-sm transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-white/65 hover:bg-slate-950/60 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-white/60 motion-reduce:transform-none"
           >
-            <Smartphone className="h-4 w-4" />
+            <Smartphone className="h-4 w-4" aria-hidden="true" />
             Get the Attendee App
           </a>
         </div>
