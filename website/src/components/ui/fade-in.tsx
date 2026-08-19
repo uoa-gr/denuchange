@@ -41,14 +41,17 @@ export function FadeIn({
   return (
     <div
       ref={ref}
-      className={className}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translate(0)" : transforms[direction],
-        transition: `opacity 1.2s cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform 1.2s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
-      }}
+      className={`overflow-x-clip ${className}`}
     >
-      {children}
+      <div
+        style={{
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translate(0)" : transforms[direction],
+          transition: `opacity 1.2s cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform 1.2s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
+        }}
+      >
+        {children}
+      </div>
     </div>
   )
 }
