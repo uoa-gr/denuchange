@@ -76,31 +76,34 @@ export function Hero() {
           {workshopFacts.map((fact, index) => (
             <div
               key={fact.label}
-              className={`flex items-center justify-between gap-4 px-4 py-3 text-left sm:block sm:px-5 sm:py-3.5 sm:text-center ${
+              className={`px-4 py-3 text-left sm:px-5 sm:py-3.5 sm:text-center ${
                 index > 0 ? "border-t border-primary/10 sm:border-l sm:border-t-0" : ""
               }`}
             >
-              <dt className="text-[0.67rem] font-bold uppercase tracking-[0.16em] text-primary/80">
-                {fact.label}
-              </dt>
-              <dd className="flex items-center justify-end gap-2 text-right text-sm font-semibold tracking-tight text-foreground sm:mt-1.5 sm:justify-center sm:text-center sm:text-[0.95rem]">
-                {fact.value}
-              </dd>
+              <div className="flex items-center justify-between gap-4 sm:block">
+                <dt className="text-[0.67rem] font-bold uppercase tracking-[0.16em] text-primary/80">
+                  {fact.label}
+                </dt>
+                <dd className="text-right text-sm font-semibold tracking-tight text-foreground sm:mt-1.5 sm:text-center sm:text-[0.95rem]">
+                  {fact.value}
+                </dd>
+              </div>
+              {fact.label === "Date" && (
+                <a
+                  href="#ice-breaker"
+                  className="group mx-auto mt-3 flex min-h-9 w-fit max-w-full items-center justify-center gap-2 rounded-lg border border-[#f1c100]/55 bg-[#f1c100]/20 px-3 py-2 text-center text-xs font-semibold text-foreground transition-[background-color,border-color,transform] hover:-translate-y-0.5 hover:border-[#f1c100]/80 hover:bg-[#f1c100]/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transform-none"
+                >
+                  <CalendarPlus className="h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
+                  <span>Ice Breaker · October 5 · 20:00</span>
+                  <ArrowRight
+                    className="h-3.5 w-3.5 shrink-0 text-primary transition-transform group-hover:translate-x-0.5 motion-reduce:transform-none"
+                    aria-hidden="true"
+                  />
+                </a>
+              )}
             </div>
           ))}
         </dl>
-
-        <a
-          href="#ice-breaker"
-          className="group mx-auto mb-6 inline-flex min-h-10 max-w-full items-center justify-center gap-2 rounded-full border border-primary/15 bg-primary/[0.06] px-4 text-center text-sm font-semibold text-primary transition-[background-color,border-color,transform] hover:-translate-y-0.5 hover:border-primary/30 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transform-none"
-        >
-          <CalendarPlus className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-          <span>Ice Breaker · October 5 · 20:00</span>
-          <ArrowRight
-            className="h-4 w-4 shrink-0 text-primary transition-transform group-hover:translate-x-1 motion-reduce:transform-none"
-            aria-hidden="true"
-          />
-        </a>
 
         <nav aria-label="Workshop actions" className="flex flex-col justify-center gap-3 sm:flex-row">
           <Button
