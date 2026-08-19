@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { ArrowDown, CalendarPlus, FileText, Smartphone } from "lucide-react"
+import { CalendarPlus, ChevronDown, FileText, Smartphone } from "lucide-react"
 import { useEffect, useState } from "react"
 
 const detailedProgramUrl = `${import.meta.env.BASE_URL}DENUCHANGE_Program.pdf`
@@ -114,28 +114,29 @@ export function Hero() {
             </a>
           </Button>
           <a
-            href="#program"
+            href="#app"
             className="group inline-flex min-h-11 items-center justify-center gap-2 px-3 text-sm font-semibold text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:decoration-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            View more details below
-            <ArrowDown
-              className="h-4 w-4 transition-transform group-hover:translate-y-0.5 motion-reduce:transform-none"
-              aria-hidden="true"
-            />
+            <Smartphone className="h-4 w-4" aria-hidden="true" />
+            Get the Attendee App
           </a>
         </nav>
 
         </div>
 
-        <div className="mt-5 flex justify-center">
-          <a
-            href="#app"
-            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#f1c100] bg-[#f1c100] px-6 py-2.5 text-sm font-bold text-slate-950 shadow-[0_12px_32px_-16px_rgba(2,20,34,0.95)] transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#ffda2e] hover:bg-[#ffda2e] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-white/70 motion-reduce:transform-none"
-          >
-            <Smartphone className="h-4 w-4" aria-hidden="true" />
-            Get the Attendee App
-          </a>
-        </div>
+        <a
+          href="#program"
+          aria-label="View more details below"
+          className="group mx-auto mt-4 flex w-fit flex-col items-center text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-transparent"
+        >
+          <span className="flex h-8 w-5 items-start justify-center rounded-full border border-white/75 bg-slate-950/15 pt-1.5 shadow-sm backdrop-blur-sm">
+            <span className="h-1.5 w-1 rounded-full bg-white transition-transform duration-300 group-hover:translate-y-2.5 motion-reduce:transform-none" />
+          </span>
+          <ChevronDown
+            className="-mt-0.5 h-4 w-4 drop-shadow-sm transition-transform duration-300 group-hover:translate-y-0.5 motion-reduce:transform-none"
+            aria-hidden="true"
+          />
+        </a>
       </div>
 
       {/* Bottom gradient fade */}
