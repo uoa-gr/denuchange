@@ -69,7 +69,7 @@ export function Program() {
           aria-labelledby="ice-breaker-heading"
           className="mx-auto mb-4 max-w-5xl scroll-mt-24 overflow-hidden rounded-2xl border border-primary/15 bg-card shadow-[0_14px_38px_-32px_rgba(15,42,68,0.65)]"
         >
-          <div className="grid md:grid-cols-[10.5rem_minmax(0,1fr)] lg:grid-cols-[10.5rem_minmax(0,1fr)_17rem]">
+          <div className="grid md:grid-cols-[10.5rem_minmax(0,1fr)] lg:grid-cols-[10.5rem_minmax(0,1fr)_19rem]">
             <div className="flex items-center justify-between gap-5 border-b border-primary/10 bg-primary/[0.065] px-5 py-4 md:block md:border-b-0 md:border-r md:px-6 md:py-6">
               <div>
                 <p className="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-primary">Pre-workshop</p>
@@ -89,16 +89,16 @@ export function Program() {
               </p>
             </div>
 
-            <div className="border-t border-border/80 px-5 py-5 sm:px-6 md:col-span-2 lg:col-span-1 lg:border-l lg:border-t-0 lg:py-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Venue</p>
-              <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-0">
+            <div className="border-t border-border/80 px-5 py-5 sm:px-6 md:col-span-2 lg:col-span-1 lg:flex lg:flex-col lg:justify-center lg:border-l lg:border-t-0 lg:py-5">
+              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Venue</p>
+              <div className="mt-2 flex flex-col items-start gap-0.5">
                 <a
                   href={iceBreakerLocationUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex min-h-10 items-center gap-1.5 rounded-sm text-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  className="group inline-flex min-h-8 items-center gap-1.5 rounded-sm text-sm font-semibold leading-tight text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
-                  <MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />
+                  <MapPin className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                   <span>Laguna Coast Resort</span>
                   <ExternalLink
                     className="h-3.5 w-3.5 shrink-0 opacity-65 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
@@ -107,7 +107,7 @@ export function Program() {
                 </a>
                 <a
                   href="#travel-map"
-                  className="group inline-flex min-h-10 items-center gap-1.5 rounded-sm text-sm font-semibold text-primary underline decoration-primary underline-offset-4 hover:decoration-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  className="group inline-flex min-h-8 items-center gap-1.5 rounded-sm text-sm font-semibold leading-tight text-primary underline decoration-primary underline-offset-4 hover:decoration-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
                   View map below
                   <ArrowDown
