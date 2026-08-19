@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button"
-import { LockKeyhole, Smartphone } from "lucide-react"
+import { ArrowDown, FileText, Smartphone } from "lucide-react"
 import { useEffect, useState } from "react"
+
+const detailedProgramUrl = `${import.meta.env.BASE_URL}DENUCHANGE_Program.pdf`
 
 const workshopFacts = [
   { label: "Date", value: "6–9 October 2026" },
@@ -88,20 +90,26 @@ export function Hero() {
         </dl>
 
         <nav aria-label="Workshop actions" className="flex flex-col justify-center gap-3 sm:flex-row">
-          <div
-            role="status"
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-primary/20 bg-primary/[0.06] px-7 text-sm font-semibold text-primary"
+          <Button
+            size="lg"
+            asChild
+            className="h-11 rounded-lg px-7 font-bold shadow-md hover:-translate-y-0.5 hover:shadow-lg motion-reduce:transform-none"
           >
-            <LockKeyhole className="h-4 w-4" aria-hidden="true" />
-            Registration Closed
-          </div>
+            <a href={detailedProgramUrl} target="_blank" rel="noopener noreferrer">
+              <FileText className="h-4 w-4" aria-hidden="true" />
+              View Detailed Program
+            </a>
+          </Button>
           <Button
             size="lg"
             asChild
             variant="warning"
             className="h-11 rounded-lg px-7 font-bold shadow-md hover:-translate-y-0.5 hover:shadow-lg motion-reduce:transform-none"
           >
-            <a href="#program">View Program</a>
+            <a href="#program">
+              View more details below
+              <ArrowDown className="h-4 w-4" aria-hidden="true" />
+            </a>
           </Button>
         </nav>
 
