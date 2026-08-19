@@ -60,7 +60,11 @@ export function Navigation() {
           : "inset-x-3 top-3 rounded-xl border-white/60 bg-white/[0.72] shadow-[0_12px_36px_-22px_rgba(15,23,42,0.7)]"
       }`}
     >
-      <div className="container flex h-16 items-center justify-between">
+      <div
+        className={`flex h-16 w-full items-center justify-between ${
+          scrolled ? "px-6 sm:px-8" : "px-3 sm:px-5"
+        }`}
+      >
         {/* Brand */}
         <a href="#" className="flex items-center gap-3 cursor-pointer group">
           <img
