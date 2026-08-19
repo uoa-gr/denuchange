@@ -54,10 +54,10 @@ export function Navigation() {
 
   return (
     <nav
-      className={`fixed left-1/2 top-2 z-50 w-[calc(100%-1rem)] max-w-[calc(100%-1rem)] -translate-x-1/2 overflow-hidden rounded-2xl border backdrop-blur-2xl backdrop-saturate-150 transition-[border-color,background-color,box-shadow] duration-300 ease-out min-[1120px]:w-max ${
+      className={`fixed left-1/2 top-2 z-50 w-[calc(100%-1rem)] max-w-[calc(100%-1rem)] -translate-x-1/2 overflow-hidden rounded-2xl border backdrop-blur-sm transition-[border-color,background-color,box-shadow] duration-300 ease-out min-[1120px]:w-max ${
         scrolled
-          ? "border-white/60 bg-white/[0.82] shadow-[0_10px_34px_-20px_rgba(15,23,42,0.55)]"
-          : "border-white/45 bg-white/[0.54] shadow-[0_14px_40px_-24px_rgba(15,23,42,0.65)]"
+          ? "border-border/80 bg-white/[0.96] shadow-[0_8px_26px_-18px_rgba(15,23,42,0.4)]"
+          : "border-white/80 bg-white/[0.88] shadow-[0_10px_30px_-22px_rgba(15,23,42,0.5)]"
       }`}
     >
       <div className="flex h-12 w-full items-center justify-between gap-6 px-4 min-[1120px]:w-auto min-[1120px]:justify-start min-[1120px]:gap-7">
@@ -144,7 +144,7 @@ export function Navigation() {
 
       {/* Mobile menu dropdown */}
       <div
-        className="overflow-hidden border-t border-white/35 bg-white/25 min-[1120px]:hidden"
+        className="overflow-hidden border-t border-border/60 bg-white/80 min-[1120px]:hidden"
         style={{
           maxHeight: isOpen ? "400px" : "0",
           opacity: isOpen ? 1 : 0,
