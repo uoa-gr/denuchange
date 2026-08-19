@@ -54,17 +54,14 @@ export function Navigation() {
 
   return (
     <nav
-      className={`fixed z-50 border backdrop-blur-xl transition-[top,left,right,border-color,border-radius,background-color,box-shadow] duration-300 ease-out ${
-        scrolled
-          ? "inset-x-0 top-0 rounded-none border-x-0 border-t-0 border-border bg-background/95 shadow-[0_4px_20px_-12px_rgba(15,23,42,0.35)]"
-          : "inset-x-3 top-3 rounded-xl border-white/60 bg-white/[0.72] shadow-[0_12px_36px_-22px_rgba(15,23,42,0.7)]"
-      }`}
+      className="sticky top-0 z-50 w-full bg-white"
+      style={{
+        borderBottom: scrolled ? "1px solid var(--border)" : "1px solid transparent",
+        boxShadow: scrolled ? "0 1px 12px rgba(0,0,0,0.06)" : "none",
+        transition: "box-shadow 0.4s ease, border-color 0.4s ease",
+      }}
     >
-      <div
-        className={`flex h-16 w-full items-center justify-between ${
-          scrolled ? "px-6 sm:px-8" : "px-3 sm:px-5"
-        }`}
-      >
+      <div className="container flex h-16 items-center justify-between">
         {/* Brand */}
         <a href="#" className="flex items-center gap-3 cursor-pointer group">
           <img
