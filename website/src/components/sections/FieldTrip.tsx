@@ -293,15 +293,6 @@ export function FieldTrip() {
             onStopSelect={handleStopSelect}
           />
         </div>
-
-        {/* Note about itinerary */}
-        <div className="max-w-6xl mx-auto mt-8">
-          <div className="bg-[#f1c100]/15 border border-[#f1c100]/30 rounded-lg p-4 text-center">
-            <p className="text-sm text-foreground/80">
-              <span className="font-bold">Note:</span> The detailed itinerary will be announced closer to the event.
-            </p>
-          </div>
-        </div>
       </div>
     </section>
   )
