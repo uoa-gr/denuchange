@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge"
-import { Monitor, Headset, Users, GraduationCap } from "lucide-react"
+import { VENUE_URL } from "@/lib/travel-map-data"
+import { ArrowDown, ExternalLink, GraduationCap, Headset, MapPin, Monitor, Users } from "lucide-react"
 
 const features = [
   {
@@ -52,6 +53,34 @@ export function Labs() {
               </a>{" "}
               running alongside the workshop program.
             </p>
+            <div className="mt-6 border-t border-border pt-5">
+              <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-foreground/70">Location</p>
+              <div className="flex flex-wrap items-center justify-center gap-x-4 lg:justify-start">
+                <a
+                  href={VENUE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex min-h-11 items-center gap-1.5 rounded-sm text-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  <MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />
+                  <span>Laguna Coast Resort</span>
+                  <ExternalLink
+                    className="h-3.5 w-3.5 shrink-0 opacity-65 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  />
+                </a>
+                <a
+                  href="#travel-map"
+                  className="group inline-flex min-h-11 items-center gap-1.5 rounded-sm text-sm font-semibold text-primary underline decoration-primary underline-offset-4 hover:decoration-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  View map below
+                  <ArrowDown
+                    className="h-3.5 w-3.5 shrink-0 transition-transform group-hover:translate-y-0.5 motion-reduce:transform-none"
+                    aria-hidden="true"
+                  />
+                </a>
+              </div>
+            </div>
           </div>
 
           <ul

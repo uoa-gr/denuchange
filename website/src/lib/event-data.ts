@@ -74,6 +74,7 @@ export const eventData = {
       { name: "Dr. Achim A. Beylich", affiliation: "Geomorphological Field Laboratory (GFL), Norway" },
       { name: "Prof. Niki Evelpidou", affiliation: "NKUA, Greece" },
       { name: "Dr. Anna Karkani", affiliation: "NKUA, Greece" },
+      { name: "Dr. Giannis Saitis", affiliation: "NKUA, Greece" },
       { name: "Dr. Eliza Płaczkowska", affiliation: "University of Wrocław, Poland" },
       { name: "Prof. Nurit Shtober-Zisu", affiliation: "University of Haifa, Israel" },
       { name: "Prof. Zbigniew Zwoliński", affiliation: "Adam Mickiewicz University, Poland" },

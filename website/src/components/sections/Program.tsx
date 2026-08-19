@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge"
-import { VENUE_URL } from "@/lib/travel-map-data"
+import { BUS_DEPARTURE_URL, VENUE_URL } from "@/lib/travel-map-data"
 import {
   ArrowDown,
   BusFront,
@@ -140,31 +140,62 @@ export function Program() {
           ))}
         </ol>
 
+        <section
+          aria-labelledby="workshop-transport-heading"
+          className="mx-auto mt-8 max-w-5xl rounded-2xl border border-border/90 bg-card px-5 py-6 shadow-[0_16px_44px_-32px_rgba(15,42,68,0.6)] sm:px-7 sm:py-7"
+        >
+          <div className="flex items-start gap-4">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <BusFront className="h-5 w-5" aria-hidden="true" />
+            </div>
+            <div className="min-w-0">
+              <h3 id="workshop-transport-heading" className="text-lg font-bold text-foreground">
+                Workshop transport
+              </h3>
+              <div className="mt-3 space-y-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                <p>
+                  On both days of the workshop, a single bus service to the venue will be provided in the morning,
+                  departing from the central bus station in Naxos Town ({" "}
+                  <a
+                    href={BUS_DEPARTURE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-primary underline decoration-primary underline-offset-4 hover:decoration-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  >
+                    Google Maps
+                  </a>{" "}
+                  ·{" "}
+                  <a
+                    href="#travel-map"
+                    className="font-semibold text-primary underline decoration-primary underline-offset-4 hover:decoration-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  >
+                    View map below
+                  </a>
+                  ). The journey takes approximately 10 minutes. Return transfer will also be provided at the end of
+                  the day’s activities.
+                </p>
+                <p className="rounded-xl border border-primary/15 bg-primary/5 px-4 py-3 text-foreground">
+                  <span className="font-bold">Departures:</span> Tuesday 6 October at 08:15&nbsp; · &nbsp;Wednesday 7
+                  October at 09:00
+                </p>
+                <p>
+                  Please note that this is the only scheduled morning departure on each day. Participants are kindly
+                  asked to arrive at the departure point a few minutes in advance.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <aside
           aria-label="Practical information"
-          className="mx-auto mt-8 grid max-w-5xl overflow-hidden rounded-xl border border-[#f1c100]/30 bg-[#f1c100]/10 sm:grid-cols-2"
+          className="mx-auto mt-4 max-w-5xl overflow-hidden rounded-xl border border-[#f1c100]/30 bg-[#f1c100]/10"
         >
           <div className="flex items-start gap-3 px-5 py-4 sm:px-6">
             <Info className="mt-0.5 h-4 w-4 shrink-0 text-foreground/70" aria-hidden="true" />
             <p className="text-sm leading-relaxed text-foreground/80">
               <span className="font-bold">Note:</span> Detailed program will be announced closer to the event.
             </p>
-          </div>
-          <div className="flex items-start gap-3 border-t border-[#f1c100]/30 px-5 py-4 sm:border-l sm:border-t-0 sm:px-6">
-            <BusFront className="mt-0.5 h-4 w-4 shrink-0 text-foreground/70" aria-hidden="true" />
-            <div className="text-sm leading-relaxed text-foreground/80">
-              <p className="font-bold text-foreground">Workshop transport</p>
-              <p>
-                A dedicated workshop bus will provide transport during the field trip and transfers between the
-                central bus station and the venue.{" "}
-                <a
-                  href="#travel-map"
-                  className="font-semibold text-primary underline decoration-primary underline-offset-4 hover:decoration-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                >
-                  (View map below)
-                </a>
-              </p>
-            </div>
           </div>
         </aside>
       </div>
