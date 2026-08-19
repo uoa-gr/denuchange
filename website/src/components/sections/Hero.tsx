@@ -91,12 +91,10 @@ export function Hero() {
 
         <a
           href="#ice-breaker"
-          className="group mx-auto mb-6 flex w-fit max-w-full items-center justify-center gap-2.5 text-center text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="group mx-auto mb-6 inline-flex min-h-10 max-w-full items-center justify-center gap-2 rounded-full border border-primary/15 bg-primary/[0.06] px-4 text-center text-sm font-semibold text-primary transition-[background-color,border-color,transform] hover:-translate-y-0.5 hover:border-primary/30 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transform-none"
         >
           <CalendarPlus className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-          <span>
-            <span className="font-semibold text-primary">Pre-workshop event:</span> Ice Breaker · 5 October · 20:00
-          </span>
+          <span>Ice Breaker · October 5 · 20:00</span>
           <ArrowRight
             className="h-4 w-4 shrink-0 text-primary transition-transform group-hover:translate-x-1 motion-reduce:transform-none"
             aria-hidden="true"
