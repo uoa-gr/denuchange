@@ -22,7 +22,7 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative flex min-h-[calc(100svh-4rem)] items-center justify-center overflow-hidden px-4 py-10 sm:px-6 sm:py-16 lg:py-20"
+      className="relative flex min-h-svh items-center justify-center overflow-hidden px-4 pb-10 pt-24 sm:px-6 sm:pb-16 sm:pt-28 lg:py-20"
     >
       {/* Background Image */}
       <div className="absolute inset-0 z-0 bg-slate-800">

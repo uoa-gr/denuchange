@@ -54,12 +54,11 @@ export function Navigation() {
 
   return (
     <nav
-      className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
-      style={{
-        borderBottom: scrolled ? "1px solid var(--border)" : "1px solid transparent",
-        boxShadow: scrolled ? "0 1px 12px rgba(0,0,0,0.06)" : "none",
-        transition: "box-shadow 0.4s ease, border-color 0.4s ease",
-      }}
+      className={`fixed z-50 border backdrop-blur-xl transition-[top,left,right,border-color,border-radius,background-color,box-shadow] duration-300 ease-out ${
+        scrolled
+          ? "inset-x-0 top-0 rounded-none border-x-0 border-t-0 border-border bg-background/95 shadow-[0_4px_20px_-12px_rgba(15,23,42,0.35)]"
+          : "inset-x-3 top-3 rounded-xl border-white/60 bg-white/[0.72] shadow-[0_12px_36px_-22px_rgba(15,23,42,0.7)]"
+      }`}
     >
       <div className="container flex h-16 items-center justify-between">
         {/* Brand */}
