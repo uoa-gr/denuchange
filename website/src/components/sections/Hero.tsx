@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { ArrowDown, ArrowRight, CalendarPlus, FileText, Smartphone } from "lucide-react"
+import { ArrowDown, CalendarPlus, FileText, Smartphone } from "lucide-react"
 import { useEffect, useState } from "react"
 
 const detailedProgramUrl = `${import.meta.env.BASE_URL}DENUCHANGE_Program.pdf`
@@ -81,26 +81,23 @@ export function Hero() {
               }`}
             >
               <div className="flex items-center justify-between gap-4 sm:block">
-                <dt className="text-[0.67rem] font-bold uppercase tracking-[0.16em] text-primary/80">
-                  {fact.label}
+                <dt className="inline-flex items-center text-[0.67rem] font-bold uppercase tracking-[0.16em] text-primary/80">
+                  <span>{fact.label}</span>
+                  {fact.label === "Date" && (
+                    <a
+                      href="#ice-breaker"
+                      aria-label="Ice Breaker details: October 5 at 20:00"
+                      title="Ice Breaker · October 5 · 20:00"
+                      className="ml-2 inline-flex h-6 w-6 items-center justify-center rounded-full border border-primary/20 bg-white/55 text-primary transition-[background-color,border-color,transform] hover:-translate-y-0.5 hover:border-primary/35 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transform-none"
+                    >
+                      <CalendarPlus className="h-3.5 w-3.5" aria-hidden="true" />
+                    </a>
+                  )}
                 </dt>
                 <dd className="text-right text-sm font-semibold tracking-tight text-foreground sm:mt-1.5 sm:text-center sm:text-[0.95rem]">
                   {fact.value}
                 </dd>
               </div>
-              {fact.label === "Date" && (
-                <a
-                  href="#ice-breaker"
-                  className="group mx-auto mt-3 flex min-h-9 w-fit max-w-full items-center justify-center gap-2 rounded-lg border border-[#f1c100]/55 bg-[#f1c100]/20 px-3 py-2 text-center text-xs font-semibold text-foreground transition-[background-color,border-color,transform] hover:-translate-y-0.5 hover:border-[#f1c100]/80 hover:bg-[#f1c100]/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transform-none"
-                >
-                  <CalendarPlus className="h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
-                  <span>Ice Breaker · October 5 · 20:00</span>
-                  <ArrowRight
-                    className="h-3.5 w-3.5 shrink-0 text-primary transition-transform group-hover:translate-x-0.5 motion-reduce:transform-none"
-                    aria-hidden="true"
-                  />
-                </a>
-              )}
             </div>
           ))}
         </dl>
