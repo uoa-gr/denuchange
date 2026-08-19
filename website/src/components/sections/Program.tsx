@@ -10,10 +10,12 @@ import {
   ExternalLink,
   MapPin,
   MapPinned,
+  Music2,
   Presentation,
 } from "lucide-react"
 
 const detailedProgramUrl = `${import.meta.env.BASE_URL}DENUCHANGE_Program.pdf`
+const iceBreakerLocationUrl = "https://maps.app.goo.gl/iDLaAnaS7PCajEDv5"
 
 const schedule = [
   {
@@ -67,6 +69,66 @@ export function Program() {
           aria-label="Workshop schedule"
           className="mx-auto grid max-w-5xl overflow-hidden rounded-2xl border border-border/90 bg-card shadow-[0_16px_44px_-32px_rgba(15,42,68,0.6)] lg:grid-cols-2"
         >
+          <li
+            id="ice-breaker"
+            className="scroll-mt-24 border-b border-[#f1c100]/35 bg-[#f1c100]/[0.075] p-6 sm:p-8 lg:col-span-2"
+          >
+            <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(15rem,0.38fr)] lg:items-center lg:gap-8">
+              <div className="flex items-start gap-4 sm:gap-5">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#f1c100]/25 text-foreground shadow-sm">
+                  <Music2 className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
+                    <span className="rounded-full border border-[#f1c100]/50 bg-card/70 px-3 py-1.5 text-foreground">
+                      Pre-workshop event
+                    </span>
+                    <time
+                      dateTime="2026-10-05T20:00"
+                      className="inline-flex items-center gap-1.5 text-muted-foreground"
+                    >
+                      <CalendarDays className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
+                      Monday, 5 October 2026 · 20:00
+                    </time>
+                  </div>
+                  <h3 className="mt-3 text-xl font-bold tracking-tight text-foreground">Ice Breaker</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                    A welcome evening with light dinner and drinks. Live music to be announced.
+                  </p>
+                </div>
+              </div>
+
+              <div className="border-t border-[#f1c100]/35 pt-5 lg:border-l lg:border-t-0 lg:pl-7 lg:pt-0">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Location</p>
+                <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-0">
+                  <a
+                    href={iceBreakerLocationUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex min-h-11 items-center gap-1.5 rounded-sm text-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  >
+                    <MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />
+                    <span>Laguna Coast Resort, Naxos</span>
+                    <ExternalLink
+                      className="h-3.5 w-3.5 shrink-0 opacity-65 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                      aria-hidden="true"
+                    />
+                  </a>
+                  <a
+                    href="#travel-map"
+                    className="group inline-flex min-h-11 items-center gap-1.5 rounded-sm text-sm font-semibold text-primary underline decoration-primary underline-offset-4 hover:decoration-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  >
+                    View map below
+                    <ArrowDown
+                      className="h-3.5 w-3.5 shrink-0 transition-transform group-hover:translate-y-0.5 motion-reduce:transform-none"
+                      aria-hidden="true"
+                    />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+
           {schedule.map((item, index) => (
             <li
               key={item.title}
