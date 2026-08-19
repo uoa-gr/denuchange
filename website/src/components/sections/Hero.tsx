@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { ArrowDown, CalendarPlus, FileText, Smartphone } from "lucide-react"
+import { ArrowDown, ArrowRight, CalendarPlus, FileText, Smartphone } from "lucide-react"
 import { useEffect, useState } from "react"
 
 const detailedProgramUrl = `${import.meta.env.BASE_URL}DENUCHANGE_Program.pdf`
@@ -82,26 +82,26 @@ export function Hero() {
               <dt className="text-[0.67rem] font-bold uppercase tracking-[0.16em] text-primary/80">
                 {fact.label}
               </dt>
-              <dd className="flex flex-wrap items-center justify-end gap-2 text-right text-sm font-semibold tracking-tight text-foreground sm:mt-1.5 sm:justify-center sm:text-center sm:text-[0.95rem]">
-                <span>{fact.value}</span>
-                {fact.label === "Date" && (
-                  <a
-                    href="#ice-breaker"
-                    aria-label="View Ice Breaker details for 5 October at 20:00"
-                    title="Ice Breaker · 5 October at 20:00"
-                    className="group inline-flex min-h-7 items-center gap-1.5 border-l border-primary/20 pl-2.5 text-[0.68rem] font-bold tracking-normal text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  >
-                    <CalendarPlus
-                      className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 motion-reduce:transform-none"
-                      aria-hidden="true"
-                    />
-                    Pre-event · 5 Oct
-                  </a>
-                )}
+              <dd className="flex items-center justify-end gap-2 text-right text-sm font-semibold tracking-tight text-foreground sm:mt-1.5 sm:justify-center sm:text-center sm:text-[0.95rem]">
+                {fact.value}
               </dd>
             </div>
           ))}
         </dl>
+
+        <a
+          href="#ice-breaker"
+          className="group mx-auto mb-6 flex w-fit max-w-full items-center justify-center gap-2.5 text-center text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          <CalendarPlus className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+          <span>
+            <span className="font-semibold text-primary">Pre-workshop event:</span> Ice Breaker · 5 October · 20:00
+          </span>
+          <ArrowRight
+            className="h-4 w-4 shrink-0 text-primary transition-transform group-hover:translate-x-1 motion-reduce:transform-none"
+            aria-hidden="true"
+          />
+        </a>
 
         <nav aria-label="Workshop actions" className="flex flex-col justify-center gap-3 sm:flex-row">
           <Button
