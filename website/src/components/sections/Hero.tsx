@@ -100,17 +100,16 @@ export function Hero() {
               View Detailed Program
             </a>
           </Button>
-          <Button
-            size="lg"
-            asChild
-            variant="warning"
-            className="h-11 rounded-lg px-7 font-bold shadow-md hover:-translate-y-0.5 hover:shadow-lg motion-reduce:transform-none"
+          <a
+            href="#program"
+            className="group inline-flex min-h-11 items-center justify-center gap-2 px-3 text-sm font-semibold text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:decoration-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            <a href="#program">
-              View more details below
-              <ArrowDown className="h-4 w-4" aria-hidden="true" />
-            </a>
-          </Button>
+            View more details below
+            <ArrowDown
+              className="h-4 w-4 transition-transform group-hover:translate-y-0.5 motion-reduce:transform-none"
+              aria-hidden="true"
+            />
+          </a>
         </nav>
 
         <div className="mt-6 flex flex-col items-center justify-center gap-2 border-t border-border/60 pt-5 sm:flex-row sm:gap-4">
