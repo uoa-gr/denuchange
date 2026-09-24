@@ -38,7 +38,7 @@ export function AppShell() {
           />
           <div className="min-w-0">
             <p className="font-semibold text-sm leading-tight text-foreground truncate">DENUCHANGE 2026</p>
-            <p className="text-xs text-muted-foreground leading-tight">6–9 Oct · Naxos, Greece</p>
+            <p className="text-xs text-muted-foreground leading-tight">6–7 Oct · Naxos, Greece</p>
           </div>
         </div>
       </header>

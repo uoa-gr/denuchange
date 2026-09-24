@@ -1,23 +1,18 @@
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
-import { Clock, MapPin } from "lucide-react"
-
-interface ProgramSession {
-  id: string
-  date: string
-  start_time: string
-  end_time: string
-  title: string
-  description: string
-  location: string
-  session_type: string
-}
+import { Clock, MapPin, Download, Bell, ExternalLink, CalendarPlus, Check } from "lucide-react"
+import { DEFAULT_PROGRAM_SESSIONS, type ProgramSession } from "../lib/program-data"
+import {
+  generateSessionIcs,
+  generateDayIcs,
+  downloadIcsFile,
+  getGoogleCalendarUrl,
+} from "../lib/calendar"
 
 const DAYS: { date: string; label: string; short: string }[] = [
+  { date: "2026-10-05", label: "Monday, 5 Oct", short: "Mon 5" },
   { date: "2026-10-06", label: "Tuesday, 6 Oct", short: "Tue 6" },
   { date: "2026-10-07", label: "Wednesday, 7 Oct", short: "Wed 7" },
-  { date: "2026-10-08", label: "Thursday, 8 Oct", short: "Thu 8" },
-  { date: "2026-10-09", label: "Friday, 9 Oct", short: "Fri 9" },
 ]
 
 const TYPE_COLORS: Record<string, string> = {
@@ -45,7 +40,8 @@ function formatTime(t: string) {
 export function Program() {
   const [sessions, setSessions] = useState<ProgramSession[]>([])
   const [loading, setLoading] = useState(true)
-  const [activeDay, setActiveDay] = useState(DAYS[0].date)
+  const [activeDay, setActiveDay] = useState("2026-10-06")
+  const [remindedId, setRemindedId] = useState<string | null>(null)
 
   useEffect(() => {
     void (async () => {
@@ -54,10 +50,25 @@ export function Program() {
         .select("*")
         .order("date")
         .order("start_time")
-      setSessions(data ?? [])
+      setSessions(data && data.length > 0 ? data : DEFAULT_PROGRAM_SESSIONS)
       setLoading(false)
     })()
   }, [])
+
+  function handleAddReminder(session: ProgramSession) {
+    const ics = generateSessionIcs(session)
+    const filename = `DENUCHANGE_${session.date}_${session.start_time.replace(":", "")}_${session.id}.ics`
+    downloadIcsFile(filename, ics)
+    setRemindedId(session.id)
+    setTimeout(() => setRemindedId((prev) => (prev === session.id ? null : prev)), 2500)
+  }
+
+  function handleDownloadDayCalendar(date: string) {
+    const daySessions = sessions.filter((s) => s.date === date)
+    const dayLabel = DAYS.find((d) => d.date === date)?.label ?? date
+    const ics = generateDayIcs(daySessions, `DENUCHANGE 2026 - ${dayLabel}`)
+    downloadIcsFile(`DENUCHANGE_${date}_Schedule.ics`, ics)
+  }
 
   const daySession = sessions.filter((s) => s.date === activeDay)
 
@@ -80,14 +91,30 @@ export function Program() {
         ))}
       </div>
 
-      {/* Day label */}
-      <div className="px-4 py-3 bg-muted/30 border-b border-border">
+      {/* Day label and Calendar / PDF actions */}
+      <div className="px-4 py-2 bg-muted/30 border-b border-border flex items-center justify-between gap-2 flex-wrap">
         <p className="text-xs font-medium text-muted-foreground">
           {DAYS.find((d) => d.date === activeDay)?.label}
         </p>
-        {(activeDay === "2026-10-08" || activeDay === "2026-10-09") && (
-          <p className="text-xs text-green-600 font-medium mt-0.5">Field Trip Day</p>
-        )}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => handleDownloadDayCalendar(activeDay)}
+            className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:underline"
+            title="Download full day calendar (.ics with alarms) for Apple, Android, or Outlook"
+          >
+            <CalendarPlus className="h-3.5 w-3.5" />
+            <span>Add Day to Cal</span>
+          </button>
+          <a
+            href="/DENUCHANGE_Program.pdf"
+            download="DENUCHANGE_Program.pdf"
+            className="inline-flex items-center gap-1 text-[11px] font-semibold text-muted-foreground hover:text-foreground hover:underline"
+          >
+            <Download className="h-3.5 w-3.5" />
+            <span>PDF</span>
+          </a>
+        </div>
       </div>
 
       {/* Sessions list */}
@@ -133,7 +160,40 @@ export function Program() {
                 )}
               </div>
               {s.description && (
-                <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">{s.description}</p>
+                <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed whitespace-pre-line">{s.description}</p>
+              )}
+              {s.title !== "Discussion" && (
+                <div className="mt-2.5 pt-2 border-t border-border/50 flex items-center justify-between gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleAddReminder(s)}
+                    className="inline-flex items-center gap-1.5 text-[11px] font-medium text-primary hover:text-primary/80 transition-colors"
+                    title="Add reminder to your device calendar (Apple / Outlook / Android) with 15-min notification"
+                  >
+                    {remindedId === s.id ? (
+                      <>
+                        <Check className="h-3.5 w-3.5 text-green-600" />
+                        <span className="text-green-600 font-semibold">Reminder added</span>
+                      </>
+                    ) : (
+                      <>
+                        <Bell className="h-3.5 w-3.5 text-primary/70" />
+                        <span>Add Reminder (.ics)</span>
+                      </>
+                    )}
+                  </button>
+
+                  <a
+                    href={getGoogleCalendarUrl(s)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    title="Add to Google Calendar"
+                  >
+                    <span>Google Cal</span>
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
               )}
             </div>
           ))
