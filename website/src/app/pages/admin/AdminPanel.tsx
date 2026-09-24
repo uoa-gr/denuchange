@@ -4,6 +4,7 @@ import { useAuth } from "@/app/lib/auth"
 import { api, type SessionInput } from "@/app/lib/api"
 import { supabase } from "@/lib/supabase"
 import { Bell, Image, Calendar, Trash2, Pencil, Plus, X } from "lucide-react"
+import { DEFAULT_PROGRAM_SESSIONS } from "@/app/lib/program-data"
 
 type Tab = "alerts" | "gallery" | "program"
 
@@ -179,7 +180,7 @@ function ProgramTab() {
         .select("*")
         .order("date")
         .order("start_time")
-      setSessions((data ?? []) as ProgramSession[])
+      setSessions(((data && data.length > 0 ? data : DEFAULT_PROGRAM_SESSIONS) ?? []) as ProgramSession[])
       setLoading(false)
     })()
   }, [])

@@ -73,11 +73,11 @@ export function Program() {
             <div className="px-5 py-5 sm:px-7 sm:py-6">
               <div className="flex flex-wrap items-center gap-3">
                 <time
-                  dateTime="2026-10-05T20:00"
+                  dateTime="2026-10-05T19:00"
                   className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/[0.06] px-3 py-1.5 text-xs font-semibold text-primary"
                 >
                   <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
-                  October 5 · 20:00
+                  October 5 · 19:00
                 </time>
                 <span className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
                   Pre-workshop event
@@ -267,8 +267,8 @@ export function Program() {
                     <p className="font-semibold text-foreground">Tuesday</p>
                     <p className="mt-0.5 text-sm text-muted-foreground">6 October</p>
                   </div>
-                  <time dateTime="2026-10-06T08:15" className="text-xl font-bold tabular-nums text-primary">
-                    08:15
+                  <time dateTime="2026-10-06T08:45" className="text-xl font-bold tabular-nums text-primary">
+                    08:45
                   </time>
                 </div>
                 <div className="flex items-center justify-between gap-5 pt-4">
@@ -276,8 +276,8 @@ export function Program() {
                     <p className="font-semibold text-foreground">Wednesday</p>
                     <p className="mt-0.5 text-sm text-muted-foreground">7 October</p>
                   </div>
-                  <time dateTime="2026-10-07T09:00" className="text-xl font-bold tabular-nums text-primary">
-                    09:00
+                  <time dateTime="2026-10-07T09:10" className="text-xl font-bold tabular-nums text-primary">
+                    09:10
                   </time>
                 </div>
               </div>

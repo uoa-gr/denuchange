@@ -1,13 +1,9 @@
 import { useEffect, useRef, useState } from "react"
 import { supabase } from "@/lib/supabase"
 import { Bell } from "lucide-react"
+import { DEFAULT_ANNOUNCEMENTS, type NotificationItem } from "../lib/program-data"
 
-interface Notification {
-  id: string
-  title: string
-  body: string
-  created_at: string
-}
+type Notification = NotificationItem
 
 const STORAGE_KEY = "denuchange_read_notifications"
 
@@ -48,9 +44,14 @@ export function AlertsPage() {
         .from("notifications")
         .select("id, title, body, created_at")
         .order("created_at", { ascending: false })
-      const notifications = data ?? []
-      setItems(notifications)
-      markRead(notifications.map((n) => n.id))
+      const combined = [...(data ?? [])]
+      for (const def of DEFAULT_ANNOUNCEMENTS) {
+        if (!combined.some((item) => item.id === def.id || item.title === def.title)) {
+          combined.push(def)
+        }
+      }
+      setItems(combined)
+      markRead(combined.map((n) => n.id))
       readSet.current = getReadSet()
       setLoading(false)
     })()

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from "../lib/auth"
 import { supabase } from "@/lib/supabase"
 import { Calendar, MapPin, Bell, ArrowRight } from "lucide-react"
+import { DEFAULT_ANNOUNCEMENTS } from "../lib/program-data"
 
 const EVENT_DATE = new Date("2026-10-06T09:00:00+03:00")
 
@@ -30,7 +31,7 @@ export function Home() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [countdown, setCountdown] = useState(getCountdown())
-  const [latestAlert, setLatestAlert] = useState<LatestNotification | null>(null)
+  const [latestAlert, setLatestAlert] = useState<LatestNotification | null>(DEFAULT_ANNOUNCEMENTS[0] ?? null)
 
   useEffect(() => {
     const id = setInterval(() => setCountdown(getCountdown()), 60_000)
@@ -44,7 +45,7 @@ export function Home() {
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle()
-      .then(({ data }) => setLatestAlert(data))
+      .then(({ data }) => setLatestAlert(data ?? DEFAULT_ANNOUNCEMENTS[0] ?? null))
   }, [])
 
   const displayName = user
@@ -84,8 +85,8 @@ export function Home() {
         <div className="rounded-xl border border-border bg-card p-4">
           <Calendar className="h-5 w-5 text-primary mb-2" />
           <p className="text-xs text-muted-foreground">Dates</p>
-          <p className="text-sm font-semibold text-foreground">6–9 Oct 2026</p>
-          <p className="text-xs text-muted-foreground">Sessions: 6–7 · Field trip: 8–9</p>
+          <p className="text-sm font-semibold text-foreground">6–7 Oct 2026</p>
+          <p className="text-xs text-muted-foreground">Workshop Sessions & VFT Lab</p>
         </div>
         <div className="rounded-xl border border-border bg-card p-4">
           <MapPin className="h-5 w-5 text-primary mb-2" />
@@ -120,15 +121,15 @@ export function Home() {
         </button>
       )}
 
-      {/* Field trip teaser */}
+      {/* Workshop program shortcut */}
       <button
-        onClick={() => navigate("/app/fieldtrip")}
+        onClick={() => navigate("/app/program")}
         className="w-full rounded-xl border border-border bg-card p-4 flex items-center gap-3 hover:bg-muted/50 transition-colors"
       >
         <div className="flex-1 text-left">
-          <p className="text-xs text-muted-foreground mb-0.5">Field trip</p>
-          <p className="text-sm font-semibold text-foreground">8–9 October 2026</p>
-          <p className="text-xs text-muted-foreground">9 stops across Naxos island</p>
+          <p className="text-xs text-muted-foreground mb-0.5">Workshop program</p>
+          <p className="text-sm font-semibold text-foreground">View Full Schedule</p>
+          <p className="text-xs text-muted-foreground">6–7 October 2026 · Oral, Poster & VFT Lab</p>
         </div>
         <ArrowRight className="h-4 w-4 text-muted-foreground flex-none" />
       </button>
