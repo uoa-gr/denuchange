@@ -1,5 +1,5 @@
 // DENUCHANGE 2026 Workshop Program & Announcements
-// Extracted exactly from official agenda: DENUCHANGE_Program_20260923.pdf
+// Extracted exactly from official agenda: DENUCHANGE_Program.pdf
 
 export interface ProgramSession {
   id: string
@@ -21,11 +21,17 @@ export interface NotificationItem {
 
 export const DEFAULT_ANNOUNCEMENTS: NotificationItem[] = [
   {
-    id: "alert-updated-agenda-20260923",
-    title: "Updated Workshop Agenda & Program",
-    body: "The official workshop agenda has been updated. The detailed schedule for October 6–7, 2026—including opening lectures, thematic oral sessions, the poster session, and the Virtual Field Trip Laboratory—is now available in the Program section. You can also download the updated PDF program directly from the homepage.",
-    created_at: "2026-09-24T12:00:00.000Z",
+    "id": "alert-agenda-update-20260927",
+    "title": "Program Schedule Updated",
+    "body": "The workshop agenda has been updated with timing adjustments for Tuesday Session 2 (including a coffee break at 17:00), revised timings for Wednesday's Poster Session and Lunch, and the addition of a lecture by Kirki Kefalea at 14:45. Please check the Program tab or download the latest PDF.",
+    "created_at": "2026-09-27T19:00:00.000Z"
   },
+  {
+    "id": "alert-updated-agenda-20260923",
+    "title": "Updated Workshop Agenda & Program",
+    "body": "The official workshop agenda has been updated. The detailed schedule for October 6–7, 2026—including opening lectures, thematic oral sessions, the poster session, and the Virtual Field Trip Laboratory—is now available in the Program section. You can also download the updated PDF program directly from the homepage.",
+    "created_at": "2026-09-24T12:00:00.000Z"
+  }
 ]
 
 export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
@@ -240,10 +246,20 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "session_type": "field_trip"
   },
   {
-    "id": "tue-s2-1",
+    "id": "tue-coffee-2",
     "date": "2026-10-06",
     "start_time": "17:00",
-    "end_time": "17:15",
+    "end_time": "17:20",
+    "title": "Coffee break",
+    "description": "",
+    "location": "Laguna Coast Resort, Naxos",
+    "session_type": "break"
+  },
+  {
+    "id": "tue-s2-1",
+    "date": "2026-10-06",
+    "start_time": "17:20",
+    "end_time": "17:35",
     "title": "Toward the integration of historical data in erosion modelling: the case of Badlands landscapes of Aliano (Basilicata, Southern Italy)",
     "description": "Santoro G., Mairota P., Capolongo D., Marsico A.\n\nSession 2: Denudation, Landscape Evolution and Sediment Sources (From long-term landscape evolution to sediment production)",
     "location": "Laguna Coast Resort, Naxos",
@@ -251,26 +267,6 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
   },
   {
     "id": "tue-s2-1-disc",
-    "date": "2026-10-06",
-    "start_time": "17:15",
-    "end_time": "17:20",
-    "title": "Discussion",
-    "description": "",
-    "location": "Laguna Coast Resort, Naxos",
-    "session_type": "break"
-  },
-  {
-    "id": "tue-s2-2",
-    "date": "2026-10-06",
-    "start_time": "17:20",
-    "end_time": "17:35",
-    "title": "Climate-Driven Shifts in Denudational Regimes of a Lowland Fluvial System",
-    "description": "Szpikowski J., Szpikowska G., Zwoliński Zb., Mazurek M., Kruszyk R., Kostrzewski A.\n\nSession 2: Denudation, Landscape Evolution and Sediment Sources",
-    "location": "Laguna Coast Resort, Naxos",
-    "session_type": "session"
-  },
-  {
-    "id": "tue-s2-2-disc",
     "date": "2026-10-06",
     "start_time": "17:35",
     "end_time": "17:40",
@@ -280,17 +276,17 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "session_type": "break"
   },
   {
-    "id": "tue-s2-3",
+    "id": "tue-s2-2",
     "date": "2026-10-06",
     "start_time": "17:40",
     "end_time": "17:55",
-    "title": "Denudation hotspots in Italy: Towards the first national spatial dataset of badlands distribution",
-    "description": "La Licata M., Maerker M., Panagos P. & Borrelli P.\n\nSession 2: Denudation, Landscape Evolution and Sediment Sources",
+    "title": "Climate-Driven Shifts in Denudational Regimes of a Lowland Fluvial System",
+    "description": "Szpikowski J., Szpikowska G., Zwoliński Zb., Mazurek M., Kruszyk R., Kostrzewski A.\n\nSession 2: Denudation, Landscape Evolution and Sediment Sources",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "session"
   },
   {
-    "id": "tue-s2-3-disc",
+    "id": "tue-s2-2-disc",
     "date": "2026-10-06",
     "start_time": "17:55",
     "end_time": "18:00",
@@ -300,17 +296,17 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "session_type": "break"
   },
   {
-    "id": "tue-s2-4",
+    "id": "tue-s2-3",
     "date": "2026-10-06",
     "start_time": "18:00",
     "end_time": "18:15",
-    "title": "Sediment Budget and Connectivity over the last 40 years of a small high-mountain cirque in the North Caucasus, Russia",
-    "description": "Sheremetev I., Kharchenko S., Golosov V.\n\nSession 2: Denudation, Landscape Evolution and Sediment Sources",
+    "title": "Denudation hotspots in Italy: Towards the first national spatial dataset of badlands distribution",
+    "description": "La Licata M., Maerker M., Panagos P. & Borrelli P.\n\nSession 2: Denudation, Landscape Evolution and Sediment Sources",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "session"
   },
   {
-    "id": "tue-s2-4-disc",
+    "id": "tue-s2-3-disc",
     "date": "2026-10-06",
     "start_time": "18:15",
     "end_time": "18:20",
@@ -543,21 +539,31 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "id": "wed-poster",
     "date": "2026-10-07",
     "start_time": "12:50",
-    "end_time": "13:30",
+    "end_time": "13:15",
     "title": "Poster Session",
-    "description": "P1. A Regional Morpho-Kinematic Inventory of Periglacial Landforms in the Marginal Permafrost Environment of the Southern Carpathians\nOnaca A., Sîrbu F., Ardelean F., Poncos V., Strozzi T.\n\nP3. The impact of beaver activity on geomorphological processes in mountain streams (Western Carpathians)\nWąs J., Kijowska-Strugała M., Gorczyca E.\n\nP4. Typology and Morphometric Differentiation of Erosional-Denudational Valleys in the Marginal Zones of the Southern Baltic\nPaluszkiewicz R., Winowski M.\n\nP5. Artificial Litter versus Geomorphological Processes: Field Experiments on Litter Movement along Carpathian Valley Slopes\nHaska W., Gorczyca E., Liro M.\n\nP6. Geomorphology of Skiathos\nSoultanis K.\n\nP7. Rockwall weathering and associated rockfall activity in the fjord landscape in western Norway\nLaute K., Beylich A. A.\n\nP8. Sea-Level Forcing and Cliff Retreat on Wolin Island, Southern Baltic Sea, over a 40-Year Period: Temporal and Spatial Variability\nWinowski M., Tylkowski J., Kostrzewski A., Zwoliński Z.\n\nP9. Investigating Subsurface Erosion in a Peculiar Badland Landform in Italy\nSannino A., Vergari F., Ciampi P.\n\nP10. An integrated graph theory and remote sensing approach to functional sediment connectivity analysis in an Alpine proglacial area across multiple temporal scales\nPandey A., Heckmann T., Savi S.\n\nP11. Responses of sediment sources and contemporary denudation rates to environmental changes in selected cold-climate drainage basin systems in Norway\nBeylich A. A., Laute, K.\n\nP12. Geomorphological Nature-based solutions for mitigation of coastal natural hazards (tsunami & coastal floods): The case of Naxos Island\nGogou M., Mavroulis S., Saitis G., Karkani A., Lekkas E., Evelpidou N.\n\nP13. Preliminary Assessment of Nearshore Hydrodynamics and Potential Sediment Mobility in the Alyko Pocket-Beach System, Naxos, Greece\nSaitis G., Evelpidou N., Sabatier F.",
+    "description": "P1. A Regional Morpho-Kinematic Inventory of Periglacial Landforms in the Marginal Permafrost Environment of the Southern Carpathians\nOnaca A., Sîrbu F., Ardelean F., Poncos V., Strozzi T.\n\nP3. The impact of beaver activity on geomorphological processes in mountain streams (Western Carpathians)\nWąs J., Kijowska-Strugała M., Gorczyca E.\n\nP4. Typology and Morphometric Differentiation of Erosional-Denudational Valleys in the Marginal Zones of the Southern Baltic\nPaluszkiewicz R., Winowski M.\n\nP5. Artificial Litter versus Geomorphological Processes: Field Experiments on Litter Movement along Carpathian Valley Slopes\nHaska W., Gorczyca E., Liro M.\n\nP6. Geomorphology of Skiathos\nSoultanis K.\n\nP7. Rockwall weathering and associated rockfall activity in the fjord landscape in western Norway\nLaute K., Beylich A. A.\n\nP8. Sea-Level Forcing and Cliff Retreat on Wolin Island, Southern Baltic Sea, over a 40-Year Period: Temporal and Spatial Variability\nWinowski M., Tylkowski J., Kostrzewski A., Zwoliński Z.\n\nP9. Investigating Subsurface Erosion in a Peculiar Badland Landform in Italy\nSannino A., Vergari F., Ciampi P.\n\nP10. An integrated graph theory and remote sensing approach to functional sediment connectivity analysis in an Alpine proglacial area across multiple temporal scales\nPandey A., Heckmann T., Savi S.\n\nP11. Responses of sediment sources and contemporary denudation rates to environmental changes in selected cold-climate drainage basin systems in Norway\nBeylich A. A., Laute, K.\n\nP12. Geomorphological Nature-based solutions for mitigation of coastal natural hazards (tsunami & coastal floods): The case of Naxos Island\nGogou M., Mavroulis S., Saitis G., Karkani A., Lekkas E., Evelpidou N.",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "session"
   },
   {
     "id": "wed-lunch",
     "date": "2026-10-07",
-    "start_time": "13:30",
-    "end_time": "15:00",
+    "start_time": "13:15",
+    "end_time": "14:45",
     "title": "Lunch",
     "description": "",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "meal"
+  },
+  {
+    "id": "wed-kefalea",
+    "date": "2026-10-07",
+    "start_time": "14:45",
+    "end_time": "15:00",
+    "title": "From the “Dream on the wave” to the “Waste land”: Nature, War, and the Loss of Human Harmony in the work of Alexandros Papadiamantis, T.S. Eliot and W.B. Yeats",
+    "description": "Kirki Kefalea",
+    "location": "Laguna Coast Resort, Naxos",
+    "session_type": "session"
   },
   {
     "id": "wed-closing",
