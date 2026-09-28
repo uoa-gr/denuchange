@@ -17,20 +17,21 @@ const programCopy = [
   "Workshop Sessions",
   "Oral & poster presentations",
   "Coffee breaks & lunches included",
-  "Workshop Dinner (Oct 7)",
+  "Conference Dinner (Oct 6)",
   "October 8-9",
   "Field Trip",
   "Catchment to coast transect",
   "Naxos geomorphological sites",
   "Lunches included",
-  "Note:",
-  "Detailed program will be announced closer to the event.",
+  "Detailed workshop program",
+  "Download the complete schedule for all workshop days.",
+  "Download Detailed Program",
 ]
 
 const labsCopy = [
   "Labs",
-  "Virtual Field Trip Laboratories",
-  'Hands-on interactive sessions offered by the IAG Working Group "Virtual Field Trips in Geomorphology" running alongside the workshop program.',
+  "Virtual Field Trip (VFT) Laboratory",
+  'A hands-on interactive laboratory offered in collaboration with the IAG Working Group "Virtual Trips in Geomorphology".',
   "VFT Design & Application",
   "Practical experience in designing and applying Virtual Field Trips for geomorphological research and education.",
   "VR Immersion",
@@ -42,7 +43,14 @@ const labsCopy = [
 ]
 
 function normalize(markup) {
-  return markup.replace(/<[^>]+>/g, " ").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/\s+/g, " ").trim()
+  return markup
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#x27;/g, "'")
+    .replace(/\s+/g, " ")
+    .replace(/\s+([.,;:!?])/g, "$1")
+    .trim()
 }
 
 test("Program and Labs retain their approved copy in clearer semantic layouts", async (context) => {
@@ -57,13 +65,15 @@ test("Program and Labs retain their approved copy in clearer semantic layouts", 
     await vite.close()
   })
 
-  const [programModule, labsModule] = await Promise.all([
+  const [programModule, labsModule, eventDataModule] = await Promise.all([
     vite.ssrLoadModule("/src/components/sections/Program.tsx"),
     vite.ssrLoadModule("/src/components/sections/Labs.tsx"),
+    vite.ssrLoadModule("/src/lib/event-data.ts"),
   ])
 
   const programMarkup = renderToStaticMarkup(React.createElement(programModule.Program))
   const labsMarkup = renderToStaticMarkup(React.createElement(labsModule.Labs))
+  const eventData = eventDataModule.eventData
 
   await context.test("presents Program as a labelled two-part itinerary", () => {
     assert.match(programMarkup, /<section[^>]*aria-labelledby="program-heading"/)
@@ -85,5 +95,14 @@ test("Program and Labs retain their approved copy in clearer semantic layouts", 
 
     for (const text of programCopy) assert.ok(programText.includes(text), `Program text changed: ${text}`)
     for (const text of labsCopy) assert.ok(labsText.includes(text), `Labs text changed: ${text}`)
+
+    assert.ok(!programText.includes("Workshop Dinner (Oct 7)"))
+    assert.ok(!programText.includes("Live music to be announced."))
+    assert.ok(!labsText.includes("Virtual Field Trip Laboratories"))
+    assert.ok(!labsText.includes("running alongside the workshop program"))
+    assert.ok(!labsText.includes('IAG Working Group "Virtual Field Trips in Geomorphology"'))
+
+    assert.ok(eventData.registration.includes.includes("Conference Dinner (6 Oct)"))
+    assert.ok(!eventData.registration.includes.includes("Workshop Dinner (7 Oct)"))
   })
 })

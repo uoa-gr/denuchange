@@ -119,7 +119,7 @@ export function Registration() {
               </Table>
               <p className="mt-4 text-xs text-muted-foreground">
                 Full fee includes materials, coffee breaks, lunches (Oct 6–7),
-                Workshop Dinner (Oct 7), and field trip.
+                Conference Dinner (Oct 6), and field trip.
               </p>
             </CardContent>
           </Card>

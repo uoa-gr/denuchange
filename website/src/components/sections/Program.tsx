@@ -23,7 +23,7 @@ const schedule = [
     items: [
       "Oral & poster presentations",
       "Coffee breaks & lunches included",
-      "Workshop Dinner (Oct 7)",
+      "Conference Dinner (Oct 6)",
     ],
     location: {
       label: "Laguna Coast Resort",
@@ -87,7 +87,7 @@ export function Program() {
                 Ice Breaker
               </h3>
               <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-                A welcome evening with light dinner and drinks. Live music to be announced.
+                A welcome evening with light dinner and drinks.
               </p>
             </div>
 

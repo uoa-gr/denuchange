@@ -30,7 +30,7 @@ export const eventData = {
     includes: [
       "Meeting materials",
       "Coffee breaks and lunches (6-7 Oct)",
-      "Workshop Dinner (7 Oct)",
+      "Conference Dinner (6 Oct)",
       "2-day field trip (full fee only)",
     ],
   },
