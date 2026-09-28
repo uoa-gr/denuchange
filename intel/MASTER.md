@@ -35,7 +35,7 @@
 | Meeting only | €100 | 2-day meeting (regular or student) |
 | Accompanying person | €300 | Field trip only |
 
-**Full fee covers**: materials, coffee breaks, lunches (Oct 6-7), Workshop Dinner (Oct 7), field trip
+**Full fee covers**: materials, coffee breaks, lunches (Oct 6-7), Conference Dinner (Oct 6), field trip
 
 ## DEADLINES
 - **13 June 2026**: Abstract submission

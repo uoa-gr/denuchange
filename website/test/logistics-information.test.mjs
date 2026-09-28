@@ -59,19 +59,22 @@ test("Program keeps transport outside its two-part itinerary", async (context) =
   assert.doesNotMatch(scheduleMarkup, new RegExp(busDepartureUrl))
   assert.match(fieldTripMarkup, /id="field-trip-map"/)
 
-  const practicalInformation = markup.match(
-    /<aside[^>]*aria-label="Practical information"[^>]*>[\s\S]*?<\/aside>/
+  const workshopTransport = markup.match(
+    /<section[^>]*aria-labelledby="workshop-transport-heading"[^>]*>[\s\S]*?<\/section>/
   )?.[0]
 
-  assert.ok(practicalInformation, "Practical information is missing")
-  assert.match(practicalInformation, new RegExp(`href="${busDepartureUrl}"`))
-  assert.match(practicalInformation, /Detailed program will be announced closer to the event\./)
-  assert.doesNotMatch(practicalInformation, /with session times/i)
-  assert.match(practicalInformation, /Workshop transport/)
-  assert.match(practicalInformation, /A dedicated workshop bus will provide transport during the field trip and transfers between the/)
-  assert.match(practicalInformation, /central bus station/)
-  assert.match(practicalInformation, /and the venue\./)
-  assert.doesNotMatch(practicalInformation, /Conference transport/)
+  assert.ok(workshopTransport, "Workshop transport information is missing")
+  assert.match(workshopTransport, new RegExp(`href="${busDepartureUrl}"`))
+  assert.match(workshopTransport, /Workshop transport/)
+  assert.match(workshopTransport, /On both days of the workshop, a single bus service to the venue will be provided in the morning/)
+  assert.match(workshopTransport, /central bus station/)
+  assert.match(workshopTransport, /Morning departures/)
+  assert.match(workshopTransport, /08:45/)
+  assert.match(workshopTransport, /09:10/)
+  assert.doesNotMatch(workshopTransport, /Conference transport/)
+  assert.match(markup, /Detailed workshop program/)
+  assert.match(markup, /Download the complete schedule for all workshop days\./)
+  assert.doesNotMatch(markup, /Detailed program will be announced closer to the event\./)
 })
 
 test("Travel map exposes only the seven arrival and workshop logistics points", async (context) => {

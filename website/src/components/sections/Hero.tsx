@@ -114,7 +114,7 @@ export function Hero() {
                     Ice Breaker
                   </span>
                   <span className="block text-[0.7rem] text-muted-foreground">
-                    5 October · 20:00
+                    5 October · 19:00
                   </span>
                 </span>
                 <ArrowRight

@@ -43,6 +43,8 @@ test("homepage presents the approved workshop hierarchy", async (context) => {
     assert.match(markup, /6(?:–|‑|-)9 October 2026/)
     assert.match(markup, />Location</)
     assert.match(markup, />Naxos, Greece</)
+    assert.match(markup, /5 October · 19:00/)
+    assert.doesNotMatch(markup, /5 October · 20:00/)
     assert.doesNotMatch(markup, />Abstracts</)
     assert.doesNotMatch(markup, /<dd[^>]*>\s*Closed\s*<\/dd>/)
   })
@@ -64,10 +66,11 @@ test("homepage presents the approved workshop hierarchy", async (context) => {
     assert.match(registrationMarkup, /Registration Closed/)
     assert.match(registrationMarkup, /The registration period ended on July 15, 2026/)
     assert.match(registrationMarkup, /Registration and abstract submission are now closed\./)
+    assert.match(registrationMarkup, /Conference Dinner \(Oct 6\)/)
+    assert.doesNotMatch(registrationMarkup, /Workshop Dinner \(Oct 7\)/)
     assert.doesNotMatch(registrationMarkup, />Register Now<\/button>/)
     assert.doesNotMatch(heroMarkup, /href="#registration"/)
     assert.doesNotMatch(heroMarkup, />Register Now<\/a>/)
-    assert.match(heroMarkup, /role="status"[^>]*>[\s\S]*?Registration Closed/)
   })
 
   await context.test("gives the refreshed hero one clear accessible hierarchy", () => {
@@ -76,8 +79,8 @@ test("homepage presents the approved workshop hierarchy", async (context) => {
     assert.match(markup, /<section[^>]*aria-labelledby="hero-heading"/)
     assert.match(markup, /<h1[^>]*id="hero-heading"/)
     assert.match(markup, /<nav[^>]*aria-label="Workshop actions"/)
-    assert.match(markup, /role="status"[^>]*>[\s\S]*?Registration Closed/)
-    assert.match(markup, /<a[^>]*href="#program"[^>]*>View Program<\/a>/)
+    assert.match(markup, /<a[^>]*href="\/DENUCHANGE_Program\.pdf"[^>]*>[\s\S]*?Download Detailed Program<\/a>/)
+    assert.match(markup, /<a[^>]*href="#program"[^>]*>[\s\S]*?View more/)
   })
 
   await context.test("groups organisers and supporters immediately before About", () => {

@@ -39,19 +39,18 @@ export function Labs() {
               Labs
             </Badge>
             <h2 id="labs-heading" className="mb-4 text-balance text-3xl font-bold tracking-tight sm:text-4xl">
-              Virtual Field Trip Laboratories
+              Virtual Field Trip (VFT) Laboratory
             </h2>
             <p className="text-pretty leading-relaxed text-muted-foreground">
-              Hands-on interactive sessions offered by the{" "}
+              A hands-on interactive laboratory offered in collaboration with the{" "}
               <a
                 href="https://www.geomorph.org/virtual-trips-in-geomorphology/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="cursor-pointer font-medium text-primary underline decoration-primary/30 underline-offset-4 transition-colors hover:decoration-primary focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
               >
-                IAG Working Group "Virtual Field Trips in Geomorphology"
-              </a>{" "}
-              running alongside the workshop program.
+                IAG Working Group "Virtual Trips in Geomorphology"
+              </a>.
             </p>
             <div className="mt-6 border-t border-border pt-5">
               <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-foreground/70">Location</p>
