@@ -15,6 +15,60 @@ import { esc, sendMail, wrapEmail } from "../_lib/email"
 
 const APP_BASE_URL = process.env.APP_BASE_URL ?? "https://denuchange.vercel.app"
 
+export interface PasswordlessUserInfo {
+  firstName: string
+  lastName: string
+  affiliation: string
+  country: string
+  registrationType: string
+}
+
+export const PASSWORDLESS_USERS: Record<string, PasswordlessUserInfo> = {
+  "ch.koromilas@prv.ypeka.gr": {
+    firstName: "Χρήστος",
+    lastName: "Κορομηλάς",
+    affiliation: "Υπουργείο Περιβάλλοντος και Ενέργειας (ΥΠΕΝ / YPEKA)",
+    country: "Greece",
+    registrationType: "regular_full",
+  },
+  "mpouzasd@prv.ypeka.gr": {
+    firstName: "Δημήτριος",
+    lastName: "Μπούζας",
+    affiliation: "Υπουργείο Περιβάλλοντος και Ενέργειας (ΥΠΕΝ / YPEKA)",
+    country: "Greece",
+    registrationType: "regular_full",
+  },
+}
+
+async function syncPasswordlessUsers() {
+  try {
+    const admin = getSupabaseAdmin()
+    for (const [email, pwdless] of Object.entries(PASSWORDLESS_USERS)) {
+      await admin.from("registrations").upsert(
+        {
+          first_name: pwdless.firstName,
+          last_name: pwdless.lastName,
+          email,
+          affiliation: pwdless.affiliation,
+          country: pwdless.country,
+          registration_type: pwdless.registrationType,
+          payment_confirmed: true,
+        },
+        { onConflict: "email" }
+      )
+      await admin.from("app_users").upsert(
+        {
+          email,
+          is_admin: false,
+        },
+        { onConflict: "email", ignoreDuplicates: true }
+      )
+    }
+  } catch (err) {
+    console.warn("[auth] Failed to sync passwordless users into Supabase:", err)
+  }
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function handler(req: any, res: any) {
   try {
@@ -35,28 +89,31 @@ async function _handle(req: any, res: any) {
     const payload = extractJwt(req)
     if (!payload) return res.status(401).json({ error: "Unauthorized" })
 
+    const email = payload.email.toLowerCase()
+    const pwdless = PASSWORDLESS_USERS[email]
+
     const [{ data: user }, { data: reg }] = await Promise.all([
       getSupabaseAdmin()
         .from("app_users")
         .select("email, is_admin, avatar_path")
-        .ilike("email", payload.email)
+        .ilike("email", email)
         .maybeSingle(),
       getSupabaseAdmin()
         .from("registrations")
         .select("first_name, last_name, affiliation, registration_type")
-        .ilike("email", payload.email)
+        .ilike("email", email)
         .maybeSingle(),
     ])
 
-    if (!user) return res.status(401).json({ error: "Unauthorized" })
+    if (!user && !pwdless) return res.status(401).json({ error: "Unauthorized" })
     return res.json({
-      email: user.email,
-      isAdmin: user.is_admin,
-      firstName: reg?.first_name ?? "",
-      lastName: reg?.last_name ?? "",
-      affiliation: reg?.affiliation ?? "",
-      registrationType: reg?.registration_type ?? "",
-      avatarPath: user.avatar_path ?? null,
+      email: user?.email ?? email,
+      isAdmin: user?.is_admin ?? false,
+      firstName: reg?.first_name ?? pwdless?.firstName ?? "",
+      lastName: reg?.last_name ?? pwdless?.lastName ?? "",
+      affiliation: reg?.affiliation ?? pwdless?.affiliation ?? "",
+      registrationType: reg?.registration_type ?? pwdless?.registrationType ?? "",
+      avatarPath: user?.avatar_path ?? null,
     })
   }
 
@@ -83,6 +140,26 @@ async function _handle(req: any, res: any) {
     if (!raw || raw.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) {
       return res.status(400).json({ error: "Invalid email address" })
     }
+
+    const pwdless = PASSWORDLESS_USERS[raw]
+    if (pwdless) {
+      await syncPasswordlessUsers()
+      const jwtToken = signJwt({ email: raw, isAdmin: false })
+      res.setHeader("Set-Cookie", getSessionCookie(jwtToken))
+      return res.json({
+        status: "authenticated",
+        user: {
+          email: raw,
+          isAdmin: false,
+          firstName: pwdless.firstName,
+          lastName: pwdless.lastName,
+          affiliation: pwdless.affiliation,
+          registrationType: pwdless.registrationType,
+          avatarPath: null,
+        },
+      })
+    }
+
     const { data: reg } = await getSupabaseAdmin()
       .from("registrations")
       .select("email")
@@ -107,6 +184,10 @@ async function _handle(req: any, res: any) {
   if (req.method === "POST" && action === "send-setup") {
     const email: string = (req.body?.email ?? "").toString().trim().toLowerCase()
     if (!email || email.length > 254) return res.status(400).json({ error: "Invalid email" })
+
+    if (PASSWORDLESS_USERS[email]) {
+      return res.json({ sent: true })
+    }
 
     const { data: user } = await getSupabaseAdmin()
       .from("app_users")
@@ -201,7 +282,25 @@ async function _handle(req: any, res: any) {
   if (req.method === "POST" && action === "login") {
     const email: string = (req.body?.email ?? "").toString().trim().toLowerCase()
     const password: string = (req.body?.password ?? "").toString()
-    if (!email || !password) return res.status(400).json({ error: "Email and password are required" })
+    const pwdless = PASSWORDLESS_USERS[email]
+
+    if (!email) return res.status(400).json({ error: "Email is required" })
+    if (!password && !pwdless) return res.status(400).json({ error: "Email and password are required" })
+
+    if (pwdless) {
+      await syncPasswordlessUsers()
+      const jwtToken = signJwt({ email, isAdmin: false })
+      res.setHeader("Set-Cookie", getSessionCookie(jwtToken))
+      return res.json({
+        email,
+        isAdmin: false,
+        firstName: pwdless.firstName,
+        lastName: pwdless.lastName,
+        affiliation: pwdless.affiliation,
+        registrationType: pwdless.registrationType,
+        avatarPath: null,
+      })
+    }
 
     const { data: user } = await getSupabaseAdmin()
       .from("app_users")

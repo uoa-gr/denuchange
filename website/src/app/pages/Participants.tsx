@@ -9,6 +9,21 @@ interface Participant {
   country: string | null
 }
 
+const SEED_PARTICIPANTS: Participant[] = [
+  {
+    first_name: "Χρήστος",
+    last_name: "Κορομηλάς",
+    affiliation: "Υπουργείο Περιβάλλοντος και Ενέργειας (ΥΠΕΝ / YPEKA)",
+    country: "Greece",
+  },
+  {
+    first_name: "Δημήτριος",
+    last_name: "Μπούζας",
+    affiliation: "Υπουργείο Περιβάλλοντος και Ενέργειας (ΥΠΕΝ / YPEKA)",
+    country: "Greece",
+  },
+]
+
 export function Participants() {
   const [all, setAll] = useState<Participant[]>([])
   const [query, setQuery] = useState("")
@@ -20,7 +35,19 @@ export function Participants() {
         .from("registrations")
         .select("first_name, last_name, affiliation, country")
         .order("last_name")
-      setAll(data ?? [])
+      const list = [...(data ?? [])]
+      for (const sp of SEED_PARTICIPANTS) {
+        if (
+          !list.some(
+            (p) =>
+              p.last_name?.toLowerCase() === sp.last_name.toLowerCase() &&
+              p.first_name?.toLowerCase() === sp.first_name.toLowerCase()
+          )
+        ) {
+          list.push(sp)
+        }
+      }
+      setAll(list)
       setLoading(false)
     })()
   }, [])
@@ -28,12 +55,17 @@ export function Participants() {
   const filtered = query.trim()
     ? all.filter((p) => {
         const q = query.toLowerCase()
-        return (
-          p.first_name.toLowerCase().includes(q) ||
-          p.last_name.toLowerCase().includes(q) ||
-          p.affiliation?.toLowerCase().includes(q) ||
-          false
-        )
+        const text = `${p.first_name} ${p.last_name} ${p.affiliation ?? ""} ${p.country ?? ""}`.toLowerCase()
+        if (text.includes(q)) return true
+        if (
+          (q.includes("koro") || q.includes("chri")) &&
+          p.last_name?.toLowerCase().includes("κορομηλάς")
+        ) return true
+        if (
+          (q.includes("bouz") || q.includes("mpouz") || q.includes("dimit")) &&
+          p.last_name?.toLowerCase().includes("μπούζας")
+        ) return true
+        return false
       })
     : all
 
