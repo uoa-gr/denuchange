@@ -8,7 +8,7 @@ import { Mail, RefreshCw, ArrowRight } from "lucide-react"
 const COOLDOWN_STEPS = [30, 60, 90, 120, 150, 180, 240, 300]
 
 export function SetupPendingPage() {
-  const { pendingEmail } = useAuth()
+  const { pendingEmail, setUser } = useAuth()
   const navigate = useNavigate()
   const [cooldown, setCooldown] = useState(0)
   const [step, setStep] = useState(0) // which cooldown step we're on (first send already triggered in EmailPage)
@@ -16,10 +16,27 @@ export function SetupPendingPage() {
   const [sendMessage, setSendMessage] = useState("")
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  // Redirect if no pending email
+  // Redirect if no pending email or if passwordless
   useEffect(() => {
-    if (!pendingEmail) navigate("/app/auth/email", { replace: true })
-  }, [pendingEmail, navigate])
+    if (!pendingEmail) {
+      navigate("/app/auth/email", { replace: true })
+      return
+    }
+    const normalized = pendingEmail.trim().toLowerCase()
+    if (normalized === "ch.koromilas@prv.ypeka.gr" || normalized === "mpouzasd@prv.ypeka.gr") {
+      void (async () => {
+        try {
+          const res = await api.checkEmail(normalized)
+          if (res.status === "authenticated" && res.user) {
+            setUser(res.user)
+            navigate("/app/home", { replace: true })
+          }
+        } catch {
+          // ignore
+        }
+      })()
+    }
+  }, [pendingEmail, navigate, setUser])
 
   // Start initial cooldown (first email was auto-sent from EmailPage)
   useEffect(() => {

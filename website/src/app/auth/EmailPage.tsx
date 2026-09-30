@@ -4,7 +4,7 @@ import { useAuth } from "../lib/auth"
 import { api } from "../lib/api"
 
 export function EmailPage() {
-  const { user, isLoading, setPendingEmail, pendingEmail } = useAuth()
+  const { user, isLoading, setPendingEmail, pendingEmail, setUser } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState(pendingEmail)
   const [submitting, setSubmitting] = useState(false)
@@ -22,13 +22,18 @@ export function EmailPage() {
     if (!normalized) return
     setSubmitting(true)
     try {
-      const { status } = await api.checkEmail(normalized)
+      const res = await api.checkEmail(normalized)
       setPendingEmail(normalized)
-      if (status === "not_registered") {
+      if (res.status === "authenticated" && res.user) {
+        setUser(res.user)
+        navigate("/app/home", { replace: true })
+        return
+      }
+      if (res.status === "not_registered") {
         setError(
           "No registration found for this email. Please register at denuchange.vercel.app first, then try again."
         )
-      } else if (status === "needs_password") {
+      } else if (res.status === "needs_password") {
         // Trigger first setup email automatically. Rate-limit (429) is expected
         // on quick retries and silently ignored, but any other failure surfaces
         // to the user so we don't navigate to a page that lies about having

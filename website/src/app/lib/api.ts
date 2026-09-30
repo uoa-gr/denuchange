@@ -11,7 +11,12 @@ export interface AppUser {
   avatarPath: string | null
 }
 
-export type EmailStatus = "not_registered" | "needs_password" | "has_password"
+export type EmailStatus = "not_registered" | "needs_password" | "has_password" | "authenticated"
+
+export interface CheckEmailResponse {
+  status: EmailStatus
+  user?: AppUser
+}
 
 interface ApiError extends Error {
   status: number
@@ -53,7 +58,7 @@ export const api = {
     apiFetch("/api/app/auth?action=check", {
       method: "POST",
       body: JSON.stringify({ email }),
-    }) as Promise<{ status: EmailStatus }>,
+    }) as Promise<CheckEmailResponse>,
 
   sendSetupEmail: (email: string) =>
     apiFetch("/api/app/auth?action=send-setup", {

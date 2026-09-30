@@ -6,6 +6,10 @@ import { LogOut, Camera } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 const REG_TYPE_LABELS: Record<string, string> = {
+  regular_full: "Regular – Full",
+  student_full: "Student – Full",
+  meeting_only: "Meeting Only",
+  accompanying: "Accompanying Person",
   standard: "Standard",
   student: "Student / Early Career",
   virtual: "Virtual",
