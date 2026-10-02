@@ -163,8 +163,8 @@ export function AgendaPage() {
           <p className="agenda-subtitle">{agendaSubtitle}</p>
           <p className="agenda-location">{agendaLocationDate}</p>
           <div className="agenda-actions">
-            <a href="#agenda-venue"><MapPin size={16} aria-hidden="true" />Venue &amp; transport</a>
             <a href="#agenda-organizers">Organizers</a>
+            <a href="#agenda-venue"><MapPin size={16} aria-hidden="true" />Venue &amp; transport</a>
             <button type="button" onClick={() => window.print()}><Printer size={16} aria-hidden="true" />Print program</button>
           </div>
         </div>
@@ -181,25 +181,7 @@ export function AgendaPage() {
         </div>
       </nav>
 
-      <main className="agenda-wrap" id="agenda-program" tabIndex={-1}>
-        <div className="agenda-program-intro">
-          <h2>Program</h2>
-          <p><a href="#monday">{programPreface}</a></p>
-        </div>
-        {days.map((day) => (
-          <section className="agenda-day" id={day.id} key={day.id} aria-labelledby={`${day.id}-heading`}>
-            <h2 id={`${day.id}-heading`} className="agenda-day-heading"><time dateTime={day.date}>{day.label}</time></h2>
-            {day.blocks.map((block, index) => <Block key={index} block={block} />)}
-          </section>
-        ))}
-
-        <section className="agenda-information" id="agenda-venue" aria-labelledby="agenda-venue-heading">
-          <h2 id="agenda-venue-heading">Workshop Venue</h2>
-          <p className="agenda-venue-link"><a href={venueUrl} target="_blank" rel="noopener noreferrer"><MapPin size={18} aria-hidden="true" />{venueName}</a></p>
-          <h3>Transport</h3>
-          {transportParagraphs.map((paragraph) => <p key={paragraph}><LinkedText text={paragraph} /></p>)}
-        </section>
-
+      <main className="agenda-wrap">
         <section className="agenda-information" id="agenda-organizers" aria-labelledby="agenda-organizers-heading">
           <h2 id="agenda-organizers-heading">Organizing bodies</h2>
           <ul className="agenda-organizing-bodies">
@@ -220,6 +202,24 @@ export function AgendaPage() {
             </section>
           </div>
         </section>
+
+        <section className="agenda-information" id="agenda-venue" aria-labelledby="agenda-venue-heading">
+          <h2 id="agenda-venue-heading">Workshop Venue</h2>
+          <p className="agenda-venue-link"><a href={venueUrl} target="_blank" rel="noopener noreferrer"><MapPin size={18} aria-hidden="true" />{venueName}</a></p>
+          <h3>Transport</h3>
+          {transportParagraphs.map((paragraph) => <p key={paragraph}><LinkedText text={paragraph} /></p>)}
+        </section>
+
+        <div className="agenda-program-intro" id="agenda-program" tabIndex={-1}>
+          <h2>Program</h2>
+          <p><a href="#monday">{programPreface}</a></p>
+        </div>
+        {days.map((day) => (
+          <section className="agenda-day" id={day.id} key={day.id} aria-labelledby={`${day.id}-heading`}>
+            <h2 id={`${day.id}-heading`} className="agenda-day-heading"><time dateTime={day.date}>{day.label}</time></h2>
+            {day.blocks.map((block, index) => <Block key={index} block={block} />)}
+          </section>
+        ))}
       </main>
       <footer className="agenda-footer"><div className="agenda-wrap"><span>{agendaTitle}</span><a href="#agenda-program">Back to program</a></div></footer>
     </div>
