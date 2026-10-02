@@ -359,11 +359,6 @@ export function AgendaPage() {
         <div className="agenda-wrap">
           <div className="agenda-brand-row">
             <a href={import.meta.env.BASE_URL} className="agenda-home"><ArrowLeft size={16} aria-hidden="true" />Workshop website</a>
-            <div className="agenda-brand-logos" aria-label="Workshop organizers">
-              <img className="agenda-brand-denuchange" src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`} alt="DENUCHANGE" width="117" height="97" />
-              <img className="agenda-brand-iag" src={`${import.meta.env.BASE_URL}images/logo-iag.jpg`} alt="International Association of Geomorphologists" width="179" height="97" />
-              <img className="agenda-brand-nkua" src={`${import.meta.env.BASE_URL}images/logo-nkua.jpg`} alt="National and Kapodistrian University of Athens" width="288" height="76" />
-            </div>
           </div>
           <h1>{agendaTitle}</h1>
           <p className="agenda-subtitle">{agendaSubtitle}</p>
