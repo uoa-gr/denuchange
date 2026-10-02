@@ -50,11 +50,6 @@ details[open] > .agenda-summary > .agenda-chevron { transform: none; }
 .agenda-hero { background: white; border-top: 4px solid #1e73be; padding-bottom: 1.75rem; }
 .agenda-brand-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; padding-block: 1rem 1.5rem; }
 .agenda-home { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; font-size: .8rem; font-weight: 600; }
-.agenda-brand-logos { display: flex; align-items: center; justify-content: space-between; gap: .8rem; width: 100%; padding-block: .4rem; }
-.agenda-brand-logos img { object-fit: contain; height: auto; flex-shrink: 0; content-visibility: visible; }
-.agenda-brand-denuchange { width: 52px; }
-.agenda-brand-iag { width: 84px; }
-.agenda-brand-nkua { width: min(42%, 168px); }
 .agenda-page h1 { max-width: 23ch; font-size: clamp(1.75rem, 4.3vw, 2.9rem); font-weight: 800; line-height: 1.2; letter-spacing: -.045em; color: #154e78; text-wrap: balance; }
 .agenda-subtitle { max-width: 65ch; margin-top: 1rem !important; color: var(--agenda-muted); line-height: 1.6; }
 .agenda-location { margin-top: .75rem !important; font-size: .95rem; font-weight: 600; }
@@ -163,10 +158,6 @@ details[open] > .agenda-summary > .agenda-chevron { transform: none; }
   .agenda-layout { width: min(100% - 3rem, 80rem); padding-top: 2rem; }
   .agenda-hero { padding-bottom: 2rem; }
   .agenda-brand-row { padding-block: 1.25rem 1.75rem; }
-  .agenda-brand-logos { width: auto; gap: 1.25rem; }
-  .agenda-brand-denuchange { width: 68px; }
-  .agenda-brand-iag { width: 108px; }
-  .agenda-brand-nkua { width: 220px; }
   .agenda-day { padding-top: 2rem; }
   .agenda-block-heading { padding: 1.15rem 1.5rem; }
   .agenda-block-context { padding: .75rem 1.5rem 1.15rem; }
@@ -218,7 +209,7 @@ details[open] > .agenda-summary > .agenda-chevron { transform: none; }
   .agenda-layout { display: block; width: 100%; padding-top: 0; }
   .agenda-summary { cursor: default; min-height: 0; }
   .agenda-hero { border: 0; padding-bottom: 1rem; }
-  .agenda-brand-row { padding-block: 0 .5rem; justify-content: flex-end; }
+  .agenda-brand-row { display: none; }
   .agenda-page h1 { font-size: 24pt; max-width: none; }
   .agenda-program-intro { padding-top: .5rem; }
   .agenda-day { padding-top: 1rem; }
