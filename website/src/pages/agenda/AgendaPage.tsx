@@ -1,5 +1,5 @@
 import { useEffect, useId, useState, type ReactNode } from "react"
-import { ArrowLeft, ArrowUpRight, BusFront, ChevronDown, Info, MapPin, Printer } from "lucide-react"
+import { ArrowLeft, ArrowUpRight, BusFront, ChevronDown, Info, MapPin } from "lucide-react"
 import {
   agendaTitle,
   agendaSubtitle,
@@ -369,11 +369,6 @@ export function AgendaPage() {
           <h1>{agendaTitle}</h1>
           <p className="agenda-subtitle">{agendaSubtitle}</p>
           <p className="agenda-location">{agendaLocationDate}</p>
-          <div className="agenda-actions">
-            <a href="#agenda-organizers">Organizers</a>
-            <a href="#agenda-venue"><MapPin size={16} aria-hidden="true" />Venue &amp; transport</a>
-            <button type="button" onClick={() => window.print()}><Printer size={16} aria-hidden="true" />Print program</button>
-          </div>
         </div>
       </header>
 
