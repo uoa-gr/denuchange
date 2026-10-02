@@ -75,7 +75,7 @@ export const transportParagraphs = [
   'Please note that this is the only scheduled morning departure on each day. Participants are kindly asked to arrive at the departure point a few minutes in advance.',
 ];
 
-export const programPreface = 'The workshop is preceded by an ice breaker event on Monday, 5 October (see p. 3)';
+export const programPreface = 'The workshop is preceded by an ice breaker event on Monday, 5 October.';
 
 export const days: AgendaDay[] = [
   {
