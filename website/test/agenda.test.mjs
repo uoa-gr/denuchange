@@ -32,6 +32,36 @@ function normalize(text) {
     .trim()
 }
 
+function disclosures(markup) {
+  const result = []
+  const stack = []
+  const sectionStack = []
+  for (const token of markup.matchAll(/<section\b([^>]*)>|<\/section>|<details\b([^>]*)>|<\/details>|<summary\b[^>]*>([\s\S]*?)<\/summary>/g)) {
+    if (token[1] !== undefined) {
+      sectionStack.push(token[1].match(/\bid="([^"]+)"/)?.[1])
+    } else if (token[0] === "</section>") {
+      sectionStack.pop()
+    } else if (token[2] !== undefined) {
+      const disclosure = {
+        attributes: token[2],
+        id: token[2].match(/\bid="([^"]+)"/)?.[1] ?? sectionStack.at(-1),
+        depth: stack.length,
+        summaries: [],
+      }
+      result.push(disclosure)
+      stack.push(disclosure)
+    } else if (token[3] !== undefined) {
+      assert.ok(stack.length, "A disclosure summary must belong to a details element")
+      stack.at(-1).summaries.push(normalize(visibleText(token[3])))
+    } else {
+      assert.ok(stack.length, "A details closing tag must match a disclosure")
+      stack.pop()
+    }
+  }
+  assert.equal(stack.length, 0, "Native disclosures must have balanced markup")
+  return result
+}
+
 test("the public agenda preserves the PDF programme and remains an unlisted page", async (context) => {
   const vite = await createServer({
     root: projectRoot,
@@ -48,6 +78,7 @@ test("the public agenda preserves the PDF programme and remains an unlisted page
   ])
   const markup = renderToStaticMarkup(React.createElement(pageModule.AgendaPage))
   const renderedText = normalize(visibleText(markup))
+  const mainContent = markup.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? ""
 
   await context.test("renders every source paragraph, including authors and committees", () => {
     // Keep the fixture intact; omit the PDF page reference and label the map links.
@@ -93,7 +124,9 @@ test("the public agenda preserves the PDF programme and remains an unlisted page
     assert.equal(markup.match(/<main(?:\s|>)/g)?.length, 1)
     assert.equal(markup.match(/<h1(?:\s|>)/g)?.length, 1)
     assert.match(markup, /<nav[^>]*aria-label="[^"]+"/)
-    const ids = new Set([...markup.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]))
+    const allIds = [...markup.matchAll(/\bid="([^"]+)"/g)].map(match => match[1])
+    const ids = new Set(allIds)
+    assert.equal(ids.size, allIds.length, "Every page anchor must have a unique ID")
     const anchors = [...markup.matchAll(/href="#([^"]+)"/g)].map(match => match[1])
     assert.ok(anchors.length >= dataModule.days.length, "Day navigation is missing")
     for (const anchor of anchors) assert.ok(ids.has(anchor), `In-page link #${anchor} has no destination`)
@@ -109,6 +142,41 @@ test("the public agenda preserves the PDF programme and remains an unlisted page
       }
     }
     assert.ok((markup.match(/<h2(?:\s|>)/g)?.length ?? 0) >= dataModule.days.length, "Days need visible headings")
+  })
+
+  await context.test("offers labeled native disclosures with readable top-level sections by default", () => {
+    const sections = disclosures(mainContent)
+    assert.ok(sections.length >= dataModule.days.length + 2, "The days, organizers and venue need native disclosures")
+    for (const section of sections) {
+      assert.equal(section.summaries.length, 1, "Each disclosure needs one direct summary control")
+      assert.ok(section.summaries[0].length > 0, "Disclosure controls need readable labels")
+      if (section.depth === 0) assert.match(section.attributes, /\bopen(?:\s|=|$)/, "Top-level content should be expanded initially")
+    }
+    const requiredLabels = ["Organizing bodies", "Workshop Venue", ...dataModule.days.map(day => day.label)]
+    for (const label of requiredLabels) {
+      assert.ok(sections.some(section => section.summaries[0].includes(normalize(label))), `${label} needs a labeled native disclosure`)
+    }
+  })
+
+  await context.test("provides a reachable table of contents for the programme's sections", () => {
+    const sidebar = markup.match(/<nav\b[^>]*aria-label="Agenda sections"[^>]*>([\s\S]*?)<\/nav>/)
+    assert.ok(sidebar, "The programme needs a labeled Agenda sections navigation landmark")
+    const links = [...sidebar[1].matchAll(/<a\b[^>]*href="#([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)]
+    const targets = new Set(links.map(link => link[1]))
+    const ids = new Set([...markup.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]))
+    for (const link of links) {
+      assert.ok(normalize(visibleText(link[2])).length > 0, `Section link #${link[1]} needs a readable label`)
+      assert.ok(ids.has(link[1]), `Section link #${link[1]} has no destination`)
+    }
+    for (const id of ["agenda-organizers", "agenda-venue", ...dataModule.days.map(day => day.id)]) {
+      assert.ok(targets.has(id), `The table of contents needs a link to #${id}`)
+    }
+    const sections = disclosures(mainContent)
+    for (const block of dataModule.days.flatMap(day => day.blocks).filter(block => block.title)) {
+      const section = sections.find(candidate => candidate.summaries[0]?.includes(normalize(block.title)))
+      assert.ok(section, `${block.title} needs a labeled disclosure`)
+      assert.ok(section.id && targets.has(section.id), `${block.title} needs a table-of-contents destination`)
+    }
   })
 
   await context.test("mounts /agenda publicly without adding links to the existing website", async () => {
