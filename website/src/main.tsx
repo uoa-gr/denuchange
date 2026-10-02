@@ -41,10 +41,22 @@ const OpsExportPage = lazy(() =>
   import('./pages/ops/OpsExportPage.tsx').then((m) => ({ default: m.OpsExportPage })),
 )
 
+const AgendaPage = lazy(() =>
+  import('./pages/agenda/AgendaPage.tsx').then((m) => ({ default: m.AgendaPage })),
+)
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
+        <Route
+          path="/agenda"
+          element={
+            <Suspense fallback={<div role="status" style={{ padding: 24 }}>Loading program…</div>}>
+              <AgendaPage />
+            </Suspense>
+          }
+        />
         <Route
           path="/OPS_DATA_EXPORT"
           element={
