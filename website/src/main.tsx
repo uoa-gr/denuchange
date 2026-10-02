@@ -12,9 +12,11 @@ registerSW({
   immediate: true,
   onRegisteredSW(swUrl, registration) {
     if (!registration) return
+    let checking = false
 
     const checkForUpdate = async () => {
-      if (registration.installing || !navigator.onLine) return
+      if (checking || registration.installing || !navigator.onLine) return
+      checking = true
 
       try {
         const response = await fetch(swUrl, {
@@ -25,12 +27,15 @@ registerSW({
         if (response.ok) await registration.update()
       } catch {
         // Keep the current offline-capable version when the update check cannot connect.
+      } finally {
+        checking = false
       }
     }
 
     void checkForUpdate()
     window.setInterval(() => void checkForUpdate(), updateIntervalMs)
     window.addEventListener('focus', () => void checkForUpdate())
+    window.addEventListener('online', () => void checkForUpdate())
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') void checkForUpdate()
     })

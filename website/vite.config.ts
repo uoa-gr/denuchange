@@ -17,9 +17,22 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,jpg,jpeg,svg,webp}'],
         maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MiB
-        navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/api\//, /\/DENUCHANGE_Program\.pdf$/i],
+        // Online visits must fetch the current HTML, including the homepage.
+        // Disable the precache navigation shortcuts; retain the shell for offline use.
+        navigateFallback: null,
+        directoryIndex: null,
         runtimeCaching: [
+          {
+            urlPattern: ({ request, url, sameOrigin }) =>
+              request.mode === 'navigate' &&
+              sameOrigin &&
+              !/^\/(?:api|_vercel)(?:\/|$)/.test(url.pathname) &&
+              !/\.pdf$/i.test(url.pathname),
+            handler: 'NetworkOnly',
+            options: {
+              precacheFallback: { fallbackURL: 'index.html' },
+            },
+          },
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: 'CacheFirst',
