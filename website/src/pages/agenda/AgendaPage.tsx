@@ -1,5 +1,5 @@
-import { useEffect, useId, useState } from "react"
-import { ArrowLeft, ArrowUpRight, BusFront, Info, MapPin, Printer } from "lucide-react"
+import { useEffect, useId, useState, type ReactNode } from "react"
+import { ArrowLeft, ArrowUpRight, BusFront, ChevronDown, Info, MapPin, Printer } from "lucide-react"
 import {
   agendaTitle,
   agendaSubtitle,
@@ -24,6 +24,91 @@ const shortDays = [
   { weekday: "Tuesday", date: "6 October" },
   { weekday: "Wednesday", date: "7 October" },
 ]
+
+const agendaOutline = [
+  { id: "agenda-organizers", label: "Organizing bodies", children: [] },
+  { id: "agenda-venue", label: "Venue & transport", children: [] },
+  { id: "agenda-program", label: "Program", children: [] },
+  ...days.map((day, dayIndex) => ({
+    id: day.id,
+    label: `${shortDays[dayIndex].weekday} · ${shortDays[dayIndex].date}`,
+    children: day.blocks.flatMap((block, index) => block.title ? [{
+      id: `${day.id}-block-${index + 1}`,
+      label: block.title.startsWith("Session ") ? block.title.split(":")[0]
+        : block.tutors ? "VFT Laboratory" : block.title,
+    }] : []),
+  })),
+]
+
+function revealAgendaSection(id: string) {
+  let targetId: string
+  try { targetId = decodeURIComponent(id) } catch { return null }
+  const target = document.getElementById(targetId)
+  if (!target) return null
+  const ownDisclosure = target.querySelector<HTMLDetailsElement>(":scope > details.agenda-collapsible")
+  if (ownDisclosure) ownDisclosure.open = true
+  for (let parent = target.parentElement; parent; parent = parent.parentElement) {
+    if (parent instanceof HTMLDetailsElement) parent.open = true
+  }
+  return target
+}
+
+function setAgendaSectionsOpen(open: boolean) {
+  document.querySelectorAll<HTMLDetailsElement>("main .agenda-collapsible").forEach((section) => { section.open = open })
+}
+
+function AgendaDisclosure({ title, headingId, level = 2, summaryClass = "", children }: {
+  title: ReactNode; headingId: string; level?: 2 | 3; summaryClass?: string; children: ReactNode;
+}) {
+  const Heading = level === 2 ? "h2" : "h3"
+  return (
+    <details className="agenda-collapsible" open>
+      <summary className={`agenda-summary ${summaryClass}`}>
+        <Heading id={headingId}>{title}</Heading>
+        <ChevronDown className="agenda-chevron" size={20} aria-hidden="true" />
+      </summary>
+      <div className="agenda-disclosure-content">{children}</div>
+    </details>
+  )
+}
+
+function AgendaContents({ activeSection }: { activeSection: string }) {
+  const [isOpen, setIsOpen] = useState(false)
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1100px)")
+    const update = () => { setIsOpen(desktop.matches) }
+    update()
+    desktop.addEventListener("change", update)
+    return () => { desktop.removeEventListener("change", update) }
+  }, [])
+
+  return (
+    <aside className="agenda-sidebar">
+      <nav aria-label="Agenda sections" onClick={(event) => {
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+        if (event.target instanceof Element && event.target.closest('a[href^="#"]') && !window.matchMedia("(min-width: 1100px)").matches) setIsOpen(false)
+      }}>
+        <details className="agenda-contents" open={isOpen} onToggle={(event) => { setIsOpen(event.currentTarget.open) }}>
+          <summary className="agenda-summary"><span>On this page</span><ChevronDown className="agenda-chevron" size={18} aria-hidden="true" /></summary>
+          <div className="agenda-section-controls">
+            <button type="button" onClick={() => { setAgendaSectionsOpen(true) }}>Expand all</button>
+            <button type="button" onClick={() => { setAgendaSectionsOpen(false) }}>Collapse all</button>
+          </div>
+          <ul>
+            {agendaOutline.map((section) => (
+              <li key={section.id}>
+                <a href={`#${section.id}`} aria-current={activeSection === section.id ? "location" : undefined}>{section.label}</a>
+                {section.children.length > 0 && <ul>{section.children.map((child) => (
+                  <li key={child.id}><a href={`#${child.id}`} aria-current={activeSection === child.id ? "location" : undefined}>{child.label}</a></li>
+                ))}</ul>}
+              </li>
+            ))}
+          </ul>
+        </details>
+      </nav>
+    </aside>
+  )
+}
 
 function LinkedText({ text }: { text: string }) {
   return text.split(/(https:\/\/[^\s)]+)/g).map((part, index) =>
@@ -58,11 +143,11 @@ function VenueAndTransport() {
   const departures = transportParagraphs[2].replace("Departures: ", "").split(" · ")
 
   return (
-    <section className="agenda-information agenda-travel" id="agenda-venue" aria-labelledby="agenda-venue-heading">
+    <section className="agenda-information agenda-travel" id="agenda-venue" aria-labelledby="agenda-venue-heading" tabIndex={-1}>
+      <AgendaDisclosure title="Workshop Venue" headingId="agenda-venue-heading">
       <div className="agenda-venue-band">
         <span className="agenda-venue-icon"><MapPin size={24} aria-hidden="true" /></span>
         <div className="agenda-venue-name">
-          <h2 id="agenda-venue-heading">Workshop Venue</h2>
           <p>{venueName}</p>
         </div>
         <VenueMapButton />
@@ -98,6 +183,7 @@ function VenueAndTransport() {
         </div>
         <div className="agenda-transport-note"><Info size={18} aria-hidden="true" /><p>{transportParagraphs[3]}</p></div>
       </div>
+      </AgendaDisclosure>
     </section>
   )
 }
@@ -154,7 +240,7 @@ function Entry({ entry, hasBlockHeading }: { entry: AgendaEntry; hasBlockHeading
   )
 }
 
-function Block({ block }: { block: AgendaBlock }) {
+function Block({ block, id }: { block: AgendaBlock; id?: string }) {
   const tone = block.title?.startsWith("Session 1") ? "sediment"
     : block.title?.startsWith("Session 2") ? "landscape"
     : block.title?.startsWith("Session 3") ? "climate"
@@ -163,16 +249,14 @@ function Block({ block }: { block: AgendaBlock }) {
     : block.tutors ? "laboratory"
     : block.title === "Opening" ? "opening" : "neutral"
 
-  return (
-    <section className={`agenda-block agenda-block--${tone}`} aria-label={block.title}>
-      {block.title && (
-        <header className="agenda-block-heading">
+  const contents = <>
+      {block.title && (block.chairs || block.subtitle || block.description || block.tutors) && (
+        <div className="agenda-block-context">
           {block.chairs && <p className="agenda-chairs">{block.chairs}</p>}
-          <h3>{block.title}</h3>
           {block.subtitle && <p className="agenda-block-subtitle">{block.subtitle}</p>}
           {block.description && <p className="agenda-block-description">{block.description}</p>}
           {block.tutors && <p className="agenda-tutors">{block.tutors}</p>}
-        </header>
+        </div>
       )}
       <ol className="agenda-entries">
         {block.entries.map((entry, index) => <Entry entry={entry} hasBlockHeading={Boolean(block.title)} key={`${entry.time}-${index}`} />)}
@@ -190,34 +274,87 @@ function Block({ block }: { block: AgendaBlock }) {
           ))}
         </ul>
       )}
+    </>
+
+  return (
+    <section className={`agenda-block agenda-block--${tone}`} id={id} aria-label={block.title} tabIndex={id ? -1 : undefined}>
+      {block.title && id ? (
+        <AgendaDisclosure title={block.title} headingId={`${id}-heading`} level={3} summaryClass="agenda-block-heading">
+          {contents}
+        </AgendaDisclosure>
+      ) : contents}
     </section>
   )
 }
 
 export function AgendaPage() {
-  const [activeDay, setActiveDay] = useState(days[0].id)
+  const [activeSection, setActiveSection] = useState("agenda-organizers")
+  const activeDay = days.find((day) => activeSection === day.id || activeSection.startsWith(`${day.id}-block-`))?.id
 
   useEffect(() => {
     const previousTitle = document.title
     document.title = "Agenda | IAG DENUCHANGE Workshop 2026"
-    // Lazy routes mount after the browser's initial fragment scroll attempt.
-    if (window.location.hash) document.getElementById(window.location.hash.slice(1))?.scrollIntoView()
-    return () => { document.title = previousTitle }
+    const followHash = () => {
+      const target = revealAgendaSection(window.location.hash.slice(1))
+      // Lazy routes mount after the browser's initial fragment scroll attempt.
+      if (target) target.scrollIntoView({ block: "start" })
+    }
+    followHash()
+    window.addEventListener("hashchange", followHash)
+    return () => {
+      document.title = previousTitle
+      window.removeEventListener("hashchange", followHash)
+    }
   }, [])
 
   useEffect(() => {
-    const sections = days.map((day) => document.getElementById(day.id)).filter((section) => section !== null)
-    const observer = new IntersectionObserver(() => {
-      // Two days can intersect together; choose the one at the reading position.
-      const current = sections.find((section) => section.getBoundingClientRect().bottom > 160) ?? sections.at(-1)
-      if (current) setActiveDay(current.id)
-    }, { rootMargin: "-160px 0px -10px 0px" })
-    for (const section of sections) observer.observe(section)
-    return () => observer.disconnect()
+    const sections = agendaOutline.flatMap((section) => [section, ...section.children])
+      .map((section) => document.getElementById(section.id)).filter((section) => section !== null)
+    let frame = 0
+    const update = () => {
+      frame = 0
+      const visible = sections.filter((section) => section.getClientRects().length > 0 && !section.closest("details:not([open])"))
+      const current = visible.filter((section) => section.getBoundingClientRect().top <= 160).at(-1) ?? visible[0]
+      if (current) setActiveSection(current.id)
+    }
+    const scheduleUpdate = () => { if (!frame) frame = requestAnimationFrame(update) }
+    update()
+    window.addEventListener("scroll", scheduleUpdate, { passive: true })
+    window.addEventListener("resize", scheduleUpdate)
+    document.addEventListener("toggle", scheduleUpdate, true)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener("scroll", scheduleUpdate)
+      window.removeEventListener("resize", scheduleUpdate)
+      document.removeEventListener("toggle", scheduleUpdate, true)
+    }
+  }, [])
+
+  useEffect(() => {
+    let closedSections: HTMLDetailsElement[] | null = null
+    const beforePrint = () => {
+      if (closedSections !== null) return
+      closedSections = [...document.querySelectorAll<HTMLDetailsElement>("main .agenda-collapsible:not([open])")]
+      setAgendaSectionsOpen(true)
+    }
+    const afterPrint = () => { closedSections?.forEach((section) => { section.open = false }); closedSections = null }
+    window.addEventListener("beforeprint", beforePrint)
+    window.addEventListener("afterprint", afterPrint)
+    return () => {
+      window.removeEventListener("beforeprint", beforePrint)
+      window.removeEventListener("afterprint", afterPrint)
+    }
   }, [])
 
   return (
-    <div className="agenda-page">
+    <div className="agenda-page" onClick={(event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || !(event.target instanceof Element)) return
+      const link = event.target.closest<HTMLAnchorElement>('a[href^="#"]')
+      if (!link) return
+      const target = revealAgendaSection(link.hash.slice(1))
+      const focusTarget = target?.querySelector<HTMLElement>(":scope > details > summary") ?? target
+      focusTarget?.focus({ preventScroll: true })
+    }}>
       <a className="agenda-skip" href="#agenda-program">Skip to program</a>
       <header className="agenda-hero">
         <div className="agenda-wrap">
@@ -251,9 +388,11 @@ export function AgendaPage() {
         </div>
       </nav>
 
-      <main className="agenda-wrap">
-        <section className="agenda-information agenda-organizers" id="agenda-organizers" aria-labelledby="agenda-organizers-heading">
-          <h2 id="agenda-organizers-heading">Organizing bodies</h2>
+      <div className="agenda-layout">
+      <AgendaContents activeSection={activeSection} />
+      <main className="agenda-content">
+        <section className="agenda-information agenda-organizers" id="agenda-organizers" aria-labelledby="agenda-organizers-heading" tabIndex={-1}>
+          <AgendaDisclosure title="Organizing bodies" headingId="agenda-organizers-heading">
           <ul className="agenda-organizing-bodies">
             {organizingBodies.map((body) => (
               <li key={body.name}>
@@ -276,6 +415,7 @@ export function AgendaPage() {
               <ul>{scientificCommittee.map((member) => <li key={member}><PersonText text={member} /></li>)}</ul>
             </section>
           </div>
+          </AgendaDisclosure>
         </section>
 
         <VenueAndTransport />
@@ -285,12 +425,14 @@ export function AgendaPage() {
           <p><a href="#monday">{programPreface}</a></p>
         </div>
         {days.map((day) => (
-          <section className="agenda-day" id={day.id} key={day.id} aria-labelledby={`${day.id}-heading`}>
-            <h2 id={`${day.id}-heading`} className="agenda-day-heading"><time dateTime={day.date}>{day.label}</time></h2>
-            {day.blocks.map((block, index) => <Block key={index} block={block} />)}
+          <section className="agenda-day" id={day.id} key={day.id} aria-labelledby={`${day.id}-heading`} tabIndex={-1}>
+            <AgendaDisclosure title={<time dateTime={day.date}>{day.label}</time>} headingId={`${day.id}-heading`} summaryClass="agenda-day-heading">
+              {day.blocks.map((block, index) => <Block key={index} block={block} id={block.title ? `${day.id}-block-${index + 1}` : undefined} />)}
+            </AgendaDisclosure>
           </section>
         ))}
       </main>
+      </div>
       <footer className="agenda-footer"><div className="agenda-wrap"><span>{agendaTitle}</span><a href="#agenda-program">Back to program</a></div></footer>
     </div>
   )
