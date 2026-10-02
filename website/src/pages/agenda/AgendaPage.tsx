@@ -100,15 +100,13 @@ export function AgendaPage() {
   }, [])
 
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) setActiveDay(entry.target.id)
-      }
-    }, { rootMargin: "-80px 0px -55% 0px" })
-    for (const day of days) {
-      const section = document.getElementById(day.id)
-      if (section) observer.observe(section)
-    }
+    const sections = days.map((day) => document.getElementById(day.id)).filter((section) => section !== null)
+    const observer = new IntersectionObserver(() => {
+      // Two days can intersect together; choose the one at the reading position.
+      const current = sections.find((section) => section.getBoundingClientRect().bottom > 160) ?? sections.at(-1)
+      if (current) setActiveDay(current.id)
+    }, { rootMargin: "-160px 0px -10px 0px" })
+    for (const section of sections) observer.observe(section)
     return () => observer.disconnect()
   }, [])
 
