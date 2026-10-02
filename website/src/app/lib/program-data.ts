@@ -1,10 +1,12 @@
 // DENUCHANGE 2026 Workshop Program & Announcements
-// Extracted exactly from official agenda: DENUCHANGE_Program.pdf
+// Based on the official DENUCHANGE_Program.pdf and its verified public agenda.
+// The app retains its existing normalization of two printed timing typos below.
 
 export interface ProgramSession {
   id: string
   date: string
   start_time: string
+  // Empty when the source specifies a start time without an end time.
   end_time: string
   title: string
   description: string
@@ -23,13 +25,13 @@ export const DEFAULT_ANNOUNCEMENTS: NotificationItem[] = [
   {
     "id": "alert-agenda-update-20260927",
     "title": "Program Schedule Updated",
-    "body": "The workshop agenda has been updated with timing adjustments for Tuesday Session 2 (including a coffee break at 17:00), revised timings for Wednesday's Poster Session and Lunch, and the addition of a lecture by Kirki Kefalea at 14:45. Please check the Program tab or download the latest PDF.",
+    "body": "The workshop agenda has been updated with timing adjustments for Tuesday Session 2 (including a coffee break at 17:00), revised timings for Wednesday's Poster Session and Lunch, and the addition of a lecture by Kirki Kefalea at 14:45. Please check the Program tab or view the detailed program from the homepage.",
     "created_at": "2026-09-27T19:00:00.000Z"
   },
   {
     "id": "alert-updated-agenda-20260923",
     "title": "Updated Workshop Agenda & Program",
-    "body": "The official workshop agenda has been updated. The detailed schedule for October 6–7, 2026—including opening lectures, thematic oral sessions, the poster session, and the Virtual Field Trip Laboratory—is now available in the Program section. You can also download the updated PDF program directly from the homepage.",
+    "body": "The official workshop agenda has been updated. The detailed schedule for October 6–7, 2026—including opening lectures, thematic oral sessions, the poster session, and the Virtual Field Trip Laboratory—is now available in the Program section. You can also view the detailed program directly from the homepage.",
     "created_at": "2026-09-24T12:00:00.000Z"
   }
 ]
@@ -39,9 +41,9 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "id": "mon-bus",
     "date": "2026-10-05",
     "start_time": "18:45",
-    "end_time": "19:00",
+    "end_time": "",
     "title": "Bus transfer to venue",
-    "description": "Bus service to the venue departing from the central bus station in Naxos Town (approx. 10 min journey).",
+    "description": "For the ice breaker event, a bus service to the venue will be provided at 18:45 departing from the central bus station in Naxos Town.",
     "location": "Central bus station, Naxos Town",
     "session_type": "social"
   },
@@ -49,7 +51,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "id": "mon-icebreaker",
     "date": "2026-10-05",
     "start_time": "19:00",
-    "end_time": "21:30",
+    "end_time": "",
     "title": "ICE BREAKER",
     "description": "Pre-workshop event · A welcome evening with light dinner and drinks.",
     "location": "Laguna Coast Resort, Naxos",
@@ -59,9 +61,9 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "id": "tue-bus",
     "date": "2026-10-06",
     "start_time": "08:45",
-    "end_time": "09:00",
+    "end_time": "",
     "title": "Bus transfer to venue",
-    "description": "Morning bus departure from the central bus station in Naxos Town to Laguna Coast Resort.",
+    "description": "On both days of the workshop, a single bus service to the venue will be provided in the morning, departing from the central bus station in Naxos Town (https://maps.app.goo.gl/PsK22G3EVy2mAKBL8). The journey takes approximately 10 minutes. Return transfer will also be provided at the end of the day’s activities.\n\nPlease note that this is the only scheduled morning departure on each day. Participants are kindly asked to arrive at the departure point a few minutes in advance.",
     "location": "Central bus station, Naxos Town",
     "session_type": "social"
   },
@@ -81,7 +83,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "start_time": "09:30",
     "end_time": "10:00",
     "title": "Opening: Welcome speeches & Event Opening",
-    "description": "Welcome speeches:\nProf. Niki Evelpidou, Chair of the IAG WG Virtual trips in Geomorphology / Department of Geology and Geoenvironment, National and Kapodistrian University of Athens\nProf. Achim A. Beylich, Chair of the IAG WG DENUCHANGE / Geomorphological Field Laboratory\nProf. Zbigniew Zwoliński, Co-Chair of the IAG WG DENUCHANGE / Institute of Geoecology and Geoinformation, Adam Mickiewicz University\nVasilis Flerianos, Deputy Mayor for Culture, Municipality of Naxos and Small Cyclades\nProf. Assimina Antonarakou, President, Department of Geology and Geoenvironment, National and Kapodistrian University of Athens\n\nEvent Opening:\nProf. Efstathios Efstathopoulos, Vice-Rector for Research and Innovation, National and Kapodistrian University of Athens",
+    "description": "Welcome speeches:\nProf. Niki Evelpidou, Chair of the IAG WG Virtual trips in Geomorphology / Department of Geology and Geoenvironment, National and Kapodistrian University of Athens\nDr. Mihai Micu, President of the International Association of Geomorphologists /Institute of Geography, Romanian Academy\nProf. Achim A. Beylich, Chair of the IAG WG DENUCHANGE / Geomorphological Field Laboratory\nProf. Zbigniew Zwoliński, Co-Chair of the IAG WG DENUCHANGE / Institute of Geoecology and Geoinformation, Adam Mickiewicz University\nVasilis Flerianos, Deputy Mayor for Culture, Municipality of Naxos and Small Cyclades\nProf. Assimina Antonarakou, President, Department of Geology and Geoenvironment, National and Kapodistrian University of Athens\n\nEvent Opening:\nProf. Efstathios Efstathopoulos, Vice-Rector for Research and Innovation, National and Kapodistrian University of Athens",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "session"
   },
@@ -108,6 +110,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
   {
     "id": "tue-keynote-vespremeanu",
     "date": "2026-10-06",
+    // Printed as 11:45-11:15 in the PDF; the app keeps its existing 10:45 start.
     "start_time": "10:45",
     "end_time": "11:15",
     "title": "Invited keynote lecture: From Deglaciation to Rock Glaciers: Timing and Patterns of Rock-Wall Debris Production in the Southern Carpathians",
@@ -131,7 +134,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "start_time": "11:35",
     "end_time": "11:50",
     "title": "SWAT-based modelling of water runoff and suspended sediment transport in catchments across diverse morphoclimatic zones",
-    "description": "Gudowicz J., Bochenek W., Kijowska-Strugała M., Majewski M., Zwoliński Z.\n\nSession 1: Catchment Hydrology, Sediment Connectivity and Modelling (Understanding how sediment is mobilised, transported and monitored)",
+    "description": "Gudowicz J., Bochenek W., Kijowska-Strugała M., Majewski M., Zwoliński Z.\n\nSession 1: Catchment Hydrology, Sediment Connectivity and Modelling (Understanding how sediment is mobilised, transported and monitored)\nChairs: Achim Beylich, Giannis Saitis",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "session"
   },
@@ -210,8 +213,8 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "date": "2026-10-06",
     "start_time": "12:55",
     "end_time": "13:10",
-    "title": "Debris flow release susceptibility and sediment connectivity in the Russian sector of the Greater Caucasus",
-    "description": "Posazhennikova V., Golosov V. N., Kharchenko S. V.\n\nSession 1: Catchment Hydrology, Sediment Connectivity and Modelling",
+    "title": "Toward the integration of historical data in erosion modelling: the case of Badlands landscapes of Aliano (Basilicata, Southern Italy)",
+    "description": "Santoro G., Mairota P., Capolongo D., Marsico A.\n\nSession 1: Catchment Hydrology, Sediment Connectivity and Modelling",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "session"
   },
@@ -260,8 +263,8 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "date": "2026-10-06",
     "start_time": "17:20",
     "end_time": "17:35",
-    "title": "Toward the integration of historical data in erosion modelling: the case of Badlands landscapes of Aliano (Basilicata, Southern Italy)",
-    "description": "Santoro G., Mairota P., Capolongo D., Marsico A.\n\nSession 2: Denudation, Landscape Evolution and Sediment Sources (From long-term landscape evolution to sediment production)",
+    "title": "Debris flow release susceptibility and sediment connectivity in the Russian sector of the Greater Caucasus",
+    "description": "Posazhennikova V., Golosov V. N., Kharchenko S. V.\n\nSession 2: Denudation, Landscape Evolution and Sediment Sources (From long-term landscape evolution to sediment production)\nChairs: Zbigniew Zwoliński, Nurit Shtober-Zisu",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "session"
   },
@@ -329,7 +332,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "id": "tue-dinner",
     "date": "2026-10-06",
     "start_time": "19:30",
-    "end_time": "22:30",
+    "end_time": "",
     "title": "Conference Dinner",
     "description": "Laguna Coast Resort, Naxos",
     "location": "Laguna Coast Resort, Naxos",
@@ -339,9 +342,9 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "id": "wed-bus",
     "date": "2026-10-07",
     "start_time": "09:10",
-    "end_time": "09:25",
+    "end_time": "",
     "title": "Bus transfer to venue",
-    "description": "Morning bus departure from the central bus station in Naxos Town to Laguna Coast Resort.",
+    "description": "On both days of the workshop, a single bus service to the venue will be provided in the morning, departing from the central bus station in Naxos Town (https://maps.app.goo.gl/PsK22G3EVy2mAKBL8). The journey takes approximately 10 minutes. Return transfer will also be provided at the end of the day’s activities.\n\nPlease note that this is the only scheduled morning departure on each day. Participants are kindly asked to arrive at the departure point a few minutes in advance.",
     "location": "Central bus station, Naxos Town",
     "session_type": "social"
   },
@@ -351,7 +354,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "start_time": "09:30",
     "end_time": "09:45",
     "title": "Wildfire-Induced Denudation Processes in Mediterranean Mountain Catchments",
-    "description": "Wittenberg L., Malkinson D., Brook A., Ben Yehuda D., Tessler N., Shtober -Zisu N.\n\nSession 3: Climate Change, Wildfires and Extreme Events (Disturbance-driven denudation and geomorphic hazards)",
+    "description": "Wittenberg L., Malkinson D., Brook A., Ben Yehuda D., Tessler N., Shtober-Zisu N.\n\nSession 3: Climate Change, Wildfires and Extreme Events (Disturbance-driven denudation and geomorphic hazards)\nChairs: Mihaela Verga, Anna Karkani",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "session"
   },
@@ -461,13 +464,14 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "start_time": "11:30",
     "end_time": "11:45",
     "title": "Coastal dune recovery: a case study from the west of Ireland",
-    "description": "Lynch K., Cascone S., Morley T.\n\nSession 4: From Catchments to Coasts: Coastal Responses to Sediment Fluxes (How sediment delivery shapes coastal landscapes)",
+    "description": "Lynch K., Cascone S., Morley T.\n\nSession 4: From Catchments to Coasts: Coastal Responses to Sediment Fluxes (How sediment delivery shapes coastal landscapes)\nChairs: Katja Laute, Niki Evelpidou",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "session"
   },
   {
     "id": "wed-s4-1-disc",
     "date": "2026-10-07",
+    // Printed as 11:45-11:-50 in the PDF; the app keeps its existing 11:50 end.
     "start_time": "11:45",
     "end_time": "11:50",
     "title": "Discussion",
@@ -571,7 +575,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "start_time": "15:00",
     "end_time": "15:30",
     "title": "Closing remarks",
-    "description": "",
+    "description": "Prof. Achim A. Beylich, Chair of the IAG WG DENUCHANGE / Geomorphological Field Laboratory\nProf. Zbigniew Zwoliński, Co-Chair of the IAG WG DENUCHANGE / Institute of Geoecology and Geoinformation, Adam Mickiewicz University",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "session"
   },

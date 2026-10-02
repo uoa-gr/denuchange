@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
-import { Clock, MapPin, Download, Bell, ExternalLink, CalendarPlus, Check } from "lucide-react"
+import { Clock, MapPin, CalendarDays, Bell, ExternalLink, CalendarPlus, Check } from "lucide-react"
 import { DEFAULT_PROGRAM_SESSIONS, type ProgramSession } from "../lib/program-data"
+import { formatSessionTime } from "../lib/program-time"
 import {
   generateSessionIcs,
   generateDayIcs,
@@ -31,10 +32,6 @@ const TYPE_BADGES: Record<string, string> = {
   meal: "bg-amber-100 text-amber-700",
   field_trip: "bg-green-100 text-green-700",
   social: "bg-purple-100 text-purple-700",
-}
-
-function formatTime(t: string) {
-  return t.slice(0, 5)
 }
 
 export function Program() {
@@ -91,7 +88,7 @@ export function Program() {
         ))}
       </div>
 
-      {/* Day label and Calendar / PDF actions */}
+      {/* Day label and Calendar / detailed agenda actions */}
       <div className="px-4 py-2 bg-muted/30 border-b border-border flex items-center justify-between gap-2 flex-wrap">
         <p className="text-xs font-medium text-muted-foreground">
           {DAYS.find((d) => d.date === activeDay)?.label}
@@ -107,12 +104,13 @@ export function Program() {
             <span>Add Day to Cal</span>
           </button>
           <a
-            href="/DENUCHANGE_Program.pdf"
-            download="DENUCHANGE_Program.pdf"
+            href="https://uoa-gr.github.io/denuchange/agenda/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-[11px] font-semibold text-muted-foreground hover:text-foreground hover:underline"
           >
-            <Download className="h-3.5 w-3.5" />
-            <span>PDF</span>
+            <CalendarDays className="h-3.5 w-3.5" />
+            <span>Full agenda</span>
           </a>
         </div>
       </div>
@@ -126,9 +124,9 @@ export function Program() {
         ) : daySession.length === 0 ? (
           <div className="text-center py-12">
             <Calendar2 className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-            <p className="text-sm font-medium text-foreground">Schedule coming soon</p>
+            <p className="text-sm font-medium text-foreground">No sessions listed for this day</p>
             <p className="text-xs text-muted-foreground mt-1">
-              The detailed programme will be announced closer to the event.
+              View the full agenda for the workshop schedule.
             </p>
           </div>
         ) : (
@@ -147,10 +145,10 @@ export function Program() {
                   {s.session_type.replace("_", " ")}
                 </span>
               </div>
-              <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1 whitespace-nowrap">
                   <Clock className="h-3 w-3" />
-                  {formatTime(s.start_time)} – {formatTime(s.end_time)}
+                  {formatSessionTime(s.start_time, s.end_time)}
                 </span>
                 {s.location && (
                   <span className="flex items-center gap-1">
@@ -160,7 +158,7 @@ export function Program() {
                 )}
               </div>
               {s.description && (
-                <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed whitespace-pre-line">{s.description}</p>
+                <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed whitespace-pre-line break-words">{s.description}</p>
               )}
               {s.title !== "Discussion" && (
                 <div className="mt-2.5 pt-2 border-t border-border/50 flex items-center justify-between gap-2">

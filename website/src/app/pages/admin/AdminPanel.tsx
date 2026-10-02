@@ -5,6 +5,7 @@ import { api, type SessionInput } from "@/app/lib/api"
 import { supabase } from "@/lib/supabase"
 import { Bell, Image, Calendar, Trash2, Pencil, Plus, X } from "lucide-react"
 import { DEFAULT_PROGRAM_SESSIONS } from "@/app/lib/program-data"
+import { formatSessionTime } from "@/app/lib/program-time"
 
 type Tab = "alerts" | "gallery" | "program"
 
@@ -299,7 +300,7 @@ function ProgramTab() {
           {sessions.map((s) => (
             <div key={s.id} className="flex items-start gap-3 px-4 py-3">
               <div className="flex-1 min-w-0">
-                <p className="text-xs text-muted-foreground">{s.date} · {s.start_time}–{s.end_time}</p>
+                <p className="text-xs text-muted-foreground">{s.date} · {formatSessionTime(s.start_time, s.end_time)}</p>
                 <p className="text-sm font-medium text-foreground truncate">{s.title}</p>
                 <p className="text-xs text-muted-foreground capitalize">{s.session_type}</p>
               </div>

@@ -31,12 +31,31 @@ function escapeIcs(str: string): string {
     .replace(/\r?\n/g, "\\n")
 }
 
+/** Fold at 75 UTF-8 octets without splitting accented names or other characters. */
+function foldIcsLines(content: string): string {
+  const encoder = new TextEncoder()
+  return content.split("\r\n").map((line) => {
+    let folded = ""
+    let octets = 0
+    for (const character of line) {
+      const size = encoder.encode(character).length
+      if (octets + size > 75) {
+        folded += "\r\n "
+        octets = 1
+      }
+      folded += character
+      octets += size
+    }
+    return folded
+  }).join("\r\n") + "\r\n"
+}
+
 /**
  * Builds the RFC 5545 VEVENT block for a single session with a 15-minute alarm.
  */
 function buildVEvent(session: ProgramSession, nowUtc: string): string {
   const startUtc = formatUtcIcsDate(session.date, session.start_time)
-  const endUtc = formatUtcIcsDate(session.date, session.end_time)
+  const endUtc = session.end_time ? formatUtcIcsDate(session.date, session.end_time) : null
   const location = session.location || VENUE_FALLBACK
   const description = session.description ? `${session.description}\n\nVenue: ${location}` : session.title
 
@@ -45,7 +64,8 @@ function buildVEvent(session: ProgramSession, nowUtc: string): string {
     `UID:denuchange-${session.id}@denuchange.vercel.app`,
     `DTSTAMP:${nowUtc}`,
     `DTSTART:${startUtc}`,
-    `DTEND:${endUtc}`,
+    // RFC 5545 allows start-only events when no duration is supplied.
+    ...(endUtc ? [`DTEND:${endUtc}`] : []),
     `SUMMARY:${escapeIcs(session.title)}`,
     `DESCRIPTION:${escapeIcs(description)}`,
     `LOCATION:${escapeIcs(location)}`,
@@ -66,7 +86,7 @@ export function generateSessionIcs(session: ProgramSession): string {
   const nowUtc = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "")
   const eventBlock = buildVEvent(session, nowUtc)
 
-  return [
+  return foldIcsLines([
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
     "PRODID:-//DENUCHANGE 2026 Workshop//EN",
@@ -76,7 +96,7 @@ export function generateSessionIcs(session: ProgramSession): string {
     "X-WR-TIMEZONE:Europe/Athens",
     eventBlock,
     "END:VCALENDAR",
-  ].join("\r\n")
+  ].join("\r\n"))
 }
 
 /**
@@ -86,7 +106,7 @@ export function generateDayIcs(sessions: ProgramSession[], calendarTitle = "DENU
   const nowUtc = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "")
   const events = sessions.map((s) => buildVEvent(s, nowUtc)).join("\r\n")
 
-  return [
+  return foldIcsLines([
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
     "PRODID:-//DENUCHANGE 2026 Workshop//EN",
@@ -96,7 +116,7 @@ export function generateDayIcs(sessions: ProgramSession[], calendarTitle = "DENU
     "X-WR-TIMEZONE:Europe/Athens",
     events,
     "END:VCALENDAR",
-  ].join("\r\n")
+  ].join("\r\n"))
 }
 
 /**
@@ -119,7 +139,8 @@ export function downloadIcsFile(filename: string, icsContent: string): void {
  */
 export function getGoogleCalendarUrl(session: ProgramSession): string {
   const startUtc = formatUtcIcsDate(session.date, session.start_time)
-  const endUtc = formatUtcIcsDate(session.date, session.end_time)
+  // A zero-duration template preserves the departure/start without guessing an end.
+  const endUtc = session.end_time ? formatUtcIcsDate(session.date, session.end_time) : startUtc
   const location = session.location || VENUE_FALLBACK
   const details = session.description ? `${session.description}\n\nVenue: ${location}` : session.title
 
