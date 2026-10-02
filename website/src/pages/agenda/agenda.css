@@ -93,7 +93,31 @@
 .agenda-information h3 { font-size: 1rem; font-weight: 700; margin-block: 1.5rem .7rem !important; }
 .agenda-information p { font-size: .91rem; line-height: 1.8; }
 .agenda-information p + p { margin-top: .8rem !important; }
-.agenda-venue-link a { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; font-weight: 600; }
+.agenda-venue-band { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: .85rem; align-items: start; }
+.agenda-venue-icon { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: #eef5fb; color: var(--agenda-blue); border-radius: .5rem; }
+.agenda-travel .agenda-venue-name h2 { margin-bottom: .4rem !important; font-size: .85rem; color: var(--agenda-muted); letter-spacing: normal; }
+.agenda-travel .agenda-venue-name p { font-family: "Plus Jakarta Sans", "Inter", system-ui, sans-serif; font-size: 1.2rem; line-height: 1.5; font-weight: 700; letter-spacing: -.025em; text-wrap: balance; }
+.agenda-map-action { grid-column: 2; display: inline-flex; align-items: center; justify-content: center; gap: .5rem; justify-self: start; min-height: 44px; padding: .6rem .85rem; border: 1px solid #bad1e3; border-radius: .35rem; font-size: .8rem; font-weight: 600; }
+.agenda-map-action:hover { background: #eef5fb; }
+.agenda-transport { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--agenda-line); }
+.agenda-travel .agenda-transport h3 { display: flex; align-items: center; gap: .6rem; margin: 0 0 1.1rem !important; font-size: 1.08rem; }
+.agenda-transport h3 svg { color: var(--agenda-blue); }
+.agenda-transport-grid { display: grid; gap: 1.25rem; }
+.agenda-travel .agenda-transfer-details h4 { font-size: .82rem; font-weight: 700; margin-bottom: .35rem; }
+.agenda-transfer-details p { color: var(--agenda-muted); }
+.agenda-transfer-details h4:not(:first-child) { margin-top: 1rem; }
+.agenda-station-map { display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; margin-top: .25rem; font-size: .8rem; font-weight: 600; }
+.agenda-transfer-time { font-weight: 700; color: var(--agenda-ink); font-variant-numeric: tabular-nums; }
+.agenda-travel .agenda-departures { align-self: start; padding: 1rem 1.1rem; background: #f1f6fa; border: 1px solid var(--agenda-line); border-radius: .45rem; }
+.agenda-departures-label { display: block; margin-bottom: .65rem; font-size: .82rem; font-weight: 700; }
+.agenda-departure-item { display: block; }
+.agenda-departure-row { display: flex; align-items: center; justify-content: space-between; gap: .8rem; }
+.agenda-departure-row > span { font-size: .83rem; line-height: 1.6; }
+.agenda-departure-row time { color: var(--agenda-blue); font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.4; }
+.agenda-departure-divider { display: block; height: 1px; margin-block: .85rem; overflow: hidden; background: var(--agenda-line); color: transparent; }
+.agenda-transport-note { display: flex; align-items: flex-start; gap: .65rem; margin-top: 1.25rem; padding: .85rem 1rem; border-left: 3px solid #8eb7d6; background: #f8fafc; }
+.agenda-transport-note svg { flex-shrink: 0; margin-top: .2rem; color: var(--agenda-blue); }
+.agenda-travel .agenda-transport-note p { font-size: .81rem; line-height: 1.75; color: var(--agenda-muted); }
 .agenda-organizing-bodies { display: grid; grid-template-columns: 1fr; gap: 1.15rem; list-style: none; padding: 0; margin: 0; }
 .agenda-organizing-bodies li { display: flex; align-items: center; gap: 1rem; font-size: .87rem; line-height: 1.7; }
 .agenda-organizing-bodies img, .agenda-supporter img { object-fit: contain; width: 64px; height: 56px; flex-shrink: 0; }
@@ -121,10 +145,15 @@
   .agenda-entry--break { padding-block: .6rem; }
   .agenda-posters li { grid-template-columns: 3rem minmax(0, 1fr); gap: 1rem; padding-inline: 1.5rem; }
   .agenda-information { padding: 2rem; }
+  .agenda-venue-band { grid-template-columns: 48px minmax(0, 1fr) auto; align-items: center; gap: 1rem; }
+  .agenda-venue-icon { width: 48px; height: 48px; }
+  .agenda-travel .agenda-venue-name p { font-size: 1.4rem; }
+  .agenda-map-action { grid-column: auto; }
   .agenda-organizing-bodies { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 2rem; }
 }
 
 @media (min-width: 900px) {
+  .agenda-transport-grid { grid-template-columns: minmax(0, 1.65fr) minmax(17rem, 1fr); gap: 2rem; }
   .agenda-committees { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem; }
   .agenda-program-intro { padding-top: 2.5rem; }
   .agenda-day-heading { margin-bottom: 1.5rem !important; }
@@ -152,6 +181,8 @@
   .agenda-entry { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: .75rem; padding: .6rem .75rem; }
   .agenda-time { margin-bottom: 0 !important; }
   .agenda-information { padding: 1rem; border-radius: 0; }
+  .agenda-map-action { border: 0; padding: 0; }
+  .agenda-venue-band, .agenda-transport-note, .agenda-departures { break-inside: avoid; }
   .agenda-page a { color: inherit; }
   .agenda-page :is(.agenda-block-heading, .agenda-entry) { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
 }
