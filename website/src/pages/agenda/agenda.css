@@ -16,7 +16,7 @@
 .agenda-page a { color: var(--agenda-blue); text-underline-offset: .2em; }
 .agenda-page a:hover { text-decoration: underline; }
 .agenda-page :is(a, button):focus-visible { outline: 3px solid var(--agenda-blue); outline-offset: 4px; border-radius: 3px; }
-.agenda-page :is(section[id], .agenda-program-intro[id]) { scroll-margin-top: 1.5rem; }
+.agenda-page :is(section[id], .agenda-program[id]) { scroll-margin-top: 1.5rem; }
 .agenda-wrap { width: min(100% - 2rem, 62rem); margin-inline: auto; }
 .agenda-layout { display: grid; gap: 1.5rem; width: min(100% - 2rem, 80rem); margin-inline: auto; padding-top: 1.5rem; }
 .agenda-content { min-width: 0; }
@@ -54,10 +54,6 @@ details[open] > .agenda-summary > .agenda-chevron { transform: none; }
 .agenda-subtitle { max-width: 65ch; margin-top: 1rem !important; color: var(--agenda-muted); line-height: 1.6; }
 .agenda-location { margin-top: .75rem !important; font-size: .95rem; font-weight: 600; }
 
-.agenda-program-intro { padding-block: 1.75rem .5rem; }
-.agenda-program-intro h2 { font-size: 1.6rem; font-weight: 700; letter-spacing: -.035em; }
-.agenda-program-intro p { max-width: 70ch; margin-top: .35rem !important; font-size: .84rem; }
-.agenda-program-intro a { color: var(--agenda-muted); }
 .agenda-day { padding-top: 1.5rem; padding-bottom: .75rem; }
 .agenda-day-heading { margin-bottom: 1.25rem !important; padding-bottom: .75rem; border-bottom: 2px solid #1e73be; font-size: clamp(1.25rem, 3vw, 1.6rem); font-weight: 700; letter-spacing: -.025em; line-height: 1.4; }
 .agenda-block { --agenda-block-color: #f1f6fa; margin-bottom: 1.15rem; border: 1px solid var(--agenda-line); border-radius: .6rem; overflow: hidden; background: white; }
@@ -186,7 +182,6 @@ details[open] > .agenda-summary > .agenda-chevron { transform: none; }
 @media (min-width: 900px) {
   .agenda-transport-grid { grid-template-columns: minmax(0, 1.65fr) minmax(17rem, 1fr); gap: 2rem; }
   .agenda-committees { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem; }
-  .agenda-program-intro { padding-top: 2.5rem; }
   .agenda-day-heading { margin-bottom: 1.5rem !important; }
   .agenda-block { margin-bottom: 1.4rem; }
 }
@@ -211,7 +206,6 @@ details[open] > .agenda-summary > .agenda-chevron { transform: none; }
   .agenda-hero { border: 0; padding-bottom: 1rem; }
   .agenda-brand-row { display: none; }
   .agenda-page h1 { font-size: 24pt; max-width: none; }
-  .agenda-program-intro { padding-top: .5rem; }
   .agenda-day { padding-top: 1rem; }
   .agenda-day-heading { break-after: avoid; }
   .agenda-block { overflow: visible; border-radius: 0; }

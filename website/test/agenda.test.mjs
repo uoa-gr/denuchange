@@ -81,10 +81,12 @@ test("the public agenda preserves the PDF programme and remains an unlisted page
   const mainContent = markup.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? ""
 
   await context.test("renders every source paragraph, including authors and committees", () => {
-    // Keep the fixture intact; omit the PDF page reference and label the map links.
+    // Keep the fixture intact; the removed intro is an intentional content omission.
+    const removedPreface = "The workshop is preceded by an ice breaker event on Monday, 5 October (see p. 3)"
     const fragments = sourceFixture.split(/\r?\n\s*\r?\n/)
-      .map(fragment => normalize(fragment).replace(" (see p. 3)", ".").replace(` (${dataModule.busStationUrl})`, "").replace(dataModule.venueUrl, "Open venue map"))
-      .filter(Boolean)
+      .map(normalize)
+      .filter(fragment => fragment && fragment !== removedPreface)
+      .map(fragment => fragment.replace(` (${dataModule.busStationUrl})`, "").replace(dataModule.venueUrl, "Open venue map"))
     const missing = fragments.filter(fragment => !renderedText.includes(fragment))
     assert.deepEqual(missing, [], "Source programme content is missing or changed")
     assert.doesNotMatch(renderedText, /\(see p\. \d+\)/, "PDF page references do not belong in the web programme")

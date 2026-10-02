@@ -12,7 +12,6 @@ import {
   venueUrl,
   busStationUrl,
   transportParagraphs,
-  programPreface,
   days,
   type AgendaBlock,
   type AgendaEntry,
@@ -398,10 +397,7 @@ export function AgendaPage() {
 
         <VenueAndTransport />
 
-        <div className="agenda-program-intro" id="agenda-program" tabIndex={-1}>
-          <h2>Program</h2>
-          <p><a href="#monday">{programPreface}</a></p>
-        </div>
+        <div className="agenda-program" id="agenda-program" tabIndex={-1}>
         {days.map((day) => (
           <section className="agenda-day" id={day.id} key={day.id} aria-labelledby={`${day.id}-heading`} tabIndex={-1}>
             <AgendaDisclosure title={<time dateTime={day.date}>{day.label}</time>} headingId={`${day.id}-heading`} summaryClass="agenda-day-heading">
@@ -409,6 +405,7 @@ export function AgendaPage() {
             </AgendaDisclosure>
           </section>
         ))}
+        </div>
       </main>
       </div>
       <footer className="agenda-footer"><div className="agenda-wrap"><span>{agendaTitle}</span><a href="#agenda-program">Back to program</a></div></footer>
