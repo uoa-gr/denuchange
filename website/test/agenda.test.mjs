@@ -62,7 +62,7 @@ function disclosures(markup) {
   return result
 }
 
-test("the public agenda preserves the PDF programme and remains an unlisted page", async (context) => {
+test("the public agenda preserves the approved programme and public routing", async (context) => {
   const vite = await createServer({
     root: projectRoot,
     server: { middlewareMode: true, hmr: false },
@@ -178,7 +178,7 @@ test("the public agenda preserves the PDF programme and remains an unlisted page
     }
   })
 
-  await context.test("mounts /agenda publicly without adding links to the existing website", async () => {
+  await context.test("mounts /agenda publicly and keeps homepage links within the approved sections", async () => {
     const entry = await readFile(path.join(projectRoot, "src", "main.tsx"), "utf8")
     assert.match(entry, /path=["']\/agenda["']/)
     assert.match(entry, /import\(["']\.\/pages\/agenda\/AgendaPage\.tsx["']\)/)
@@ -188,8 +188,16 @@ test("the public agenda preserves the PDF programme and remains an unlisted page
     const sections = await readdir(path.join(projectRoot, "src", "components", "sections"))
     homepageFiles.push(...sections.filter(file => file.endsWith(".tsx")).map(file => `src/components/sections/${file}`))
     const homepageSources = await Promise.all(homepageFiles.map(async file => [file, await readFile(path.join(projectRoot, file), "utf8")]))
+    const approvedSections = new Set(["src/components/sections/Hero.tsx", "src/components/sections/Program.tsx"])
+    const publishedAgendaUrl = "https://uoa-gr.github.io/denuchange/agenda/"
     for (const [file, source] of homepageSources) {
-      assert.doesNotMatch(source, /["'`]\/agenda(?:[/?#"'`]|$)/, `${file} adds an incoming agenda link`)
+      const agendaReferences = [...source.matchAll(/(["'`])([^"'`\r\n]+)\1/g)]
+        .map(match => match[2])
+        .filter(value => /\/agenda(?:[/?#]|$)/.test(value))
+      for (const reference of agendaReferences) {
+        assert.ok(approvedSections.has(file), `${file} adds an unsolicited incoming agenda link`)
+        assert.equal(reference, publishedAgendaUrl, `${file} should link to the published agenda URL`)
+      }
     }
   })
 })

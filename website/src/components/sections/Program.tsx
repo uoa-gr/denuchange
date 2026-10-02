@@ -6,14 +6,13 @@ import {
   BusFront,
   CalendarDays,
   Check,
-  Download,
   ExternalLink,
   MapPin,
   MapPinned,
   Presentation,
 } from "lucide-react"
 
-const detailedProgramUrl = `${import.meta.env.BASE_URL}DENUCHANGE_Program.pdf`
+const detailedProgramUrl = "https://uoa-gr.github.io/denuchange/agenda/"
 const iceBreakerLocationUrl = "https://maps.app.goo.gl/iDLaAnaS7PCajEDv5"
 
 const schedule = [
@@ -288,12 +287,12 @@ export function Program() {
         <div className="mx-auto mt-4 flex max-w-5xl flex-col items-start justify-between gap-4 rounded-xl border border-primary/15 bg-primary/[0.045] px-5 py-4 sm:flex-row sm:items-center sm:px-6">
           <div>
             <p className="font-bold text-foreground">Detailed workshop program</p>
-            <p className="mt-1 text-sm text-muted-foreground">Download the complete schedule for all workshop days.</p>
+            <p className="mt-1 text-sm text-muted-foreground">View the complete schedule for all workshop days.</p>
           </div>
           <Button asChild className="shrink-0 font-bold">
-            <a href={detailedProgramUrl} download="DENUCHANGE_Program.pdf">
-              <Download className="h-4 w-4" aria-hidden="true" />
-              Download Detailed Program
+            <a href={detailedProgramUrl}>
+              <CalendarDays className="h-4 w-4" aria-hidden="true" />
+              View Detailed Program
             </a>
           </Button>
         </div>

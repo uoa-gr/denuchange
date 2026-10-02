@@ -79,7 +79,8 @@ test("homepage presents the approved workshop hierarchy", async (context) => {
     assert.match(markup, /<section[^>]*aria-labelledby="hero-heading"/)
     assert.match(markup, /<h1[^>]*id="hero-heading"/)
     assert.match(markup, /<nav[^>]*aria-label="Workshop actions"/)
-    assert.match(markup, /<a[^>]*href="\/DENUCHANGE_Program\.pdf"[^>]*>[\s\S]*?Download Detailed Program<\/a>/)
+    assert.match(markup, /<a[^>]*href="https:\/\/uoa-gr\.github\.io\/denuchange\/agenda\/"[^>]*>[\s\S]*?View Detailed Program<\/a>/)
+    assert.doesNotMatch(markup, /<a[^>]*download(?:=|\s|>)/)
     assert.match(markup, /<a[^>]*href="#program"[^>]*>[\s\S]*?View more/)
   })
 

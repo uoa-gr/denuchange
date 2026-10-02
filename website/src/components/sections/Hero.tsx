@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button"
-import { ArrowRight, CalendarClock, CalendarDays, ChevronsDown, Download, MapPin, Smartphone } from "lucide-react"
+import { ArrowRight, CalendarClock, CalendarDays, ChevronsDown, MapPin, Smartphone } from "lucide-react"
 import { useEffect, useState } from "react"
 
-const detailedProgramUrl = `${import.meta.env.BASE_URL}DENUCHANGE_Program.pdf`
+const detailedProgramUrl = "https://uoa-gr.github.io/denuchange/agenda/"
 
 export function Hero() {
   const [imgLoaded, setImgLoaded] = useState(false)
@@ -132,9 +132,9 @@ export function Hero() {
             asChild
             className="h-11 rounded-lg px-7 font-bold shadow-md hover:-translate-y-0.5 hover:shadow-lg motion-reduce:transform-none"
           >
-            <a href={detailedProgramUrl} download="DENUCHANGE_Program.pdf">
-              <Download className="h-4 w-4" aria-hidden="true" />
-              Download Detailed Program
+            <a href={detailedProgramUrl}>
+              <CalendarDays className="h-4 w-4" aria-hidden="true" />
+              View Detailed Program
             </a>
           </Button>
           <a

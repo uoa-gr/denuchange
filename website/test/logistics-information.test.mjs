@@ -73,7 +73,7 @@ test("Program keeps transport outside its two-part itinerary", async (context) =
   assert.match(workshopTransport, /09:10/)
   assert.doesNotMatch(workshopTransport, /Conference transport/)
   assert.match(markup, /Detailed workshop program/)
-  assert.match(markup, /Download the complete schedule for all workshop days\./)
+  assert.match(markup, /View the complete schedule for all workshop days\./)
   assert.doesNotMatch(markup, /Detailed program will be announced closer to the event\./)
 })
 
