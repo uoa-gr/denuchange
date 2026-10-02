@@ -206,9 +206,9 @@ export function AgendaPage() {
           <div className="agenda-brand-row">
             <a href={import.meta.env.BASE_URL} className="agenda-home"><ArrowLeft size={16} aria-hidden="true" />Workshop website</a>
             <div className="agenda-brand-logos" aria-label="Workshop organizers">
-              <img src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`} alt="DENUCHANGE" width="48" height="48" />
-              <img src={`${import.meta.env.BASE_URL}images/logo-iag.jpg`} alt="International Association of Geomorphologists" width="56" height="48" />
-              <img src={`${import.meta.env.BASE_URL}images/logo-nkua.jpg`} alt="National and Kapodistrian University of Athens" width="48" height="48" />
+              <img className="agenda-brand-denuchange" src={`${import.meta.env.BASE_URL}images/logo-denuchange.jpg`} alt="DENUCHANGE" width="117" height="97" />
+              <img className="agenda-brand-iag" src={`${import.meta.env.BASE_URL}images/logo-iag.jpg`} alt="International Association of Geomorphologists" width="179" height="97" />
+              <img className="agenda-brand-nkua" src={`${import.meta.env.BASE_URL}images/logo-nkua.jpg`} alt="National and Kapodistrian University of Athens" width="288" height="76" />
             </div>
           </div>
           <h1>{agendaTitle}</h1>
@@ -234,15 +234,20 @@ export function AgendaPage() {
       </nav>
 
       <main className="agenda-wrap">
-        <section className="agenda-information" id="agenda-organizers" aria-labelledby="agenda-organizers-heading">
+        <section className="agenda-information agenda-organizers" id="agenda-organizers" aria-labelledby="agenda-organizers-heading">
           <h2 id="agenda-organizers-heading">Organizing bodies</h2>
           <ul className="agenda-organizing-bodies">
             {organizingBodies.map((body) => (
-              <li key={body.name}><img src={`${import.meta.env.BASE_URL}${body.image.replace(/^\//, "")}`} alt="" width="72" height="64" loading="lazy" /><span>{body.name}</span></li>
+              <li key={body.name}>
+                <div className="agenda-organization-logo"><img src={`${import.meta.env.BASE_URL}${body.image.replace(/^\//, "")}`} alt="" width="240" height="112" loading="lazy" /></div>
+                <span>{body.name}</span>
+              </li>
             ))}
           </ul>
-          <h3>Supported by</h3>
-          <div className="agenda-supporter"><img src={`${import.meta.env.BASE_URL}${supportedBy.image.replace(/^\//, "")}`} alt="" width="72" height="64" loading="lazy" /><p>{supportedBy.name}</p></div>
+          <div className="agenda-supporter">
+            <div className="agenda-supporter-logo"><img src={`${import.meta.env.BASE_URL}${supportedBy.image.replace(/^\//, "")}`} alt="" width="180" height="144" loading="lazy" /></div>
+            <div><h3>Supported by</h3><p>{supportedBy.name}</p></div>
+          </div>
           <div className="agenda-committees">
             <section aria-labelledby="agenda-organizing-committee-heading">
               <h3 id="agenda-organizing-committee-heading">Organizing Committee</h3>
