@@ -16,7 +16,7 @@
 .agenda-page a { color: var(--agenda-blue); text-underline-offset: .2em; }
 .agenda-page a:hover { text-decoration: underline; }
 .agenda-page :is(a, button):focus-visible { outline: 3px solid var(--agenda-blue); outline-offset: 4px; border-radius: 3px; }
-.agenda-page :is(section[id], main[id]) { scroll-margin-top: 6.5rem; }
+.agenda-page :is(section[id], .agenda-program-intro[id]) { scroll-margin-top: 6.5rem; }
 .agenda-wrap { width: min(100% - 2rem, 62rem); margin-inline: auto; }
 
 .agenda-skip { position: fixed; top: .75rem; left: 1rem; z-index: 30; padding: .65rem 1rem; background: white; transform: translateY(-180%); }
