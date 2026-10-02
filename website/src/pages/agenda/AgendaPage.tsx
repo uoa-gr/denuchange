@@ -33,6 +33,26 @@ function LinkedText({ text }: { text: string }) {
   )
 }
 
+function VenueMapButton() {
+  return (
+    <a className="agenda-map-action" href={venueUrl} target="_blank" rel="noopener noreferrer">
+      Open venue map<ArrowUpRight size={17} aria-hidden="true" />
+    </a>
+  )
+}
+
+function EntryDetail({ text }: { text: string }) {
+  if (text.includes(venueUrl)) {
+    return (
+      <div className="agenda-detail agenda-entry-venue">
+        <p>{text.replace(` — ${venueUrl}`, "")}</p>
+        <VenueMapButton />
+      </div>
+    )
+  }
+  return <p className="agenda-detail"><LinkedText text={text} /></p>
+}
+
 function VenueAndTransport() {
   const [beforeIceTime, afterIceTime] = transportParagraphs[0].split("18:45")
   const departures = transportParagraphs[2].replace("Departures: ", "").split(" · ")
@@ -45,9 +65,7 @@ function VenueAndTransport() {
           <h2 id="agenda-venue-heading">Workshop Venue</h2>
           <p>{venueName}</p>
         </div>
-        <a className="agenda-map-action" href={venueUrl} target="_blank" rel="noopener noreferrer">
-          Open venue map<ArrowUpRight size={17} aria-hidden="true" />
-        </a>
+        <VenueMapButton />
       </div>
 
       <div className="agenda-transport">
@@ -130,7 +148,7 @@ function Entry({ entry, hasBlockHeading }: { entry: AgendaEntry; hasBlockHeading
             {entry.speakers?.map((speaker) => <Speaker text={speaker} key={speaker} />)}
           </>
         )}
-        {paragraphs?.filter((paragraph) => paragraph !== "Invited keynote lecture").map((paragraph) => <p className="agenda-detail" key={paragraph}><LinkedText text={paragraph} /></p>)}
+        {paragraphs?.filter((paragraph) => paragraph !== "Invited keynote lecture").map((paragraph) => <EntryDetail text={paragraph} key={paragraph} />)}
       </div>
     </li>
   )

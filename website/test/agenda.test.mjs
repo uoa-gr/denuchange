@@ -50,14 +50,16 @@ test("the public agenda preserves the PDF programme and remains an unlisted page
   const renderedText = normalize(visibleText(markup))
 
   await context.test("renders every source paragraph, including authors and committees", () => {
-    // Keep the fixture intact; omit the PDF page reference and label the bus map link.
+    // Keep the fixture intact; omit the PDF page reference and label the map links.
     const fragments = sourceFixture.split(/\r?\n\s*\r?\n/)
-      .map(fragment => normalize(fragment).replace(" (see p. 3)", ".").replace(` (${dataModule.busStationUrl})`, ""))
+      .map(fragment => normalize(fragment).replace(" (see p. 3)", ".").replace(` (${dataModule.busStationUrl})`, "").replace(dataModule.venueUrl, "Open venue map"))
       .filter(Boolean)
     const missing = fragments.filter(fragment => !renderedText.includes(fragment))
     assert.deepEqual(missing, [], "Source programme content is missing or changed")
     assert.doesNotMatch(renderedText, /\(see p\. \d+\)/, "PDF page references do not belong in the web programme")
     assert.ok(markup.includes(`href="${dataModule.busStationUrl}"`), "The bus station map must retain its source destination")
+    assert.ok(markup.includes(`href="${dataModule.venueUrl}"`), "Venue map buttons must retain their source destination")
+    assert.ok(!renderedText.includes(dataModule.venueUrl), "Venue maps should use descriptive buttons instead of visible URLs")
   })
 
   await context.test("preserves the PDF poster numbering and literal time anomalies", () => {
