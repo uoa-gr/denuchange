@@ -120,18 +120,15 @@ test("the public agenda preserves the PDF programme and remains an unlisted page
     }
   })
 
-  await context.test("provides a main landmark, page heading and reachable day navigation", () => {
+  await context.test("provides semantic day sections and reachable in-page links", () => {
     assert.equal(markup.match(/<main(?:\s|>)/g)?.length, 1)
     assert.equal(markup.match(/<h1(?:\s|>)/g)?.length, 1)
-    assert.match(markup, /<nav[^>]*aria-label="[^"]+"/)
     const allIds = [...markup.matchAll(/\bid="([^"]+)"/g)].map(match => match[1])
     const ids = new Set(allIds)
     assert.equal(ids.size, allIds.length, "Every page anchor must have a unique ID")
     const anchors = [...markup.matchAll(/href="#([^"]+)"/g)].map(match => match[1])
-    assert.ok(anchors.length >= dataModule.days.length, "Day navigation is missing")
     for (const anchor of anchors) assert.ok(ids.has(anchor), `In-page link #${anchor} has no destination`)
     for (const day of dataModule.days) {
-      assert.ok(anchors.includes(day.id), `Day ${day.id} is missing from navigation`)
       assert.ok(ids.has(day.id), `Day ${day.id} section is missing`)
       assert.ok(renderedText.includes(normalize(day.label)), `Day heading ${day.label} is missing`)
       assert.ok(markup.includes(`dateTime="${day.date}"`) || markup.includes(`datetime="${day.date}"`), `Day date ${day.date} needs a semantic time element`)
@@ -158,7 +155,7 @@ test("the public agenda preserves the PDF programme and remains an unlisted page
     }
   })
 
-  await context.test("provides a reachable table of contents for the programme's sections", () => {
+  await context.test("provides sidebar contents with reachable links to every day and titled programme section", () => {
     const sidebar = markup.match(/<nav\b[^>]*aria-label="Agenda sections"[^>]*>([\s\S]*?)<\/nav>/)
     assert.ok(sidebar, "The programme needs a labeled Agenda sections navigation landmark")
     const links = [...sidebar[1].matchAll(/<a\b[^>]*href="#([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)]

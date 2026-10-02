@@ -289,7 +289,6 @@ function Block({ block, id }: { block: AgendaBlock; id?: string }) {
 
 export function AgendaPage() {
   const [activeSection, setActiveSection] = useState("agenda-organizers")
-  const activeDay = days.find((day) => activeSection === day.id || activeSection.startsWith(`${day.id}-block-`))?.id
 
   useEffect(() => {
     const previousTitle = document.title
@@ -314,7 +313,7 @@ export function AgendaPage() {
     const update = () => {
       frame = 0
       const visible = sections.filter((section) => section.getClientRects().length > 0 && !section.closest("details:not([open])"))
-      const current = visible.filter((section) => section.getBoundingClientRect().top <= 160).at(-1) ?? visible[0]
+      const current = visible.filter((section) => section.getBoundingClientRect().top <= 64).at(-1) ?? visible[0]
       if (current) setActiveSection(current.id)
     }
     const scheduleUpdate = () => { if (!frame) frame = requestAnimationFrame(update) }
@@ -371,17 +370,6 @@ export function AgendaPage() {
           <p className="agenda-location">{agendaLocationDate}</p>
         </div>
       </header>
-
-      <nav className="agenda-day-nav" aria-label="Agenda days">
-        <div className="agenda-wrap">
-          {days.map((day, index) => (
-            <a href={`#${day.id}`} key={day.id} aria-current={activeDay === day.id ? "location" : undefined}>
-              <span>{shortDays[index].weekday}</span>
-              <strong>{shortDays[index].date}</strong>
-            </a>
-          ))}
-        </div>
-      </nav>
 
       <div className="agenda-layout">
       <AgendaContents activeSection={activeSection} />
