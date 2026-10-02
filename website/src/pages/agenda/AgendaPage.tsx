@@ -1,5 +1,5 @@
 import { useEffect, useId, useState } from "react"
-import { ArrowLeft, MapPin, Printer } from "lucide-react"
+import { ArrowLeft, ArrowUpRight, BusFront, Info, MapPin, Printer } from "lucide-react"
 import {
   agendaTitle,
   agendaSubtitle,
@@ -10,6 +10,7 @@ import {
   supportedBy,
   venueName,
   venueUrl,
+  busStationUrl,
   transportParagraphs,
   programPreface,
   days,
@@ -29,6 +30,57 @@ function LinkedText({ text }: { text: string }) {
     part.startsWith("https://") ? (
       <a key={index} href={part} target="_blank" rel="noopener noreferrer">{part}</a>
     ) : part,
+  )
+}
+
+function VenueAndTransport() {
+  const [beforeIceTime, afterIceTime] = transportParagraphs[0].split("18:45")
+  const departures = transportParagraphs[2].replace("Departures: ", "").split(" · ")
+
+  return (
+    <section className="agenda-information agenda-travel" id="agenda-venue" aria-labelledby="agenda-venue-heading">
+      <div className="agenda-venue-band">
+        <span className="agenda-venue-icon"><MapPin size={24} aria-hidden="true" /></span>
+        <div className="agenda-venue-name">
+          <h2 id="agenda-venue-heading">Workshop Venue</h2>
+          <p>{venueName}</p>
+        </div>
+        <a className="agenda-map-action" href={venueUrl} target="_blank" rel="noopener noreferrer">
+          Open venue map<ArrowUpRight size={17} aria-hidden="true" />
+        </a>
+      </div>
+
+      <div className="agenda-transport">
+        <h3><BusFront size={20} aria-hidden="true" />Transport</h3>
+        <div className="agenda-transport-grid">
+          <div className="agenda-transfer-details">
+            <h4>Ice breaker</h4>
+            <p>{beforeIceTime}<time className="agenda-transfer-time" dateTime="2026-10-05T18:45">18:45</time>{afterIceTime}</p>
+            <h4>Workshop transfers</h4>
+            <p>{transportParagraphs[1].replace(` (${busStationUrl})`, "")}</p>
+            <a className="agenda-station-map" href={busStationUrl} target="_blank" rel="noopener noreferrer">
+              View bus station map<ArrowUpRight size={17} aria-hidden="true" />
+            </a>
+          </div>
+          <p className="agenda-departures">
+            <span className="agenda-departures-label">Departures:</span>
+            {departures.map((departure, index) => {
+              const [date, time] = departure.split(" at ")
+              return (
+                <span className="agenda-departure-item" key={departure}>
+                  {index > 0 && <span className="agenda-departure-divider" aria-hidden="true"> · </span>}
+                  <span className="agenda-departure-row">
+                    <span>{date} at</span>
+                    <time dateTime={`${days[index + 1].date}T${time}`}>{time}</time>
+                  </span>
+                </span>
+              )
+            })}
+          </p>
+        </div>
+        <div className="agenda-transport-note"><Info size={18} aria-hidden="true" /><p>{transportParagraphs[3]}</p></div>
+      </div>
+    </section>
   )
 }
 
@@ -203,12 +255,7 @@ export function AgendaPage() {
           </div>
         </section>
 
-        <section className="agenda-information" id="agenda-venue" aria-labelledby="agenda-venue-heading">
-          <h2 id="agenda-venue-heading">Workshop Venue</h2>
-          <p className="agenda-venue-link"><a href={venueUrl} target="_blank" rel="noopener noreferrer"><MapPin size={18} aria-hidden="true" />{venueName}</a></p>
-          <h3>Transport</h3>
-          {transportParagraphs.map((paragraph) => <p key={paragraph}><LinkedText text={paragraph} /></p>)}
-        </section>
+        <VenueAndTransport />
 
         <div className="agenda-program-intro" id="agenda-program" tabIndex={-1}>
           <h2>Program</h2>
