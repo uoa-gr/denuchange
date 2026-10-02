@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useId, useState } from "react"
 import { ArrowLeft, MapPin, Printer } from "lucide-react"
 import {
   agendaTitle,
@@ -32,17 +32,53 @@ function LinkedText({ text }: { text: string }) {
   )
 }
 
+function isAffiliatedPerson(text: string) {
+  return /^(?:Prof\.|Dr\.)\s/.test(text) || text.startsWith("Vasilis Flerianos, ")
+}
+
+function PersonText({ text }: { text: string }) {
+  const comma = text.indexOf(",")
+  if (!isAffiliatedPerson(text) || comma < 0) return text
+
+  return <><strong className="agenda-person-name">{text.slice(0, comma)}</strong>{text.slice(comma)}</>
+}
+
+function Speaker({ text }: { text: string }) {
+  return <p className={isAffiliatedPerson(text) ? "agenda-person" : "agenda-speaker"}><PersonText text={text} /></p>
+}
+
+function SpeakerGroup({ title, speakers }: { title: string; speakers: string[] }) {
+  const headingId = useId()
+  return (
+    <section className="agenda-speaker-group" aria-labelledby={headingId}>
+      <h4 className="agenda-entry-title" id={headingId}>{title}</h4>
+      {speakers.map((speaker) => <Speaker text={speaker} key={speaker} />)}
+    </section>
+  )
+}
+
 function Entry({ entry, hasBlockHeading }: { entry: AgendaEntry; hasBlockHeading: boolean }) {
   const Heading = hasBlockHeading ? "h4" : "h3"
   const isKeynote = entry.paragraphs?.includes("Invited keynote lecture")
+  const openingIndex = entry.paragraphs?.indexOf("Event Opening") ?? -1
+  const paragraphs = openingIndex >= 0 ? entry.paragraphs?.slice(0, openingIndex) : entry.paragraphs
   return (
     <li className={`agenda-entry${entry.kind ? ` agenda-entry--${entry.kind}` : ""}`}>
       <p className="agenda-time">{entry.time}</p>
       <div className="agenda-entry-content">
         {isKeynote && <p className="agenda-keynote-label">Invited keynote lecture</p>}
-        <Heading className="agenda-entry-title">{entry.title}</Heading>
-        {entry.speakers?.map((speaker) => <p className={speaker === "Event Opening" ? "agenda-inline-heading" : "agenda-speaker"} key={speaker}>{speaker}</p>)}
-        {entry.paragraphs?.filter((paragraph) => paragraph !== "Invited keynote lecture").map((paragraph) => <p className="agenda-detail" key={paragraph}><LinkedText text={paragraph} /></p>)}
+        {openingIndex >= 0 ? (
+          <>
+            <SpeakerGroup title={entry.title} speakers={entry.speakers ?? []} />
+            <SpeakerGroup title="Event Opening" speakers={entry.paragraphs?.slice(openingIndex + 1) ?? []} />
+          </>
+        ) : (
+          <>
+            <Heading className="agenda-entry-title">{entry.title}</Heading>
+            {entry.speakers?.map((speaker) => <Speaker text={speaker} key={speaker} />)}
+          </>
+        )}
+        {paragraphs?.filter((paragraph) => paragraph !== "Invited keynote lecture").map((paragraph) => <p className="agenda-detail" key={paragraph}><LinkedText text={paragraph} /></p>)}
       </div>
     </li>
   )
@@ -176,11 +212,11 @@ export function AgendaPage() {
           <div className="agenda-committees">
             <section aria-labelledby="agenda-organizing-committee-heading">
               <h3 id="agenda-organizing-committee-heading">Organizing Committee</h3>
-              <ul>{organizingCommittee.map((member) => <li key={member}>{member}</li>)}</ul>
+              <ul>{organizingCommittee.map((member) => <li key={member}><PersonText text={member} /></li>)}</ul>
             </section>
             <section aria-labelledby="agenda-scientific-committee-heading">
               <h3 id="agenda-scientific-committee-heading">Scientific Committee</h3>
-              <ul>{scientificCommittee.map((member) => <li key={member}>{member}</li>)}</ul>
+              <ul>{scientificCommittee.map((member) => <li key={member}><PersonText text={member} /></li>)}</ul>
             </section>
           </div>
         </section>
