@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
 import { Clock, MapPin, CalendarDays, Bell, ExternalLink, CalendarPlus, Check } from "lucide-react"
-import { DEFAULT_PROGRAM_SESSIONS, type ProgramSession } from "../lib/program-data"
+import type { ProgramSession } from "../lib/program-data"
 import { formatSessionTime } from "../lib/program-time"
+import { startProgramUpdates } from "../lib/program-updates"
 import {
   generateSessionIcs,
   generateDayIcs,
@@ -41,15 +42,19 @@ export function Program() {
   const [remindedId, setRemindedId] = useState<string | null>(null)
 
   useEffect(() => {
-    void (async () => {
-      const { data } = await supabase
-        .from("program_sessions")
-        .select("*")
-        .order("date")
-        .order("start_time")
-      setSessions(data && data.length > 0 ? data : DEFAULT_PROGRAM_SESSIONS)
-      setLoading(false)
-    })()
+    return startProgramUpdates({
+      loadSessions: async () => {
+        const { data, error } = await supabase
+          .from("program_sessions")
+          .select("*")
+          .order("date")
+          .order("start_time")
+        if (error) throw error
+        return data ?? []
+      },
+      onSessions: setSessions,
+      onReady: () => setLoading(false),
+    })
   }, [])
 
   function handleAddReminder(session: ProgramSession) {

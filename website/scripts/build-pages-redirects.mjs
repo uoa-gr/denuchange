@@ -30,6 +30,41 @@ function redirectPage(destinationPath, title) {
 `
 }
 
+function retiringWorker() {
+  // Keep this worker published at its original URL for returning Pages clients.
+  return `const repositoryOrigin = "https://uoa-gr.github.io";
+const repositoryPath = "/denuchange";
+const expectedScope = repositoryOrigin + repositoryPath + "/";
+
+if (self.location.origin === repositoryOrigin && self.registration.scope === expectedScope) {
+  self.addEventListener("install", (event) => {
+    event.waitUntil(self.skipWaiting());
+  });
+
+  self.addEventListener("activate", (event) => {
+    event.waitUntil((async () => {
+      await self.clients.claim();
+      await self.registration.unregister();
+      const clients = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+      await Promise.allSettled(clients.map(async (client) => {
+        const source = new URL(client.url);
+        if (source.origin !== repositoryOrigin ||
+          (source.pathname !== repositoryPath && !source.pathname.startsWith(repositoryPath + "/"))) return;
+
+        let forwardedPath = source.pathname === repositoryPath ? "/" : source.pathname.slice(repositoryPath.length);
+        if (forwardedPath === "/agenda/" || forwardedPath === "/agenda/index.html") forwardedPath = "/agenda";
+        const destination = new URL("https://denuchange.vercel.app/");
+        destination.pathname = forwardedPath;
+        destination.search = source.search;
+        destination.hash = source.hash;
+        await client.navigate(destination.href);
+      }));
+    })());
+  });
+}
+`
+}
+
 export async function buildPagesRedirects(outputDirectory) {
   await mkdir(path.join(outputDirectory, "agenda"), { recursive: true })
   const homepage = redirectPage("/", "IAG DENUCHANGE Workshop 2026 | Naxos, Greece")
@@ -38,6 +73,7 @@ export async function buildPagesRedirects(outputDirectory) {
     writeFile(path.join(outputDirectory, "index.html"), homepage),
     writeFile(path.join(outputDirectory, "404.html"), homepage),
     writeFile(path.join(outputDirectory, "agenda", "index.html"), agenda),
+    writeFile(path.join(outputDirectory, "sw.js"), retiringWorker()),
   ])
 }
 
