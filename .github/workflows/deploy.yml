@@ -17,39 +17,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
       - name: Create redirect pages
-        run: |
-          mkdir -p dist
-
-          cat > dist/index.html << 'EOF'
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <meta http-equiv="refresh" content="0;url=https://denuchange.vercel.app/" />
-            <link rel="canonical" href="https://denuchange.vercel.app/" />
-            <title>Redirecting…</title>
-          </head>
-          <body>
-            <p>Redirecting to <a href="https://denuchange.vercel.app/">denuchange.vercel.app</a>…</p>
-          </body>
-          </html>
-          EOF
-
-          cat > dist/404.html << 'EOF'
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <title>Redirecting…</title>
-            <script>
-              var path = window.location.pathname.replace('/denuchange', '');
-              window.location.replace('https://denuchange.vercel.app' + path + window.location.search + window.location.hash);
-            </script>
-          </head>
-          <body>
-            <p>Redirecting to <a href="https://denuchange.vercel.app/">denuchange.vercel.app</a>…</p>
-          </body>
-          </html>
-          EOF
+        run: node website/scripts/build-pages-redirects.mjs dist
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

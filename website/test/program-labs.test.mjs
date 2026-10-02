@@ -24,8 +24,8 @@ const programCopy = [
   "Naxos geomorphological sites",
   "Lunches included",
   "Detailed workshop program",
-  "Download the complete schedule for all workshop days.",
-  "Download Detailed Program",
+  "View the complete schedule for all workshop days.",
+  "View Detailed Program",
 ]
 
 const labsCopy = [
@@ -80,6 +80,8 @@ test("Program and Labs retain their approved copy in clearer semantic layouts", 
     assert.match(programMarkup, /<h2[^>]*id="program-heading"/)
     assert.match(programMarkup, /<ol[^>]*aria-label="Workshop schedule"/)
     assert.equal(programMarkup.match(/<li(?:\s|>)/g)?.length, 8)
+    assert.match(programMarkup, /<a[^>]*href="https:\/\/uoa-gr\.github\.io\/denuchange\/agenda\/"[^>]*>[\s\S]*?View Detailed Program<\/a>/)
+    assert.doesNotMatch(programMarkup, /<a[^>]*download(?:=|\s|>)/)
   })
 
   await context.test("presents Labs as one labelled focus-area list", () => {
