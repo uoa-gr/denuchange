@@ -25,8 +25,6 @@ const shortDays = [
 ]
 
 const agendaOutline = [
-  { id: "agenda-organizers", label: "Organizing bodies", children: [] },
-  { id: "agenda-venue", label: "Venue & transport", children: [] },
   { id: "agenda-program", label: "Program", children: [] },
   ...days.map((day, dayIndex) => ({
     id: day.id,
@@ -37,6 +35,8 @@ const agendaOutline = [
         : block.tutors ? "VFT Laboratory" : block.title,
     }] : []),
   })),
+  { id: "agenda-organizers", label: "Organizing bodies", children: [] },
+  { id: "agenda-venue", label: "Venue & transport", children: [] },
 ]
 
 function revealAgendaSection(id: string) {
@@ -287,7 +287,7 @@ function Block({ block, id }: { block: AgendaBlock; id?: string }) {
 }
 
 export function AgendaPage() {
-  const [activeSection, setActiveSection] = useState("agenda-organizers")
+  const [activeSection, setActiveSection] = useState("agenda-program")
 
   useEffect(() => {
     const previousTitle = document.title
@@ -312,7 +312,8 @@ export function AgendaPage() {
     const update = () => {
       frame = 0
       const visible = sections.filter((section) => section.getClientRects().length > 0 && !section.closest("details:not([open])"))
-      const current = visible.filter((section) => section.getBoundingClientRect().top <= 64).at(-1) ?? visible[0]
+      const atEnd = window.scrollY > 0 && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2
+      const current = atEnd ? visible.at(-1) : visible.filter((section) => section.getBoundingClientRect().top <= 64).at(-1) ?? visible[0]
       if (current) setActiveSection(current.id)
     }
     const scheduleUpdate = () => { if (!frame) frame = requestAnimationFrame(update) }
@@ -368,6 +369,16 @@ export function AgendaPage() {
       <div className="agenda-layout">
       <AgendaContents activeSection={activeSection} />
       <main className="agenda-content">
+        <div className="agenda-program" id="agenda-program" tabIndex={-1}>
+        {days.map((day) => (
+          <section className="agenda-day" id={day.id} key={day.id} aria-labelledby={`${day.id}-heading`} tabIndex={-1}>
+            <AgendaDisclosure title={<time dateTime={day.date}>{day.label}</time>} headingId={`${day.id}-heading`} summaryClass="agenda-day-heading">
+              {day.blocks.map((block, index) => <Block key={index} block={block} id={block.title ? `${day.id}-block-${index + 1}` : undefined} />)}
+            </AgendaDisclosure>
+          </section>
+        ))}
+        </div>
+
         <section className="agenda-information agenda-organizers" id="agenda-organizers" aria-labelledby="agenda-organizers-heading" tabIndex={-1}>
           <AgendaDisclosure title="Organizing bodies" headingId="agenda-organizers-heading">
           <ul className="agenda-organizing-bodies">
@@ -396,16 +407,6 @@ export function AgendaPage() {
         </section>
 
         <VenueAndTransport />
-
-        <div className="agenda-program" id="agenda-program" tabIndex={-1}>
-        {days.map((day) => (
-          <section className="agenda-day" id={day.id} key={day.id} aria-labelledby={`${day.id}-heading`} tabIndex={-1}>
-            <AgendaDisclosure title={<time dateTime={day.date}>{day.label}</time>} headingId={`${day.id}-heading`} summaryClass="agenda-day-heading">
-              {day.blocks.map((block, index) => <Block key={index} block={block} id={block.title ? `${day.id}-block-${index + 1}` : undefined} />)}
-            </AgendaDisclosure>
-          </section>
-        ))}
-        </div>
       </main>
       </div>
       <footer className="agenda-footer"><div className="agenda-wrap"><span>{agendaTitle}</span><a href="#agenda-program">Back to program</a></div></footer>
