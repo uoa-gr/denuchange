@@ -14,7 +14,7 @@ const jwtSecret = "local-passwordless-auth-regression-test-secret"
 
 // The real auth handlers, JWT library and Supabase client talk to a local REST
 // fixture. No production database, mail server or authenticated user is used.
-async function fixture(context) {
+async function fixture(context, { requireRegistration = false } = {}) {
   const tables = { registrations: [], app_users: [], password_setup_tokens: [], notifications: [] }
   const writes = []
   let failTable = null
@@ -41,6 +41,11 @@ async function fixture(context) {
     const chunks = []
     for await (const chunk of req) chunks.push(chunk)
     const body = JSON.parse(Buffer.concat(chunks).toString())
+    if (requireRegistration && table === "app_users" && req.method === "POST" && !tables.registrations.some(row => row.email === body.email)) {
+      res.writeHead(409)
+      res.end(JSON.stringify({ message: "app_users email references registrations", code: "23503" }))
+      return
+    }
     writes.push({ table, method: req.method, body, prefer: req.headers.prefer ?? "" })
     if (req.method === "POST") {
       for (const record of Array.isArray(body) ? body : [body]) {
@@ -123,8 +128,28 @@ test("all four approved guests enter from email alone and get non-admin sessions
   }
   assert.ok(f.tables.registrations.every(row => row.payment_confirmed === false))
   assert.deepEqual(f.tables.registrations.map(row => row.email).sort(), [...ministryEmails].sort(), "Guests without known registration details must not be assigned a financial registration")
-  assert.equal(f.tables.app_users.length, 4)
+  assert.equal(f.tables.app_users.length, 2)
   assert.ok(f.tables.app_users.every(row => row.is_admin === false))
+})
+
+test("approved guests without financial registrations can enter when app profiles require a registration", async context => {
+  const f = await fixture(context, { requireRegistration: true })
+  context.mock.method(console, "error", () => {})
+  for (const [email, firstName, lastName] of [["apittaras@icloud.com", "Antonis", "Pittaras"], ["operations@lagunacoastresort.com", "Eleni", "Alachmaneti"]]) {
+    const response = await call(f.auth, "check", { email })
+    assert.equal(response.code, 200)
+    assert.equal(response.body.status, "authenticated")
+    assert.equal(response.body.user.isAdmin, false)
+    const cookie = response.headers["Set-Cookie"].split(";")[0]
+    const profile = await call(f.auth, "me", {}, cookie, "GET")
+    assert.equal(profile.code, 200)
+    assert.equal(profile.body.firstName, firstName)
+    assert.equal(profile.body.lastName, lastName)
+    assert.equal(profile.body.isAdmin, false)
+    assert.equal((await call(f.admin, "notify", { title: "Unauthorized", body: "Must not be posted" }, sessionCookie(email, true))).code, 403)
+  }
+  assert.deepEqual(f.tables.registrations, [], "App access does not invent a workshop registration")
+  assert.deepEqual(f.tables.app_users, [], "A registration-dependent profile is unnecessary for guest program and alerts access")
 })
 
 test("guest me and admin routes ignore admin privileges in old cookies and stored profiles", async context => {

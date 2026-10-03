@@ -19,30 +19,32 @@ const APP_BASE_URL = process.env.APP_BASE_URL ?? "https://denuchange.vercel.app"
 async function syncPasswordlessUser(email: string, pwdless: PasswordlessUserInfo) {
   const admin = getSupabaseAdmin()
   // Never change an existing registration or infer payment from app access.
-  // Guests without known registration details only need an app user profile.
-  if (pwdless.affiliation && pwdless.country && pwdless.registrationType) {
-    const { data: registration, error: registrationError } = await admin.from("registrations")
-      .select("email").ilike("email", email).maybeSingle()
-    if (registrationError) throw new Error("Unable to prepare app access")
-    if (!registration) {
-      const { error } = await admin.from("registrations").upsert(
-        {
-          first_name: pwdless.firstName,
-          last_name: pwdless.lastName,
-          email,
-          affiliation: pwdless.affiliation,
-          country: pwdless.country,
-          registration_type: pwdless.registrationType,
-        },
-        { onConflict: "email", ignoreDuplicates: true }
-      )
-      if (error) throw new Error("Unable to prepare app access")
-    }
+  const { data: registration, error: registrationError } = await admin.from("registrations")
+    .select("email").ilike("email", email).maybeSingle()
+  if (registrationError) throw new Error("Unable to prepare app access")
+  let hasRegistration = Boolean(registration)
+  if (!hasRegistration && pwdless.affiliation && pwdless.country && pwdless.registrationType) {
+    const { error } = await admin.from("registrations").upsert(
+      {
+        first_name: pwdless.firstName,
+        last_name: pwdless.lastName,
+        email,
+        affiliation: pwdless.affiliation,
+        country: pwdless.country,
+        registration_type: pwdless.registrationType,
+      },
+      { onConflict: "email", ignoreDuplicates: true }
+    )
+    if (error) throw new Error("Unable to prepare app access")
+    hasRegistration = true
   }
   const { data: user, error: userError } = await admin.from("app_users")
     .select("email").ilike("email", email).maybeSingle()
   if (userError) throw new Error("Unable to prepare app access")
   if (!user) {
+    // Guest Program/Alerts access comes from the exact server allowlist. A new
+    // guest needs no profile row that may depend on a financial registration.
+    if (!hasRegistration) return
     const { error } = await admin.from("app_users").upsert(
       { email, is_admin: false }, { onConflict: "email", ignoreDuplicates: true }
     )
