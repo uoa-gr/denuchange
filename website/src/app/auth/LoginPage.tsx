@@ -1,7 +1,7 @@
-import { useState, useEffect, type FormEvent } from "react"
+import { useState, useEffect, useRef, type FormEvent } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../lib/auth"
-import { api } from "../lib/api"
+import { api, type CheckEmailResponse } from "../lib/api"
 import { Eye, EyeOff, ArrowLeft } from "lucide-react"
 
 export function LoginPage() {
@@ -11,51 +11,40 @@ export function LoginPage() {
   const [showPw, setShowPw] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState("")
+  const [checkingAccess, setCheckingAccess] = useState(true)
+  const accessCheck = useRef<{ email: string; request: Promise<CheckEmailResponse> } | null>(null)
 
   useEffect(() => {
     const normalized = pendingEmail.trim().toLowerCase()
-    if (normalized === "ch.koromilas@prv.ypeka.gr" || normalized === "mpouzasd@prv.ypeka.gr") {
-      void (async () => {
-        setSubmitting(true)
-        try {
-          const res = await api.checkEmail(normalized)
-          if (res.status === "authenticated" && res.user) {
-            setUser(res.user)
-            navigate("/app/home", { replace: true })
-          }
-        } finally {
-          setSubmitting(false)
-        }
-      })()
+    if (!normalized) {
+      navigate("/app/auth/email", { replace: true })
+      return
     }
+    if (accessCheck.current?.email !== normalized) {
+      accessCheck.current = { email: normalized, request: api.checkEmail(normalized) }
+    }
+    let active = true
+    void accessCheck.current.request.then(res => {
+      if (!active) return
+      if (res.status === "authenticated" && res.user) {
+        setUser(res.user)
+        navigate("/app/home", { replace: true })
+      }
+    }).catch(() => {
+      if (active) setError("Sign-in check failed. Please change email and try again.")
+    }).finally(() => {
+      if (active) setCheckingAccess(false)
+    })
+    return () => { active = false }
   }, [pendingEmail, navigate, setUser])
 
-  if (!pendingEmail) {
-    navigate("/app/auth/email", { replace: true })
-    return null
+  if (!pendingEmail || checkingAccess) {
+    return <div className="min-h-[100dvh] flex items-center justify-center p-6 bg-background"><p className="text-sm text-muted-foreground" role="status">Checking access…</p></div>
   }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setError("")
-    const normalized = pendingEmail.trim().toLowerCase()
-    if (normalized === "ch.koromilas@prv.ypeka.gr" || normalized === "mpouzasd@prv.ypeka.gr") {
-      setSubmitting(true)
-      try {
-        const res = await api.checkEmail(normalized)
-        if (res.status === "authenticated" && res.user) {
-          setUser(res.user)
-          navigate("/app/home", { replace: true })
-          return
-        }
-      } catch {
-        setError("Sign in failed. Please try again.")
-      } finally {
-        setSubmitting(false)
-      }
-      return
-    }
-
     if (!password) return
     setSubmitting(true)
     try {

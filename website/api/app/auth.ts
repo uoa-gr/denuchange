@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs"
 import { getSupabaseAdmin } from "../_lib/supabase-admin"
 import { signJwt, getSessionCookie, clearSessionCookie, extractJwt } from "../_lib/auth"
 import { esc, sendMail, wrapEmail } from "../_lib/email"
+import { getPasswordlessUser, type PasswordlessUserInfo } from "../_lib/passwordless-users"
 
 // Consolidated auth handler
 // GET  ?action=me           → return current user
@@ -15,36 +16,16 @@ import { esc, sendMail, wrapEmail } from "../_lib/email"
 
 const APP_BASE_URL = process.env.APP_BASE_URL ?? "https://denuchange.vercel.app"
 
-export interface PasswordlessUserInfo {
-  firstName: string
-  lastName: string
-  affiliation: string
-  country: string
-  registrationType: string
-}
-
-export const PASSWORDLESS_USERS: Record<string, PasswordlessUserInfo> = {
-  "ch.koromilas@prv.ypeka.gr": {
-    firstName: "Χρήστος",
-    lastName: "Κορομηλάς",
-    affiliation: "Υπουργείο Περιβάλλοντος και Ενέργειας (ΥΠΕΝ / YPEKA)",
-    country: "Greece",
-    registrationType: "regular_full",
-  },
-  "mpouzasd@prv.ypeka.gr": {
-    firstName: "Δημήτριος",
-    lastName: "Μπούζας",
-    affiliation: "Υπουργείο Περιβάλλοντος και Ενέργειας (ΥΠΕΝ / YPEKA)",
-    country: "Greece",
-    registrationType: "regular_full",
-  },
-}
-
-async function syncPasswordlessUsers() {
-  try {
-    const admin = getSupabaseAdmin()
-    for (const [email, pwdless] of Object.entries(PASSWORDLESS_USERS)) {
-      await admin.from("registrations").upsert(
+async function syncPasswordlessUser(email: string, pwdless: PasswordlessUserInfo) {
+  const admin = getSupabaseAdmin()
+  // Never change an existing registration or infer payment from app access.
+  // Guests without known registration details only need an app user profile.
+  if (pwdless.affiliation && pwdless.country && pwdless.registrationType) {
+    const { data: registration, error: registrationError } = await admin.from("registrations")
+      .select("email").ilike("email", email).maybeSingle()
+    if (registrationError) throw new Error("Unable to prepare app access")
+    if (!registration) {
+      const { error } = await admin.from("registrations").upsert(
         {
           first_name: pwdless.firstName,
           last_name: pwdless.lastName,
@@ -52,21 +33,24 @@ async function syncPasswordlessUsers() {
           affiliation: pwdless.affiliation,
           country: pwdless.country,
           registration_type: pwdless.registrationType,
-          payment_confirmed: true,
-        },
-        { onConflict: "email" }
-      )
-      await admin.from("app_users").upsert(
-        {
-          email,
-          is_admin: false,
         },
         { onConflict: "email", ignoreDuplicates: true }
       )
+      if (error) throw new Error("Unable to prepare app access")
     }
-  } catch (err) {
-    console.warn("[auth] Failed to sync passwordless users into Supabase:", err)
   }
+  const { data: user, error: userError } = await admin.from("app_users")
+    .select("email").ilike("email", email).maybeSingle()
+  if (userError) throw new Error("Unable to prepare app access")
+  if (!user) {
+    const { error } = await admin.from("app_users").upsert(
+      { email, is_admin: false }, { onConflict: "email", ignoreDuplicates: true }
+    )
+    if (error) throw new Error("Unable to prepare app access")
+  }
+  // Update only the privilege flag, preserving password and avatar data.
+  const { error } = await admin.from("app_users").update({ is_admin: false }).ilike("email", email)
+  if (error) throw new Error("Unable to prepare app access")
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -90,7 +74,7 @@ async function _handle(req: any, res: any) {
     if (!payload) return res.status(401).json({ error: "Unauthorized" })
 
     const email = payload.email.toLowerCase()
-    const pwdless = PASSWORDLESS_USERS[email]
+    const pwdless = getPasswordlessUser(email)
 
     const [{ data: user }, { data: reg }] = await Promise.all([
       getSupabaseAdmin()
@@ -108,7 +92,7 @@ async function _handle(req: any, res: any) {
     if (!user && !pwdless) return res.status(401).json({ error: "Unauthorized" })
     return res.json({
       email: user?.email ?? email,
-      isAdmin: user?.is_admin ?? false,
+      isAdmin: pwdless ? false : user?.is_admin ?? false,
       firstName: reg?.first_name ?? pwdless?.firstName ?? "",
       lastName: reg?.last_name ?? pwdless?.lastName ?? "",
       affiliation: reg?.affiliation ?? pwdless?.affiliation ?? "",
@@ -141,9 +125,9 @@ async function _handle(req: any, res: any) {
       return res.status(400).json({ error: "Invalid email address" })
     }
 
-    const pwdless = PASSWORDLESS_USERS[raw]
+    const pwdless = getPasswordlessUser(raw)
     if (pwdless) {
-      await syncPasswordlessUsers()
+      await syncPasswordlessUser(raw, pwdless)
       const jwtToken = signJwt({ email: raw, isAdmin: false })
       res.setHeader("Set-Cookie", getSessionCookie(jwtToken))
       return res.json({
@@ -153,8 +137,8 @@ async function _handle(req: any, res: any) {
           isAdmin: false,
           firstName: pwdless.firstName,
           lastName: pwdless.lastName,
-          affiliation: pwdless.affiliation,
-          registrationType: pwdless.registrationType,
+          affiliation: pwdless.affiliation ?? "",
+          registrationType: pwdless.registrationType ?? "",
           avatarPath: null,
         },
       })
@@ -185,7 +169,7 @@ async function _handle(req: any, res: any) {
     const email: string = (req.body?.email ?? "").toString().trim().toLowerCase()
     if (!email || email.length > 254) return res.status(400).json({ error: "Invalid email" })
 
-    if (PASSWORDLESS_USERS[email]) {
+    if (getPasswordlessUser(email)) {
       return res.json({ sent: true })
     }
 
@@ -282,13 +266,13 @@ async function _handle(req: any, res: any) {
   if (req.method === "POST" && action === "login") {
     const email: string = (req.body?.email ?? "").toString().trim().toLowerCase()
     const password: string = (req.body?.password ?? "").toString()
-    const pwdless = PASSWORDLESS_USERS[email]
+    const pwdless = getPasswordlessUser(email)
 
     if (!email) return res.status(400).json({ error: "Email is required" })
     if (!password && !pwdless) return res.status(400).json({ error: "Email and password are required" })
 
     if (pwdless) {
-      await syncPasswordlessUsers()
+      await syncPasswordlessUser(email, pwdless)
       const jwtToken = signJwt({ email, isAdmin: false })
       res.setHeader("Set-Cookie", getSessionCookie(jwtToken))
       return res.json({
@@ -296,8 +280,8 @@ async function _handle(req: any, res: any) {
         isAdmin: false,
         firstName: pwdless.firstName,
         lastName: pwdless.lastName,
-        affiliation: pwdless.affiliation,
-        registrationType: pwdless.registrationType,
+        affiliation: pwdless.affiliation ?? "",
+        registrationType: pwdless.registrationType ?? "",
         avatarPath: null,
       })
     }
