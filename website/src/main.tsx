@@ -1,46 +1,9 @@
 import { StrictMode, Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { registerSW } from 'virtual:pwa-register'
 import './index.css'
 import App from './App.tsx'
 import { AppRouter } from './app/router.tsx'
-
-const updateIntervalMs = 60 * 1000
-
-registerSW({
-  immediate: true,
-  onRegisteredSW(swUrl, registration) {
-    if (!registration) return
-    let checking = false
-
-    const checkForUpdate = async () => {
-      if (checking || registration.installing || !navigator.onLine) return
-      checking = true
-
-      try {
-        const response = await fetch(swUrl, {
-          cache: 'no-store',
-          headers: { 'cache-control': 'no-cache' },
-        })
-
-        if (response.ok) await registration.update()
-      } catch {
-        // Keep the current offline-capable version when the update check cannot connect.
-      } finally {
-        checking = false
-      }
-    }
-
-    void checkForUpdate()
-    window.setInterval(() => void checkForUpdate(), updateIntervalMs)
-    window.addEventListener('focus', () => void checkForUpdate())
-    window.addEventListener('online', () => void checkForUpdate())
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') void checkForUpdate()
-    })
-  },
-})
 
 const OpsExportPage = lazy(() =>
   import('./pages/ops/OpsExportPage.tsx').then((m) => ({ default: m.OpsExportPage })),
