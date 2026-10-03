@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
 import { Bell } from "lucide-react"
 import { DEFAULT_ANNOUNCEMENTS, type NotificationItem } from "../lib/program-data"
+import { mergeAnnouncements } from "../lib/announcements"
 
 type Notification = NotificationItem
 
@@ -36,7 +37,7 @@ function timeAgo(iso: string) {
 export function AlertsPage() {
   const [items, setItems] = useState<Notification[]>([])
   const [loading, setLoading] = useState(true)
-  const readSet = useRef(getReadSet())
+  const [readSet, setReadSet] = useState(getReadSet)
 
   useEffect(() => {
     void (async () => {
@@ -44,15 +45,10 @@ export function AlertsPage() {
         .from("notifications")
         .select("id, title, body, created_at")
         .order("created_at", { ascending: false })
-      const combined = [...(data ?? [])]
-      for (const def of DEFAULT_ANNOUNCEMENTS) {
-        if (!combined.some((item) => item.id === def.id || item.title === def.title)) {
-          combined.push(def)
-        }
-      }
+      const combined = mergeAnnouncements(data ?? [], DEFAULT_ANNOUNCEMENTS)
       setItems(combined)
       markRead(combined.map((n) => n.id))
-      readSet.current = getReadSet()
+      setReadSet(getReadSet())
       setLoading(false)
     })()
 
@@ -63,7 +59,7 @@ export function AlertsPage() {
         { event: "INSERT", schema: "public", table: "notifications" },
         (payload) => {
           const n = payload.new as Notification
-          setItems((prev) => [n, ...prev])
+          setItems((prev) => mergeAnnouncements([n, ...prev], DEFAULT_ANNOUNCEMENTS))
           // Don't auto-mark new ones so they appear unread briefly
         }
       )
@@ -97,14 +93,14 @@ export function AlertsPage() {
   return (
     <div className="divide-y divide-border">
       {items.map((n) => {
-        const isUnread = !readSet.current.has(n.id)
+        const isUnread = !readSet.has(n.id)
         return (
           <div
             key={n.id}
             className={`px-4 py-4 ${isUnread ? "bg-primary/5" : "bg-background"}`}
             onClick={() => {
               markRead([n.id])
-              readSet.current.add(n.id)
+              setReadSet((prev) => new Set(prev).add(n.id))
             }}
           >
             <div className="flex items-start gap-3">
