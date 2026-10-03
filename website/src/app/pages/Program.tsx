@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
-import { Clock, MapPin, CalendarDays, Bell, ExternalLink, CalendarPlus, Check } from "lucide-react"
+import { CalendarDays, CalendarPlus } from "lucide-react"
 import type { ProgramSession } from "../lib/program-data"
-import { formatSessionTime } from "../lib/program-time"
 import { startProgramUpdates } from "../lib/program-updates"
+import { ProgramSchedule } from "../components/ProgramSchedule"
 import {
   generateSessionIcs,
   generateDayIcs,
   downloadIcsFile,
-  getGoogleCalendarUrl,
 } from "../lib/calendar"
 
 const DAYS: { date: string; label: string; short: string }[] = [
@@ -16,24 +15,6 @@ const DAYS: { date: string; label: string; short: string }[] = [
   { date: "2026-10-06", label: "Tuesday, 6 Oct", short: "Tue 6" },
   { date: "2026-10-07", label: "Wednesday, 7 Oct", short: "Wed 7" },
 ]
-
-const TYPE_COLORS: Record<string, string> = {
-  keynote: "border-l-primary bg-primary/5",
-  session: "border-l-blue-400 bg-blue-50/50",
-  break: "border-l-muted-foreground bg-muted/40",
-  meal: "border-l-amber-400 bg-amber-50/50",
-  field_trip: "border-l-green-500 bg-green-50/50",
-  social: "border-l-purple-400 bg-purple-50/50",
-}
-
-const TYPE_BADGES: Record<string, string> = {
-  keynote: "bg-primary/10 text-primary",
-  session: "bg-blue-100 text-blue-700",
-  break: "bg-muted text-muted-foreground",
-  meal: "bg-amber-100 text-amber-700",
-  field_trip: "bg-green-100 text-green-700",
-  social: "bg-purple-100 text-purple-700",
-}
 
 export function Program() {
   const [sessions, setSessions] = useState<ProgramSession[]>([])
@@ -135,71 +116,11 @@ export function Program() {
             </p>
           </div>
         ) : (
-          daySession.map((s) => (
-            <div
-              key={s.id}
-              className={`rounded-lg border-l-4 p-3 ${TYPE_COLORS[s.session_type] ?? TYPE_COLORS.session}`}
-            >
-              <div className="flex items-start justify-between gap-2 mb-1">
-                <p className="text-sm font-semibold text-foreground leading-snug">{s.title}</p>
-                <span
-                  className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full flex-none capitalize ${
-                    TYPE_BADGES[s.session_type] ?? TYPE_BADGES.session
-                  }`}
-                >
-                  {s.session_type.replace("_", " ")}
-                </span>
-              </div>
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1 whitespace-nowrap">
-                  <Clock className="h-3 w-3" />
-                  {formatSessionTime(s.start_time, s.end_time)}
-                </span>
-                {s.location && (
-                  <span className="flex items-center gap-1">
-                    <MapPin className="h-3 w-3" />
-                    {s.location}
-                  </span>
-                )}
-              </div>
-              {s.description && (
-                <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed whitespace-pre-line break-words">{s.description}</p>
-              )}
-              {s.title !== "Discussion" && (
-                <div className="mt-2.5 pt-2 border-t border-border/50 flex items-center justify-between gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleAddReminder(s)}
-                    className="inline-flex items-center gap-1.5 text-[11px] font-medium text-primary hover:text-primary/80 transition-colors"
-                    title="Add reminder to your device calendar (Apple / Outlook / Android) with 15-min notification"
-                  >
-                    {remindedId === s.id ? (
-                      <>
-                        <Check className="h-3.5 w-3.5 text-green-600" />
-                        <span className="text-green-600 font-semibold">Reminder added</span>
-                      </>
-                    ) : (
-                      <>
-                        <Bell className="h-3.5 w-3.5 text-primary/70" />
-                        <span>Add Reminder (.ics)</span>
-                      </>
-                    )}
-                  </button>
-
-                  <a
-                    href={getGoogleCalendarUrl(s)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground hover:text-foreground transition-colors"
-                    title="Add to Google Calendar"
-                  >
-                    <span>Google Cal</span>
-                    <ExternalLink className="h-3 w-3" />
-                  </a>
-                </div>
-              )}
-            </div>
-          ))
+          <ProgramSchedule
+            sessions={daySession}
+            remindedId={remindedId}
+            onAddReminder={handleAddReminder}
+          />
         )}
       </div>
     </div>
