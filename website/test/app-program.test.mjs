@@ -223,12 +223,10 @@ test("the attendee app and its calendars retain the authoritative workshop sched
     for (const end of ["", null, undefined]) assert.equal(timeFormatting.formatSessionTime("19:00:00", end), "19:00")
   })
 
-  await context.test("directs participants to the full web agenda and removes obsolete homepage PDF guidance", () => {
+  await context.test("keeps the day calendar action without a full agenda button or obsolete PDF guidance", () => {
     const markup = renderToStaticMarkup(React.createElement(page.Program))
-    const agendaLink = markup.match(/<a[^>]*href="https:\/\/uoa-gr\.github\.io\/denuchange\/agenda\/"[^>]*>([\s\S]*?)<\/a>/)
-    assert.ok(agendaLink, "The attendee app needs its full web agenda link")
-    assert.match(agendaLink[0], /target="_blank"/)
-    assert.equal(normalize(agendaLink[1].replace(/<[^>]+>/g, " ")), "Full agenda")
+    assert.match(markup, /Add Day to Cal/)
+    assert.doesNotMatch(markup, /Full agenda|href="https:\/\/uoa-gr\.github\.io\/denuchange\/agenda\/"/)
     assert.doesNotMatch(markup, /href="[^"]*DENUCHANGE_Program\.pdf/)
     for (const announcement of appData.DEFAULT_ANNOUNCEMENTS) {
       assert.doesNotMatch(announcement.body, /download[^.]*PDF[^.]*homepage|homepage[^.]*PDF/i)

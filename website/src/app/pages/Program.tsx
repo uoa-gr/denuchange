@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
-import { CalendarDays, CalendarPlus } from "lucide-react"
+import { CalendarPlus } from "lucide-react"
 import type { ProgramSession } from "../lib/program-data"
 import { startProgramUpdates } from "../lib/program-updates"
 import { ProgramSchedule } from "../components/ProgramSchedule"
@@ -74,7 +74,7 @@ export function Program() {
         ))}
       </div>
 
-      {/* Day label and Calendar / detailed agenda actions */}
+      {/* Day label and calendar action */}
       <div className="px-4 py-2 bg-muted/30 border-b border-border flex items-center justify-between gap-2 flex-wrap">
         <p className="text-xs font-medium text-muted-foreground">
           {DAYS.find((d) => d.date === activeDay)?.label}
@@ -89,15 +89,6 @@ export function Program() {
             <CalendarPlus className="h-3.5 w-3.5" />
             <span>Add Day to Cal</span>
           </button>
-          <a
-            href="https://uoa-gr.github.io/denuchange/agenda/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-[11px] font-semibold text-muted-foreground hover:text-foreground hover:underline"
-          >
-            <CalendarDays className="h-3.5 w-3.5" />
-            <span>Full agenda</span>
-          </a>
         </div>
       </div>
 
