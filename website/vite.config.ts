@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react-swc'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 import { VitePWA } from 'vite-plugin-pwa'
+import { releaseFreshness } from './scripts/release-freshness'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -11,38 +12,18 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    releaseFreshness(process.env.GITHUB_ACTIONS ? '/denuchange/' : '/'),
     VitePWA({
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.ts',
       registerType: 'autoUpdate',
-      injectRegister: 'auto',
-      workbox: {
+      injectRegister: false,
+      injectManifest: {
+        rollupFormat: 'iife',
         globPatterns: ['**/*.{js,css,html,ico,png,jpg,jpeg,svg,webp}'],
+        globIgnores: ['**/browser-refresh.js', '**/version.json'],
         maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MiB
-        // Online visits must fetch the current HTML, including the homepage.
-        // Disable the precache navigation shortcuts; retain the shell for offline use.
-        navigateFallback: null,
-        directoryIndex: null,
-        runtimeCaching: [
-          {
-            urlPattern: ({ request, url, sameOrigin }) =>
-              request.mode === 'navigate' &&
-              sameOrigin &&
-              !/^\/(?:api|_vercel)(?:\/|$)/.test(url.pathname) &&
-              !/\.pdf$/i.test(url.pathname),
-            handler: 'NetworkOnly',
-            options: {
-              precacheFallback: { fallbackURL: 'index.html' },
-            },
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-cache',
-              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-        ],
       },
       manifest: {
         name: 'DENUCHANGE 2026',
