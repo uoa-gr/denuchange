@@ -4,6 +4,7 @@ import { useAuth } from "../lib/auth"
 import { supabase } from "@/lib/supabase"
 import { Calendar, MapPin, Bell, ArrowRight } from "lucide-react"
 import { DEFAULT_ANNOUNCEMENTS } from "../lib/program-data"
+import { mergeAnnouncements } from "../lib/announcements"
 
 const EVENT_DATE = new Date("2026-10-06T09:00:00+03:00")
 
@@ -31,7 +32,9 @@ export function Home() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [countdown, setCountdown] = useState(getCountdown())
-  const [latestAlert, setLatestAlert] = useState<LatestNotification | null>(DEFAULT_ANNOUNCEMENTS[0] ?? null)
+  const [latestAlert, setLatestAlert] = useState<LatestNotification | null>(() =>
+    mergeAnnouncements([], DEFAULT_ANNOUNCEMENTS)[0] ?? null,
+  )
 
   useEffect(() => {
     const id = setInterval(() => setCountdown(getCountdown()), 60_000)
@@ -41,11 +44,11 @@ export function Home() {
   useEffect(() => {
     supabase
       .from("notifications")
-      .select("title, created_at")
+      .select("id, title, body, created_at")
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle()
-      .then(({ data }) => setLatestAlert(data ?? DEFAULT_ANNOUNCEMENTS[0] ?? null))
+      .then(({ data }) => setLatestAlert(mergeAnnouncements(data ? [data] : [], DEFAULT_ANNOUNCEMENTS)[0] ?? null))
   }, [])
 
   const displayName = user

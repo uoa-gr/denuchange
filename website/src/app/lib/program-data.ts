@@ -23,6 +23,12 @@ export interface NotificationItem {
 
 export const DEFAULT_ANNOUNCEMENTS: NotificationItem[] = [
   {
+    "id": "alert-agenda-update-20261003",
+    "title": "Workshop Agenda Updated",
+    "body": "On Tuesday, 6 October, Santoro G.’s presentation on erosion modelling in Aliano is now at 12:55–13:10 in Session 1. Posazhennikova V.’s presentation on debris-flow susceptibility in the Greater Caucasus is now at 17:20–17:35 in Session 2. Dr. Mihai Micu has been added to the welcome speeches (09:30–10:00). The agenda now lists all session chairs and Wednesday’s closing speakers, Prof. Achim A. Beylich and Prof. Zbigniew Zwoliński (15:00–15:30). Please check the Program tab or View Detailed Program on the homepage for the updated agenda.",
+    "created_at": "2026-10-03T10:07:00.000Z"
+  },
+  {
     "id": "alert-agenda-update-20260927",
     "title": "Program Schedule Updated",
     "body": "The workshop agenda has been updated with timing adjustments for Tuesday Session 2 (including a coffee break at 17:00), revised timings for Wednesday's Poster Session and Lunch, and the addition of a lecture by Kirki Kefalea at 14:45. Please check the Program tab or view the detailed program from the homepage.",
