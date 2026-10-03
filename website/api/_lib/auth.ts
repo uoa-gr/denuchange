@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken"
+import { getPasswordlessUser } from "./passwordless-users"
 
 const JWT_SECRET = process.env.JWT_SECRET!
 const COOKIE_NAME = "denuchange_session"
@@ -38,5 +39,8 @@ export function extractJwt(req: any): JwtPayload | null {
     .find((c: string) => c.startsWith(`${COOKIE_NAME}=`))
   if (!cookie) return null
   const token = cookie.slice(COOKIE_NAME.length + 1)
-  return verifyJwt(token)
+  const payload = verifyJwt(token)
+  if (!payload || typeof payload.email !== "string") return null
+  // This also removes privileges from cookies issued before the guest policy.
+  return getPasswordlessUser(payload.email) ? { ...payload, isAdmin: false } : payload
 }

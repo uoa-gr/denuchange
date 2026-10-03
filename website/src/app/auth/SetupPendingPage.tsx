@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../lib/auth"
-import { api } from "../lib/api"
+import { api, type CheckEmailResponse } from "../lib/api"
 import { Mail, RefreshCw, ArrowRight } from "lucide-react"
 
 // Progressive cooldown steps in seconds
@@ -15,27 +15,32 @@ export function SetupPendingPage() {
   const [sending, setSending] = useState(false)
   const [sendMessage, setSendMessage] = useState("")
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const [checkingAccess, setCheckingAccess] = useState(true)
+  const accessCheck = useRef<{ email: string; request: Promise<CheckEmailResponse> } | null>(null)
 
-  // Redirect if no pending email or if passwordless
+  // Old setup URLs also use the server's current access policy.
   useEffect(() => {
     if (!pendingEmail) {
       navigate("/app/auth/email", { replace: true })
       return
     }
     const normalized = pendingEmail.trim().toLowerCase()
-    if (normalized === "ch.koromilas@prv.ypeka.gr" || normalized === "mpouzasd@prv.ypeka.gr") {
-      void (async () => {
-        try {
-          const res = await api.checkEmail(normalized)
-          if (res.status === "authenticated" && res.user) {
-            setUser(res.user)
-            navigate("/app/home", { replace: true })
-          }
-        } catch {
-          // ignore
-        }
-      })()
+    if (accessCheck.current?.email !== normalized) {
+      accessCheck.current = { email: normalized, request: api.checkEmail(normalized) }
     }
+    let active = true
+    void accessCheck.current.request.then(res => {
+      if (!active) return
+      if (res.status === "authenticated" && res.user) {
+        setUser(res.user)
+        navigate("/app/home", { replace: true })
+      }
+    }).catch(() => {
+      if (active) setSendMessage("Unable to check access. Please use a different email to return to sign-in.")
+    }).finally(() => {
+      if (active) setCheckingAccess(false)
+    })
+    return () => { active = false }
   }, [pendingEmail, navigate, setUser])
 
   // Start initial cooldown (first email was auto-sent from EmailPage)
@@ -81,6 +86,10 @@ export function SetupPendingPage() {
     } finally {
       setSending(false)
     }
+  }
+
+  if (!pendingEmail || checkingAccess) {
+    return <div className="min-h-[100dvh] flex items-center justify-center p-6 bg-background"><p className="text-sm text-muted-foreground" role="status">Checking access…</p></div>
   }
 
   return (
