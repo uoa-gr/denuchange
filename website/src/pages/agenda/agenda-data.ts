@@ -121,6 +121,7 @@ export const days: AgendaDay[] = [
               'Prof. Achim A. Beylich, Chair of the IAG WG DENUCHANGE / Geomorphological Field Laboratory',
               'Prof. Zbigniew Zwoliński, Co-Chair of the IAG WG DENUCHANGE / Institute of Geoecology and Geoinformation, Adam Mickiewicz University',
               'Vasilis Flerianos, Deputy Mayor for Culture, Municipality of Naxos and Small Cyclades',
+              'Dimitris Lianos, Mayor of Municipality of Naxos and Small Cyclades',
               'Prof. Assimina Antonarakou, President, Department of Geology and Geoenvironment, National and Kapodistrian University of Athens',
             ],
             paragraphs: [

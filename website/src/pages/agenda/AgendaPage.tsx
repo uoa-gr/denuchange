@@ -188,7 +188,7 @@ function VenueAndTransport() {
 }
 
 function isAffiliatedPerson(text: string) {
-  return /^(?:Prof\.|Dr\.)\s/.test(text) || text.startsWith("Vasilis Flerianos, ")
+  return /^(?:Prof\.|Dr\.)\s/.test(text) || /^(?:Vasilis Flerianos|Dimitris Lianos), /.test(text)
 }
 
 function PersonText({ text }: { text: string }) {

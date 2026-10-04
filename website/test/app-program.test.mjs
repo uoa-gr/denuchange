@@ -80,11 +80,14 @@ test("the attendee app and its calendars retain the authoritative workshop sched
     readFile(path.join(testDirectory, "fixtures", "agenda-source.txt"), "utf8"),
   ])
   const sessions = appData.DEFAULT_PROGRAM_SESSIONS
-  // Preserve the PDF transcription, allowing the explicitly approved welcome-role correction.
+  // Preserve the PDF transcription, allowing the approved role correction and added mayor.
   const sourceText = normalize(sourceFixture.replace(
     "Prof. Niki Evelpidou, Chair of the IAG WG Virtual trips in Geomorphology / Department of Geology and Geoenvironment, National and Kapodistrian University of Athens",
     "Prof. Niki Evelpidou, Chair of the organising committee / Department of Geology and Geoenvironment, National and Kapodistrian University of Athens",
-  ))
+  )).replace(
+    "Vasilis Flerianos, Deputy Mayor for Culture, Municipality of Naxos and Small Cyclades",
+    "Vasilis Flerianos, Deputy Mayor for Culture, Municipality of Naxos and Small Cyclades Dimitris Lianos, Mayor of Municipality of Naxos and Small Cyclades",
+  )
   const rows = agendaData.days.flatMap(day => day.blocks.flatMap(block => block.entries.map(entry => ({ day, block, entry }))))
   const sessionById = id => {
     const session = sessions.find(candidate => candidate.id === id)
@@ -150,6 +153,10 @@ test("the attendee app and its calendars retain the authoritative workshop sched
     assert.equal(posazhennikova.title, "Debris flow release susceptibility and sediment connectivity in the Russian sector of the Greater Caucasus")
     assert.ok(posazhennikova.description.startsWith("Posazhennikova V., Golosov V. N., Kharchenko S. V."))
     assert.ok(sessionById("tue-welcome").description.includes("Dr. Mihai Micu, President of the International Association of Geomorphologists /Institute of Geography, Romanian Academy"))
+    const welcome = agendaData.days.flatMap(day => day.blocks.flatMap(block => block.entries)).find(entry => entry.title === "Welcome speeches")
+    const welcomeSpeeches = sessionById("tue-welcome").description.split("\n\nEvent Opening:")[0].split("\n").slice(1)
+    assert.deepEqual(welcomeSpeeches, welcome.speakers, "App welcome speakers must follow the approved agenda order")
+    assert.equal(welcomeSpeeches.filter(speaker => speaker === "Dimitris Lianos, Mayor of Municipality of Naxos and Small Cyclades").length, 1)
     for (const name of ["Prof. Achim A. Beylich", "Prof. Zbigniew Zwoliński"]) assert.ok(sessionById("wed-closing").description.includes(name))
   })
 
