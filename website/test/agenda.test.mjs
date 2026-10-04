@@ -95,7 +95,7 @@ test("the public agenda preserves the approved programme and public routing", as
 
   await context.test("renders every source paragraph with the explicitly approved programme changes", () => {
     // Keep the original PDF fixture; allow only the approved welcome-role correction,
-    // mayor addition, named poster withdrawal and sequential poster numbering.
+    // mayor addition, welcome-speaker order, named poster withdrawal and sequential poster numbering.
     const approvedNikiWelcome = "Prof. Niki Evelpidou, Chair of the organising committee / Department of Geology and Geoenvironment, National and Kapodistrian University of Athens"
     const approvedSource = sourceFixture.replace(
       "Prof. Niki Evelpidou, Chair of the IAG WG Virtual trips in Geomorphology / Department of Geology and Geoenvironment, National and Kapodistrian University of Athens",
@@ -105,20 +105,27 @@ test("the public agenda preserves the approved programme and public routing", as
     assert.equal(welcome.speakers[0], approvedNikiWelcome, "The organising committee chair must remain the first welcome speaker")
     const approvedMayorWelcome = "Dimitris Lianos, Mayor of Municipality of Naxos and Small Cyclades"
     const precedingSpeaker = "Vasilis Flerianos, Deputy Mayor for Culture, Municipality of Naxos and Small Cyclades"
-    const expectedWelcomeSpeakers = sourceParagraphs.slice(
+    const sourceWelcomeSpeakers = sourceParagraphs.slice(
       sourceParagraphs.indexOf("Welcome speeches") + 1,
       sourceParagraphs.indexOf("Event Opening"),
     )
-    expectedWelcomeSpeakers[0] = approvedNikiWelcome
-    expectedWelcomeSpeakers.splice(expectedWelcomeSpeakers.indexOf(precedingSpeaker) + 1, 0, approvedMayorWelcome)
-    assert.deepEqual(welcome.speakers, expectedWelcomeSpeakers, "Only the approved welcome-role correction and mayor insertion may change the source speakers")
+    const expectedWelcomeSpeakers = [
+      approvedNikiWelcome,
+      sourceWelcomeSpeakers[5],
+      approvedMayorWelcome,
+      precedingSpeaker,
+      sourceWelcomeSpeakers[1],
+      sourceWelcomeSpeakers[2],
+      sourceWelcomeSpeakers[3],
+    ]
+    assert.deepEqual(welcome.speakers, expectedWelcomeSpeakers, "Only the approved welcome-role correction, mayor insertion and speaker order may change the source speakers")
     assert.equal(welcome.time, "09:30-10:00")
     assert.deepEqual(welcome.paragraphs, [
       "Event Opening",
       "Prof. Efstathios Efstathopoulos, Vice-Rector for Research and Innovation, National and Kapodistrian University of Athens",
     ])
     assert.equal(renderedText.split(approvedMayorWelcome).length - 1, 1, "The mayor must appear exactly once with the supplied wording")
-    assert.ok(renderedText.includes(expectedWelcomeSpeakers.slice(4, 7).join(" ")), "Flerianos, Lianos and Antonarakou must render in the approved order")
+    assert.ok(renderedText.includes(expectedWelcomeSpeakers.slice(1, 4).join(" ")), "Antonarakou, Lianos and Flerianos must render in the approved order")
     assert.ok(markup.includes('<p class="agenda-person"><strong class="agenda-person-name">Dimitris Lianos</strong>, Mayor of Municipality of Naxos and Small Cyclades</p>'), "The mayor must use the existing welcome-speaker affiliation and bold-name formatting")
     const removedPreface = "The workshop is preceded by an ice breaker event on Monday, 5 October (see p. 3)"
     // Registration at 19:00 replaces the Monday block's redundant subtitle.

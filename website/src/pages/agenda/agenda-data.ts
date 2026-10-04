@@ -117,12 +117,12 @@ export const days: AgendaDay[] = [
             title: 'Welcome speeches',
             speakers: [
               'Prof. Niki Evelpidou, Chair of the organising committee / Department of Geology and Geoenvironment, National and Kapodistrian University of Athens',
+              'Prof. Assimina Antonarakou, President, Department of Geology and Geoenvironment, National and Kapodistrian University of Athens',
+              'Dimitris Lianos, Mayor of Municipality of Naxos and Small Cyclades',
+              'Vasilis Flerianos, Deputy Mayor for Culture, Municipality of Naxos and Small Cyclades',
               'Dr. Mihai Micu, President of the International Association of Geomorphologists /Institute of Geography, Romanian Academy',
               'Prof. Achim A. Beylich, Chair of the IAG WG DENUCHANGE / Geomorphological Field Laboratory',
               'Prof. Zbigniew Zwoliński, Co-Chair of the IAG WG DENUCHANGE / Institute of Geoecology and Geoinformation, Adam Mickiewicz University',
-              'Vasilis Flerianos, Deputy Mayor for Culture, Municipality of Naxos and Small Cyclades',
-              'Dimitris Lianos, Mayor of Municipality of Naxos and Small Cyclades',
-              'Prof. Assimina Antonarakou, President, Department of Geology and Geoenvironment, National and Kapodistrian University of Athens',
             ],
             paragraphs: [
               'Event Opening',
