@@ -80,7 +80,11 @@ test("the attendee app and its calendars retain the authoritative workshop sched
     readFile(path.join(testDirectory, "fixtures", "agenda-source.txt"), "utf8"),
   ])
   const sessions = appData.DEFAULT_PROGRAM_SESSIONS
-  const sourceText = normalize(sourceFixture)
+  // Preserve the PDF transcription, allowing the explicitly approved welcome-role correction.
+  const sourceText = normalize(sourceFixture.replace(
+    "Prof. Niki Evelpidou, Chair of the IAG WG Virtual trips in Geomorphology / Department of Geology and Geoenvironment, National and Kapodistrian University of Athens",
+    "Prof. Niki Evelpidou, Chair of the organising committee / Department of Geology and Geoenvironment, National and Kapodistrian University of Athens",
+  ))
   const rows = agendaData.days.flatMap(day => day.blocks.flatMap(block => block.entries.map(entry => ({ day, block, entry }))))
   const sessionById = id => {
     const session = sessions.find(candidate => candidate.id === id)
