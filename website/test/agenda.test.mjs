@@ -81,9 +81,16 @@ test("the public agenda preserves the approved programme and public routing", as
   const mainContent = markup.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? ""
 
   await context.test("renders every source paragraph, including authors and committees", () => {
-    // Keep the fixture intact; the removed intro is an intentional content omission.
+    // Preserve the PDF transcription, allowing the explicitly approved welcome-role correction.
+    const approvedNikiWelcome = "Prof. Niki Evelpidou, Chair of the organising committee / Department of Geology and Geoenvironment, National and Kapodistrian University of Athens"
+    const approvedSource = sourceFixture.replace(
+      "Prof. Niki Evelpidou, Chair of the IAG WG Virtual trips in Geomorphology / Department of Geology and Geoenvironment, National and Kapodistrian University of Athens",
+      approvedNikiWelcome,
+    )
+    const welcome = dataModule.days.flatMap(day => day.blocks.flatMap(block => block.entries)).find(entry => entry.title === "Welcome speeches")
+    assert.equal(welcome.speakers[0], approvedNikiWelcome, "The organising committee chair must remain the first welcome speaker")
     const removedPreface = "The workshop is preceded by an ice breaker event on Monday, 5 October (see p. 3)"
-    const fragments = sourceFixture.split(/\r?\n\s*\r?\n/)
+    const fragments = approvedSource.split(/\r?\n\s*\r?\n/)
       .map(normalize)
       .filter(fragment => fragment && fragment !== removedPreface)
       .map(fragment => fragment.replace(` (${dataModule.busStationUrl})`, "").replace(dataModule.venueUrl, "Open venue map"))

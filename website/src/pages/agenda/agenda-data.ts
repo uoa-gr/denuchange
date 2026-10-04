@@ -115,7 +115,7 @@ export const days: AgendaDay[] = [
             time: '09:30-10:00',
             title: 'Welcome speeches',
             speakers: [
-              'Prof. Niki Evelpidou, Chair of the IAG WG Virtual trips in Geomorphology / Department of Geology and Geoenvironment, National and Kapodistrian University of Athens',
+              'Prof. Niki Evelpidou, Chair of the organising committee / Department of Geology and Geoenvironment, National and Kapodistrian University of Athens',
               'Dr. Mihai Micu, President of the International Association of Geomorphologists /Institute of Geography, Romanian Academy',
               'Prof. Achim A. Beylich, Chair of the IAG WG DENUCHANGE / Geomorphological Field Laboratory',
               'Prof. Zbigniew Zwoliński, Co-Chair of the IAG WG DENUCHANGE / Institute of Geoecology and Geoinformation, Adam Mickiewicz University',
