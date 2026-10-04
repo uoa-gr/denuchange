@@ -9,6 +9,8 @@ import { createServer } from "vite"
 
 const testDirectory = path.dirname(fileURLToPath(import.meta.url))
 const projectRoot = path.resolve(testDirectory, "..")
+const withdrawnPosterTitle = "A Regional Morpho-Kinematic Inventory of Periglacial Landforms in the Marginal Permafrost Environment of the Southern Carpathians"
+const withdrawnPosterAuthors = "Onaca A., Sîrbu F., Ardelean F., Poncos V., Strozzi T."
 
 function visibleText(markup) {
   return markup
@@ -79,9 +81,21 @@ test("the public agenda preserves the approved programme and public routing", as
   const markup = renderToStaticMarkup(React.createElement(pageModule.AgendaPage))
   const renderedText = normalize(visibleText(markup))
   const mainContent = markup.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? ""
+  const sourceParagraphs = sourceFixture.split(/\r?\n\s*\r?\n/).map(normalize).filter(Boolean)
+  const sourcePosters = sourceParagraphs.flatMap((paragraph, index) => {
+    const match = paragraph.match(/^(P\d+)\. (.+)$/)
+    return match ? [{ number: match[1], title: match[2], authors: sourceParagraphs[index + 1] }] : []
+  })
+  const remainingSourcePosters = sourcePosters.filter(poster => poster.title !== withdrawnPosterTitle)
+  const approvedPosters = remainingSourcePosters.map((poster, index) => ({ ...poster, number: `P${index + 1}` }))
+  const approvedPosterParagraphs = new Map(remainingSourcePosters.map((poster, index) => [
+    `${poster.number}. ${poster.title}`,
+    `${approvedPosters[index].number}. ${poster.title}`,
+  ]))
 
-  await context.test("renders every source paragraph, including authors and committees", () => {
-    // Preserve the PDF transcription, allowing the explicitly approved welcome-role correction.
+  await context.test("renders every source paragraph with the explicitly approved programme changes", () => {
+    // Keep the original PDF fixture; allow only the approved welcome-role correction,
+    // named poster withdrawal and sequential numbering of the remaining posters.
     const approvedNikiWelcome = "Prof. Niki Evelpidou, Chair of the organising committee / Department of Geology and Geoenvironment, National and Kapodistrian University of Athens"
     const approvedSource = sourceFixture.replace(
       "Prof. Niki Evelpidou, Chair of the IAG WG Virtual trips in Geomorphology / Department of Geology and Geoenvironment, National and Kapodistrian University of Athens",
@@ -94,7 +108,9 @@ test("the public agenda preserves the approved programme and public routing", as
     const replacedIceBreakerSubtitle = "Pre-workshop event · Monday, 5 October 2026 · 19:00"
     const fragments = approvedSource.split(/\r?\n\s*\r?\n/)
       .map(normalize)
-      .filter(fragment => fragment && fragment !== removedPreface && fragment !== replacedIceBreakerSubtitle)
+      .filter(fragment => fragment && fragment !== removedPreface && fragment !== replacedIceBreakerSubtitle
+        && fragment !== `P1. ${withdrawnPosterTitle}` && fragment !== withdrawnPosterAuthors)
+      .map(fragment => approvedPosterParagraphs.get(fragment) ?? fragment)
       .map(fragment => fragment.replace(` (${dataModule.busStationUrl})`, "").replace(dataModule.venueUrl, "Open venue map"))
     const missing = fragments.filter(fragment => !renderedText.includes(fragment))
     assert.deepEqual(missing, [], "Source programme content is missing or changed")
@@ -104,9 +120,22 @@ test("the public agenda preserves the approved programme and public routing", as
     assert.ok(!renderedText.includes(dataModule.venueUrl), "Venue maps should use descriptive buttons instead of visible URLs")
   })
 
-  await context.test("preserves the PDF poster numbering and literal time anomalies", () => {
+  await context.test("removes the withdrawn poster and preserves the remaining posters in order as P1 through P10", () => {
+    assert.equal(sourcePosters.length, 11, "The original PDF transcription must retain all source posters")
+    assert.deepEqual(sourcePosters.find(poster => poster.title === withdrawnPosterTitle), {
+      number: "P1", title: withdrawnPosterTitle, authors: withdrawnPosterAuthors,
+    })
+    const posterSession = dataModule.days.find(day => day.id === "wednesday").blocks.find(block => block.title === "Poster Session")
+    assert.deepEqual(posterSession.posters, approvedPosters, "Only the withdrawn poster and the remaining poster labels may change")
+    assert.equal(posterSession.posters.length, 10)
+    assert.deepEqual(posterSession.entries, [{ time: "12:50 – 13:15", title: "Poster Session" }])
     const posterNumbers = [...renderedText.matchAll(/\bP(\d{1,2})\b/g)].map(match => `P${match[1]}`)
-    assert.deepEqual([...new Set(posterNumbers)], ["P1", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12"])
+    assert.deepEqual(posterNumbers, Array.from({ length: 10 }, (_, index) => `P${index + 1}`))
+    assert.ok(!renderedText.includes(withdrawnPosterTitle), "The withdrawn poster title must be absent from the public agenda")
+    assert.ok(!renderedText.includes(withdrawnPosterAuthors), "The withdrawn poster authors must be absent from the public agenda")
+  })
+
+  await context.test("preserves literal PDF time anomalies", () => {
     assert.ok(renderedText.includes("11:45-11:15"), "The source's 11:45-11:15 time must be retained")
     assert.ok(renderedText.includes("11:45-11:-50"), "The source's 11:45-11:-50 time must be retained")
   })
