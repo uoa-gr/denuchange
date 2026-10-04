@@ -90,9 +90,11 @@ test("the public agenda preserves the approved programme and public routing", as
     const welcome = dataModule.days.flatMap(day => day.blocks.flatMap(block => block.entries)).find(entry => entry.title === "Welcome speeches")
     assert.equal(welcome.speakers[0], approvedNikiWelcome, "The organising committee chair must remain the first welcome speaker")
     const removedPreface = "The workshop is preceded by an ice breaker event on Monday, 5 October (see p. 3)"
+    // Registration at 19:00 replaces the Monday block's redundant subtitle.
+    const replacedIceBreakerSubtitle = "Pre-workshop event · Monday, 5 October 2026 · 19:00"
     const fragments = approvedSource.split(/\r?\n\s*\r?\n/)
       .map(normalize)
-      .filter(fragment => fragment && fragment !== removedPreface)
+      .filter(fragment => fragment && fragment !== removedPreface && fragment !== replacedIceBreakerSubtitle)
       .map(fragment => fragment.replace(` (${dataModule.busStationUrl})`, "").replace(dataModule.venueUrl, "Open venue map"))
     const missing = fragments.filter(fragment => !renderedText.includes(fragment))
     assert.deepEqual(missing, [], "Source programme content is missing or changed")

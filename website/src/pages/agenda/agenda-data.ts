@@ -84,8 +84,8 @@ export const days: AgendaDay[] = [
     blocks: [
       {
         title: 'ICE BREAKER',
-        subtitle: 'Pre-workshop event · Monday, 5 October 2026 · 19:00',
         entries: [
+          { time: '19:00', title: 'Registration' },
           {
             time: '19:00',
             title: 'A welcome evening with light dinner and drinks.',

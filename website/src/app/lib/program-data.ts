@@ -59,7 +59,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "start_time": "19:00",
     "end_time": "",
     "title": "ICE BREAKER",
-    "description": "Pre-workshop event · A welcome evening with light dinner and drinks.",
+    "description": "Registration · A welcome evening with light dinner and drinks.",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "social"
   },
