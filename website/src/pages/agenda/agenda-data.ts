@@ -1,5 +1,6 @@
 // Transcribed from the supplied DENUCHANGE_Program.pdf (8 pages).
-// Source spellings, poster numbering and printed time anomalies are preserved.
+// Source spellings and printed time anomalies are preserved, with approved
+// programme updates including the poster withdrawal and sequential numbering.
 export interface AgendaEntry {
   time: string;
   title: string;
@@ -312,56 +313,51 @@ export const days: AgendaDay[] = [
         posters: [
           {
             number: 'P1',
-            title: 'A Regional Morpho-Kinematic Inventory of Periglacial Landforms in the Marginal Permafrost Environment of the Southern Carpathians',
-            authors: 'Onaca A., Sîrbu F., Ardelean F., Poncos V., Strozzi T.',
-          },
-          {
-            number: 'P3',
             title: 'The impact of beaver activity on geomorphological processes in mountain streams (Western Carpathians)',
             authors: 'Wąs J., Kijowska-Strugała M., Gorczyca E.',
           },
           {
-            number: 'P4',
+            number: 'P2',
             title: 'Typology and Morphometric Differentiation of Erosional-Denudational Valleys in the Marginal Zones of the Southern Baltic',
             authors: 'Paluszkiewicz R., Winowski M.',
           },
           {
-            number: 'P5',
+            number: 'P3',
             title: 'Artificial Litter versus Geomorphological Processes: Field Experiments on Litter Movement along Carpathian Valley Slopes',
             authors: 'Haska W., Gorczyca E., Liro M.',
           },
           {
-            number: 'P6',
+            number: 'P4',
             title: 'Geomorphology of Skiathos',
             authors: 'Soultanis K.',
           },
           {
-            number: 'P7',
+            number: 'P5',
             title: 'Rockwall weathering and associated rockfall activity in the fjord landscape in western Norway',
             authors: 'Laute K., Beylich A. A.',
           },
           {
-            number: 'P8',
+            number: 'P6',
             title: 'Sea-Level Forcing and Cliff Retreat on Wolin Island, Southern Baltic Sea, over a 40-Year Period: Temporal and Spatial Variability',
             authors: 'Winowski M., Tylkowski J., Kostrzewski A., Zwoliński Z.',
           },
           {
-            number: 'P9',
+            number: 'P7',
             title: 'Investigating Subsurface Erosion in a Peculiar Badland Landform in Italy',
             authors: 'Sannino A., Vergari F., Ciampi P.',
           },
           {
-            number: 'P10',
+            number: 'P8',
             title: 'An integrated graph theory and remote sensing approach to functional sediment connectivity analysis in an Alpine proglacial area across multiple temporal scales',
             authors: 'Pandey A., Heckmann T., Savi S.',
           },
           {
-            number: 'P11',
+            number: 'P9',
             title: 'Responses of sediment sources and contemporary denudation rates to environmental changes in selected cold-climate drainage basin systems in Norway',
             authors: 'Beylich A. A., Laute, K.',
           },
           {
-            number: 'P12',
+            number: 'P10',
             title: 'Geomorphological Nature-based solutions for mitigation of coastal natural hazards (tsunami & coastal floods): The case of Naxos Island',
             authors: 'Gogou M., Mavroulis S., Saitis G., Karkani A., Lekkas E., Evelpidou N.',
           },

@@ -124,13 +124,18 @@ test("the attendee app and its calendars retain the authoritative workshop sched
     assert.deepEqual(sessions.filter(session => !matchedIds.has(session.id)).map(session => session.id).sort(), ["mon-bus", "tue-bus", "wed-bus"], "Only the three explicit transport departures may supplement the source timetable")
   })
 
-  await context.test("retains all poster numbers, titles and authors in the poster slot", () => {
+  await context.test("retains the remaining posters with sequential numbers after the approved withdrawal", () => {
     const posterSession = sessionById("wed-poster")
     const posters = agendaData.days.flatMap(day => day.blocks.flatMap(block => block.posters ?? []))
     const description = normalize(posterSession.description)
+    assert.equal(posters.length, 10)
+    assert.deepEqual(posters.map(poster => poster.number), Array.from({ length: 10 }, (_, index) => `P${index + 1}`))
+    assert.doesNotMatch(posterSession.description, /A Regional Morpho-Kinematic Inventory|Onaca A\./)
     assert.deepEqual([...posterSession.description.matchAll(/\b(P\d+)\./g)].map(match => match[1]), posters.map(poster => poster.number))
-    for (const poster of posters) {
-      assert.ok(sourceText.includes(normalize(`${poster.number}. ${poster.title}`)), `Poster title missing from original source: ${poster.number}`)
+    for (const [index, poster] of posters.entries()) {
+      // The source keeps its original P3-P12 labels; only the online numbering changes.
+      const originalNumber = `P${index + 3}`
+      assert.ok(sourceText.includes(normalize(`${originalNumber}. ${poster.title}`)), `Poster title missing from original source: ${originalNumber}`)
       assert.ok(description.includes(normalize(`${poster.number}. ${poster.title} ${poster.authors}`)), `Poster title or authors changed: ${poster.number}`)
     }
   })
