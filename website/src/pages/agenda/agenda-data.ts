@@ -72,7 +72,7 @@ export const busStationUrl = 'https://maps.app.goo.gl/PsK22G3EVy2mAKBL8';
 export const transportParagraphs = [
   'For the ice breaker event, a bus service to the venue will be provided at 18:45 departing from the central bus station in Naxos Town.',
   `On both days of the workshop, a single bus service to the venue will be provided in the morning, departing from the central bus station in Naxos Town (${busStationUrl}). The journey takes approximately 10 minutes. Return transfer will also be provided at the end of the day’s activities.`,
-  'Departures: Tuesday 6 October at 08:45 · Wednesday 7 October at 09:10',
+  'Departures: Tuesday 6 October at 09:00 · Wednesday 7 October at 09:10',
   'Please note that this is the only scheduled morning departure on each day. Participants are kindly asked to arrive at the departure point a few minutes in advance.',
 ];
 
@@ -106,7 +106,14 @@ export const days: AgendaDay[] = [
     label: 'Tuesday, 6 October 2026',
     blocks: [
       {
-        entries: [{ time: '09:00 - 09:30', title: 'Registration' }],
+        entries: [{
+          time: '09:00',
+          title: 'Bus departure from the central bus station in Naxos Town',
+          paragraphs: [
+            'Transfer to Laguna Coast Resort. The journey takes approximately 10 minutes.',
+            busStationUrl,
+          ],
+        }],
       },
       {
         title: 'Opening',
@@ -153,12 +160,6 @@ export const days: AgendaDay[] = [
         subtitle: 'Understanding how sediment is mobilised, transported and monitored',
         chairs: 'Chairs: Achim Beylich, Giannis Saitis',
         entries: [
-          {
-            time: '11:35-11:50',
-            title: 'SWAT-based modelling of water runoff and suspended sediment transport in catchments across diverse morphoclimatic zones',
-            speakers: ['Gudowicz J., Bochenek W., Kijowska-Strugała M., Majewski M., Zwoliński Z.'],
-          },
-          { time: '11:50-11:55', title: 'Discussion', kind: 'break' },
           {
             time: '11:55-12:10',
             title: 'From LiDAR to Water-Level Animation: Visualizing Reservoir Storage Dynamics in the Mavrokolympos reservoir basin, Cyprus',
@@ -424,3 +425,4 @@ export const days: AgendaDay[] = [
     ],
   },
 ];
+
