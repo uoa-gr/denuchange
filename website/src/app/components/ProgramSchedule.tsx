@@ -29,12 +29,44 @@ interface ProgramScheduleProps {
   onAddReminder: (session: ProgramSession) => void
 }
 
-function ProgramCard({ item, remindedId, onAddReminder }: {
+interface ProgramCardGroup {
   item: ProgramScheduleItem
+  discussions: ProgramScheduleItem[]
+}
+
+function groupTalkDiscussions(items: ProgramScheduleItem[]): ProgramCardGroup[] {
+  const groups: ProgramCardGroup[] = []
+  for (const item of items) {
+    const previous = groups[groups.length - 1]
+    const lastSession = previous
+      ? previous.discussions[previous.discussions.length - 1]?.session ?? previous.item.session
+      : undefined
+    if (
+      item.session.title.trim() === "Discussion" &&
+      previous &&
+      previous.item.session.title.trim() !== "Discussion" &&
+      (previous.item.session.session_type === "session" || previous.item.session.session_type === "keynote") &&
+      item.session.date === previous.item.session.date &&
+      lastSession?.end_time &&
+      item.session.start_time.slice(0, 5) === lastSession.end_time.slice(0, 5)
+    ) {
+      previous.discussions.push(item)
+    } else {
+      groups.push({ item, discussions: [] })
+    }
+  }
+  return groups
+}
+
+function ProgramCard({ item, discussions, remindedId, onAddReminder }: {
+  item: ProgramScheduleItem
+  discussions: ProgramScheduleItem[]
   remindedId: string | null
   onAddReminder: (session: ProgramSession) => void
 }) {
   const s = item.session
+  const lastDiscussion = discussions[discussions.length - 1]?.session
+  const calendarSession = lastDiscussion ? { ...s, end_time: lastDiscussion.end_time || s.end_time } : s
   return (
     <article
       data-program-session-id={s.id}
@@ -65,13 +97,24 @@ function ProgramCard({ item, remindedId, onAddReminder }: {
       {item.displayedDescription && (
         <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed whitespace-pre-line break-words">{item.displayedDescription}</p>
       )}
+      {discussions.length > 0 && (
+        <div className="mt-2 space-y-1 text-xs text-muted-foreground">
+          {discussions.map(discussion => (
+            <p key={discussion.session.id} data-program-discussion-id={discussion.session.id} className="leading-relaxed whitespace-pre-line">
+              <span className="font-medium">Discussion</span>{" · "}
+              {formatSessionTime(discussion.session.start_time, discussion.session.end_time)}
+              {discussion.displayedDescription && <> · {discussion.displayedDescription}</>}
+            </p>
+          ))}
+        </div>
+      )}
       {s.title !== "Discussion" && (
         <div className="mt-2.5 pt-2 border-t border-border/50 flex items-center justify-between gap-2">
           <button
             type="button"
-            onClick={() => onAddReminder(s)}
+            onClick={() => onAddReminder(calendarSession)}
             className="inline-flex items-center gap-1.5 text-[11px] font-medium text-primary hover:text-primary/80 transition-colors"
-            title="Add reminder to your device calendar (Apple / Outlook / Android) with 15-min notification"
+            title={`Add reminder to your device calendar (Apple / Outlook / Android) with 15-min notification${discussions.length ? "; includes presentation and discussion" : ""}`}
           >
             {remindedId === s.id ? (
               <>
@@ -87,11 +130,11 @@ function ProgramCard({ item, remindedId, onAddReminder }: {
           </button>
 
           <a
-            href={getGoogleCalendarUrl(s)}
+            href={getGoogleCalendarUrl(calendarSession)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground hover:text-foreground transition-colors"
-            title="Add to Google Calendar"
+            title={`Add to Google Calendar${discussions.length ? " (presentation and discussion)" : ""}`}
           >
             <span>Google Cal</span>
             <ExternalLink className="h-3 w-3" />
@@ -115,8 +158,8 @@ export function ProgramSchedule({ sessions, remindedId, onAddReminder }: Program
   return (
     <div className="space-y-5">
       {sections.map((section, index) => {
-        const cards = section.items.map(item => (
-          <ProgramCard key={item.session.id} item={item} remindedId={remindedId} onAddReminder={onAddReminder} />
+        const cards = groupTalkDiscussions(section.items).map(({ item, discussions }) => (
+          <ProgramCard key={item.session.id} item={item} discussions={discussions} remindedId={remindedId} onAddReminder={onAddReminder} />
         ))
         if (!section.heading) return <div key={section.key} className="space-y-3">{cards}</div>
 
