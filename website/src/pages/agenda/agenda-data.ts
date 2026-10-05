@@ -226,6 +226,13 @@ export const days: AgendaDay[] = [
             paragraphs: ['Working Group members'],
           },
           {
+            time: '18:30-19:30',
+            title: 'A Conversation in Stone',
+            speakers: ['Artist Tom Von Kaenel'],
+            paragraphs: ['Parallel event for participants not attending the business meeting.'],
+            kind: 'social',
+          },
+          {
             time: '19:30',
             title: 'Conference Dinner',
             paragraphs: [`${venueName} — ${venueUrl}`],
@@ -425,4 +432,3 @@ export const days: AgendaDay[] = [
     ],
   },
 ];
-
