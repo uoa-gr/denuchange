@@ -212,7 +212,20 @@ function SpeakerGroup({ title, speakers }: { title: string; speakers: string[] }
   )
 }
 
-function Entry({ entry, hasBlockHeading }: { entry: AgendaEntry; hasBlockHeading: boolean }) {
+function groupEntriesWithDiscussions(entries: AgendaEntry[]) {
+  const groups: { entry: AgendaEntry; discussions: AgendaEntry[] }[] = []
+  for (const entry of entries) {
+    const previous = groups[groups.length - 1]
+    if (/^discussion$/iu.test(entry.title.trim()) && previous && !previous.entry.kind && !/^discussion$/iu.test(previous.entry.title.trim())) {
+      previous.discussions.push(entry)
+    } else {
+      groups.push({ entry, discussions: [] })
+    }
+  }
+  return groups
+}
+
+function Entry({ entry, discussions, hasBlockHeading }: { entry: AgendaEntry; discussions: AgendaEntry[]; hasBlockHeading: boolean }) {
   const Heading = hasBlockHeading ? "h4" : "h3"
   const isKeynote = entry.paragraphs?.includes("Invited keynote lecture")
   const openingIndex = entry.paragraphs?.indexOf("Event Opening") ?? -1
@@ -234,6 +247,16 @@ function Entry({ entry, hasBlockHeading }: { entry: AgendaEntry; hasBlockHeading
           </>
         )}
         {paragraphs?.filter((paragraph) => paragraph !== "Invited keynote lecture").map((paragraph) => <EntryDetail text={paragraph} key={paragraph} />)}
+        {discussions.map((discussion, index) => (
+          <div key={`${discussion.time}-${index}`}>
+            <p className="agenda-discussion">
+              <span>{discussion.title}</span>
+              <span className="agenda-discussion-time">{discussion.time}</span>
+            </p>
+            {discussion.speakers?.map((speaker) => <Speaker text={speaker} key={speaker} />)}
+            {discussion.paragraphs?.map((paragraph) => <EntryDetail text={paragraph} key={paragraph} />)}
+          </div>
+        ))}
       </div>
     </li>
   )
@@ -258,7 +281,7 @@ function Block({ block, id }: { block: AgendaBlock; id?: string }) {
         </div>
       )}
       <ol className="agenda-entries">
-        {block.entries.map((entry, index) => <Entry entry={entry} hasBlockHeading={Boolean(block.title)} key={`${entry.time}-${index}`} />)}
+        {groupEntriesWithDiscussions(block.entries).map(({ entry, discussions }, index) => <Entry entry={entry} discussions={discussions} hasBlockHeading={Boolean(block.title)} key={`${entry.time}-${index}`} />)}
       </ol>
       {block.posters && (
         <ul className="agenda-posters" aria-label="Poster presentations">
