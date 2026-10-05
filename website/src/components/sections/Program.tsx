@@ -266,8 +266,8 @@ export function Program() {
                     <p className="font-semibold text-foreground">Tuesday</p>
                     <p className="mt-0.5 text-sm text-muted-foreground">6 October</p>
                   </div>
-                  <time dateTime="2026-10-06T08:45" className="text-xl font-bold tabular-nums text-primary">
-                    08:45
+                  <time dateTime="2026-10-06T09:00" className="text-xl font-bold tabular-nums text-primary">
+                    09:00
                   </time>
                 </div>
                 <div className="flex items-center justify-between gap-5 pt-4">
@@ -300,3 +300,4 @@ export function Program() {
     </section>
   )
 }
+
