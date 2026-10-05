@@ -6,6 +6,7 @@ const organizingCommittee = [
   { name: "Prof. Assimina Antonarakou", affiliation: "NKUA, Greece" },
   { name: "Dr. Anna Karkani", affiliation: "NKUA, Greece" },
   { name: "Dr. Giannis Saitis", affiliation: "NKUA, Greece" },
+  { name: "Alexandros Liaskos", affiliation: "National and Kapodistrian University of Athens, Greece" },
 ]
 
 const scientificCommittee = [
