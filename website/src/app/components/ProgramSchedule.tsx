@@ -23,6 +23,24 @@ const TYPE_BADGES: Record<string, string> = {
   social: "bg-purple-100 text-purple-700",
 }
 
+const OPENING_LECTURES = [
+  {
+    id: "tue-beylich-intro",
+    title: "The IAG Working Group on Denudation and Environmental Changes in Different Morphoclimatic Zones (DENUCHANGE, 2017-2030): Scientific need, research questions, outcomes and possible future directions",
+    label: "Keynote lecture",
+  },
+  {
+    id: "tue-pitaras",
+    title: "From Sustainable Tourism to Regenerative Island Development: The Laguna Pilot Model",
+    label: "Keynote lecture",
+  },
+  {
+    id: "tue-keynote-vespremeanu",
+    title: "From Deglaciation to Rock Glaciers: Timing and Patterns of Rock-Wall Debris Production in the Southern Carpathians",
+    label: "Opening keynote lecture",
+  },
+]
+
 interface ProgramScheduleProps {
   sessions: ProgramSession[]
   remindedId: string | null
@@ -65,21 +83,30 @@ function ProgramCard({ item, discussions, remindedId, onAddReminder }: {
   onAddReminder: (session: ProgramSession) => void
 }) {
   const s = item.session
+  const titleWithoutKeynotePrefix = s.title.replace(/^Invited keynote lecture:\s*/i, "").trim()
+  const openingLecture = s.date === "2026-10-06"
+    ? OPENING_LECTURES.find(lecture => lecture.id === s.id || lecture.title === titleWithoutKeynotePrefix)
+    : undefined
+  const displayedTitle = openingLecture?.id === "tue-keynote-vespremeanu" ? titleWithoutKeynotePrefix : s.title
+  const displayedType = openingLecture ? "keynote" : s.session_type
   const lastDiscussion = discussions[discussions.length - 1]?.session
   const calendarSession = lastDiscussion ? { ...s, end_time: lastDiscussion.end_time || s.end_time } : s
   return (
     <article
       data-program-session-id={s.id}
-      className={`rounded-lg border-l-4 p-3 ${TYPE_COLORS[s.session_type] ?? TYPE_COLORS.session}`}
+      className={`rounded-lg border-l-4 p-3 ${TYPE_COLORS[displayedType] ?? TYPE_COLORS.session}`}
     >
+      {openingLecture && (
+        <p className="mb-1 text-xs italic text-muted-foreground">{openingLecture.label}</p>
+      )}
       <div className="flex items-start justify-between gap-2 mb-1">
-        <p className="text-sm font-semibold text-foreground leading-snug">{s.title}</p>
+        <p className="text-sm font-semibold text-foreground leading-snug">{displayedTitle}</p>
         <span
           className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full flex-none capitalize ${
-            TYPE_BADGES[s.session_type] ?? TYPE_BADGES.session
+            TYPE_BADGES[displayedType] ?? TYPE_BADGES.session
           }`}
         >
-          {s.session_type.replace("_", " ")}
+          {displayedType.replace("_", " ")}
         </span>
       </div>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
