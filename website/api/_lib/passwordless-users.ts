@@ -28,6 +28,12 @@ export const PASSWORDLESS_USERS: Readonly<Record<string, PasswordlessUserInfo>> 
     affiliation: "Laguna Coast Resort",
     country: "Greece",
   },
+  "office@lagunacoast.org": {
+    firstName: "Laguna Coast",
+    lastName: "Office",
+    affiliation: "Laguna Coast",
+    country: "Greece",
+  },
   "operations@lagunacoastresort.com": {
     firstName: "Eleni",
     lastName: "Alachmaneti",
@@ -40,3 +46,4 @@ export function getPasswordlessUser(email: string): PasswordlessUserInfo | undef
     ? PASSWORDLESS_USERS[normalized]
     : undefined
 }
+
