@@ -4,6 +4,7 @@ const TUESDAY_DATE = "2026-10-06"
 const TUESDAY_BUS = DEFAULT_PROGRAM_SESSIONS.find(session => session.id === "tue-bus")!
 const TUESDAY_PARALLEL_EVENT = DEFAULT_PROGRAM_SESSIONS.find(session => session.id === "tue-conversation-in-stone")!
 const FIRST_TUESDAY_SESSION = DEFAULT_PROGRAM_SESSIONS.find(session => session.id === "tue-s1-2")!
+const PITARAS_PRESENTATION = DEFAULT_PROGRAM_SESSIONS.find(session => session.id === "tue-pitaras")!
 const CANCELLED_PRESENTATION = "SWAT-based modelling of water runoff and suspended sediment transport in catchments across diverse morphoclimatic zones"
 const GIALOVA_PRESENTATION = DEFAULT_PROGRAM_SESSIONS.find(session => session.id === "wed-s4-3")!
 const PREVIOUS_GIALOVA_TITLE = "The Gialova Lagoon as a Holocene sediment trap: from sediment storage to catchment-scale denudation in the Xirolagkados basin (SW Peloponnese, Greece)"
@@ -29,6 +30,9 @@ function applyPublishedProgramUpdates(sessions: ProgramSession[]): ProgramSessio
       return [{ ...TUESDAY_PARALLEL_EVENT, id: session.id }]
     }
     if (session.date !== TUESDAY_DATE) return [session]
+    if (session.id === PITARAS_PRESENTATION.id || title === PITARAS_PRESENTATION.title) {
+      return [{ ...session, description: PITARAS_PRESENTATION.description }]
+    }
     if (session.id === "tue-reg" || title === "Registration") return []
     if (session.id === "tue-s1-1" || title === CANCELLED_PRESENTATION) return []
     if (
