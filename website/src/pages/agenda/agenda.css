@@ -76,6 +76,8 @@ details[open] > .agenda-summary > .agenda-chevron { transform: none; }
 .agenda-entry + .agenda-entry { border-top: 1px solid var(--agenda-line); }
 .agenda-time { color: var(--agenda-blue); font-size: .86rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; margin-bottom: .4rem !important; }
 .agenda-entry-content { min-width: 0; }
+.agenda-discussion { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem .75rem; margin-top: .65rem !important; font-size: .82rem; color: var(--agenda-muted); }
+.agenda-discussion-time { color: var(--agenda-blue); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .agenda-page h4, .agenda-page .agenda-entry-title { font-family: "Inter", system-ui, sans-serif; font-size: .96rem; font-weight: 600; line-height: 1.6; text-wrap: pretty; letter-spacing: normal; }
 .agenda-speaker { font-size: .85rem; font-style: italic; line-height: 1.65; color: var(--agenda-muted); margin-top: .25rem !important; }
 .agenda-speaker + .agenda-speaker { margin-top: .6rem !important; }
