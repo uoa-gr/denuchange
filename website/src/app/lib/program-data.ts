@@ -23,6 +23,12 @@ export interface NotificationItem {
 
 export const DEFAULT_ANNOUNCEMENTS: NotificationItem[] = [
   {
+    "id": "alert-conversation-in-stone-20261005",
+    "title": "A Conversation in Stone: Tuesday Parallel Event",
+    "body": "A Conversation in Stone with artist Tom Von Kaenel will take place on Tuesday, 6 October, 18:30–19:30 at Laguna Coast Resort, in parallel with the DENUCHANGE Business Meeting, for participants not attending the meeting.",
+    "created_at": "2026-10-05T12:25:13.000Z"
+  },
+  {
     "id": "alert-tuesday-program-update-20261005",
     "title": "Tuesday Program Update: Bus at 09:00 & Presentation Cancellation",
     "body": "On Tuesday, 6 October, the bus to the venue will depart at 09:00 from the central bus station in Naxos Town, replacing the previously announced 08:45 departure. Please arrive a few minutes early. The 09:00–09:30 registration has been removed from Tuesday’s program; the opening remains at 09:30. The oral presentation ‘SWAT-based modelling of water runoff and suspended sediment transport in catchments across diverse morphoclimatic zones’ by Gudowicz J., Bochenek W., Kijowska-Strugała M., Majewski M. and Zwoliński Z. will not take place, and its associated discussion has been removed. The remaining presentation times are unchanged. Please check the Program tab or View Detailed Program on the homepage for the updated agenda.",
@@ -307,6 +313,16 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "end_time": "19:30",
     "title": "DENUCHANGE Business Meeting",
     "description": "Working Group members",
+    "location": "Laguna Coast Resort, Naxos",
+    "session_type": "session"
+  },
+  {
+    "id": "tue-conversation-in-stone",
+    "date": "2026-10-06",
+    "start_time": "18:30",
+    "end_time": "19:30",
+    "title": "A Conversation in Stone",
+    "description": "Artist Tom Von Kaenel\n\nParallel event for participants not attending the business meeting.",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "session"
   },
@@ -612,4 +628,3 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "session_type": "session"
   }
 ]
-
