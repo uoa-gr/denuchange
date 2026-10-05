@@ -117,7 +117,7 @@ export const days: AgendaDay[] = [
       },
       {
         title: 'Opening',
-        subtitle: 'Welcome, Introductory lecture and Invited keynote lecture',
+        subtitle: 'Welcome speeches and keynote lectures',
         entries: [
           {
             time: '09:30-10:00',
@@ -140,16 +140,18 @@ export const days: AgendaDay[] = [
             time: '10:00-10:30',
             title: 'The IAG Working Group on Denudation and Environmental Changes in Different Morphoclimatic Zones (DENUCHANGE, 2017-2030): Scientific need, research questions, outcomes and possible future directions',
             speakers: ['Beylich A.'],
+            paragraphs: ['Keynote lecture'],
           },
           {
             time: '10:30-10:45',
             title: 'From Sustainable Tourism to Regenerative Island Development: The Laguna Pilot Model',
             speakers: ['Pitaras, A.'],
+            paragraphs: ['Keynote lecture'],
           },
           {
             time: '11:45-11:15',
             title: 'From Deglaciation to Rock Glaciers: Timing and Patterns of Rock-Wall Debris Production in the Southern Carpathians',
-            paragraphs: ['Invited keynote lecture'],
+            paragraphs: ['Opening keynote lecture'],
             speakers: ['Vespremeanu Stroe, Α.'],
           },
           { time: '11:15-11:35', title: 'Coffee break', kind: 'break' },

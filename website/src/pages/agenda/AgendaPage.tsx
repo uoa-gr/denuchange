@@ -227,14 +227,14 @@ function groupEntriesWithDiscussions(entries: AgendaEntry[]) {
 
 function Entry({ entry, discussions, hasBlockHeading }: { entry: AgendaEntry; discussions: AgendaEntry[]; hasBlockHeading: boolean }) {
   const Heading = hasBlockHeading ? "h4" : "h3"
-  const isKeynote = entry.paragraphs?.includes("Invited keynote lecture")
+  const keynoteLabel = entry.paragraphs?.find(paragraph => /^(?:Invited |Opening )?keynote lecture$/iu.test(paragraph))
   const openingIndex = entry.paragraphs?.indexOf("Event Opening") ?? -1
   const paragraphs = openingIndex >= 0 ? entry.paragraphs?.slice(0, openingIndex) : entry.paragraphs
   return (
     <li className={`agenda-entry${entry.kind ? ` agenda-entry--${entry.kind}` : ""}`}>
       <p className="agenda-time">{entry.time}</p>
       <div className="agenda-entry-content">
-        {isKeynote && <p className="agenda-keynote-label">Invited keynote lecture</p>}
+        {keynoteLabel && <p className="agenda-keynote-label">{keynoteLabel}</p>}
         {openingIndex >= 0 ? (
           <>
             <SpeakerGroup title={entry.title} speakers={entry.speakers ?? []} />
@@ -246,7 +246,7 @@ function Entry({ entry, discussions, hasBlockHeading }: { entry: AgendaEntry; di
             {entry.speakers?.map((speaker) => <Speaker text={speaker} key={speaker} />)}
           </>
         )}
-        {paragraphs?.filter((paragraph) => paragraph !== "Invited keynote lecture").map((paragraph) => <EntryDetail text={paragraph} key={paragraph} />)}
+        {paragraphs?.filter((paragraph) => paragraph !== keynoteLabel).map((paragraph) => <EntryDetail text={paragraph} key={paragraph} />)}
         {discussions.map((discussion, index) => (
           <div key={`${discussion.time}-${index}`}>
             <p className="agenda-discussion">
