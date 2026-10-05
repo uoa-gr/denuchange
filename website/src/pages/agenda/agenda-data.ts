@@ -54,6 +54,7 @@ export const organizingCommittee = [
   'Prof. Assimina Antonarakou, Faculty of Geology & Geoenvironment, National & Kapodistrian University of Athens, Greece',
   'Dr. Anna Karkani, Faculty of Geology & Geoenvironment, National & Kapodistrian University of Athens, Greece',
   'Dr. Giannis Saitis, Faculty of Geology & Geoenvironment, National & Kapodistrian University of Athens, Greece',
+  'Alexandros Liaskos, National and Kapodistrian University of Athens, Greece',
 ];
 
 export const scientificCommittee = [
