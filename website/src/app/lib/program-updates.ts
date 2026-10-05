@@ -2,15 +2,25 @@ import { DEFAULT_PROGRAM_SESSIONS, type ProgramSession } from "./program-data"
 
 const TUESDAY_DATE = "2026-10-06"
 const TUESDAY_BUS = DEFAULT_PROGRAM_SESSIONS.find(session => session.id === "tue-bus")!
+const TUESDAY_PARALLEL_EVENT = DEFAULT_PROGRAM_SESSIONS.find(session => session.id === "tue-conversation-in-stone")!
 const FIRST_TUESDAY_SESSION = DEFAULT_PROGRAM_SESSIONS.find(session => session.id === "tue-s1-2")!
 const CANCELLED_PRESENTATION = "SWAT-based modelling of water runoff and suspended sediment transport in catchments across diverse morphoclimatic zones"
 
 /** Apply the published Tuesday changes to existing server records as well as bundled data. */
 function applyPublishedProgramUpdates(sessions: ProgramSession[]): ProgramSession[] {
   let hasTuesdayBus = false
+  let hasTuesdayParallelEvent = false
   const updated = sessions.flatMap(session => {
-    if (session.date !== TUESDAY_DATE) return [session]
     const title = session.title.trim()
+    if (
+      session.id === TUESDAY_PARALLEL_EVENT.id ||
+      (session.date === TUESDAY_DATE && title === TUESDAY_PARALLEL_EVENT.title)
+    ) {
+      if (hasTuesdayParallelEvent) return []
+      hasTuesdayParallelEvent = true
+      return [{ ...TUESDAY_PARALLEL_EVENT, id: session.id }]
+    }
+    if (session.date !== TUESDAY_DATE) return [session]
     if (session.id === "tue-reg" || title === "Registration") return []
     if (session.id === "tue-s1-1" || title === CANCELLED_PRESENTATION) return []
     if (
@@ -27,6 +37,7 @@ function applyPublishedProgramUpdates(sessions: ProgramSession[]): ProgramSessio
     return [session]
   })
   if (!hasTuesdayBus) updated.push(TUESDAY_BUS)
+  if (!hasTuesdayParallelEvent) updated.push(TUESDAY_PARALLEL_EVENT)
   return updated.sort((left, right) => left.date.localeCompare(right.date) || left.start_time.localeCompare(right.start_time))
 }
 
@@ -95,4 +106,3 @@ export function startProgramUpdates(
     environment.document.removeEventListener("visibilitychange", refreshVisible)
   }
 }
-
