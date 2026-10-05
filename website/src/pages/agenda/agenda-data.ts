@@ -146,7 +146,7 @@ export const days: AgendaDay[] = [
           {
             time: '10:30-10:45',
             title: 'From Sustainable Tourism to Regenerative Island Development: The Laguna Pilot Model',
-            speakers: ['Pitaras, A.'],
+            speakers: ['Pitaras, A.', 'George Dimopoulos'],
             paragraphs: ['Keynote lecture'],
           },
           {

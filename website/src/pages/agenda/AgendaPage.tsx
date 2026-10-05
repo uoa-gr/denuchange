@@ -195,7 +195,6 @@ function PersonText({ text, boldName = false }: { text: string; boldName?: boole
   const comma = text.indexOf(",")
   if (!boldName && (!isAffiliatedPerson(text) || comma < 0)) return text
   const nameEnd = comma < 0 ? text.length : comma
-
   return <><strong className="agenda-person-name">{text.slice(0, nameEnd)}</strong>{text.slice(nameEnd)}</>
 }
 
