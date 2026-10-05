@@ -111,7 +111,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "start_time": "10:30",
     "end_time": "10:45",
     "title": "From Sustainable Tourism to Regenerative Island Development: The Laguna Pilot Model",
-    "description": "Pitaras, A.; George Dimopoulos",
+    "description": "Pitaras A., Dimopoulos G.",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "session"
   },
