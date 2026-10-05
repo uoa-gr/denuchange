@@ -307,7 +307,7 @@ export const days: AgendaDay[] = [
           { time: '12:05-12:10', title: 'Discussion', kind: 'break' },
           {
             time: '12:10-12:25',
-            title: 'The Gialova Lagoon as a Holocene sediment trap: from sediment storage to catchment-scale denudation in the Xirolagkados basin (SW Peloponnese, Greece)',
+            title: 'From Open Bay to Coastal Lagoon: Holocene Landscape Evolution of the Voidokilia–Gialova Coastal System',
             speakers: ['Vespremeanu-Stroe Α., Evelpidou N., Cîrjan A., Preoteasa L., Dobre M., Țuțuianu L., Hanganu D., Cruceru N., Grosu G., Karkani A., Saitis G., Spyrou E., Verga M., Piotrowska N., Mănăilescu C., Tătui F.'],
           },
           { time: '12:25-12:30', title: 'Discussion', kind: 'break' },
