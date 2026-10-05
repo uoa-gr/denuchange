@@ -23,6 +23,12 @@ export interface NotificationItem {
 
 export const DEFAULT_ANNOUNCEMENTS: NotificationItem[] = [
   {
+    "id": "alert-tuesday-program-update-20261005",
+    "title": "Tuesday Program Update: Bus at 09:00 & Presentation Cancellation",
+    "body": "On Tuesday, 6 October, the bus to the venue will depart at 09:00 from the central bus station in Naxos Town, replacing the previously announced 08:45 departure. Please arrive a few minutes early. The 09:00–09:30 registration has been removed from Tuesday’s program; the opening remains at 09:30. The oral presentation ‘SWAT-based modelling of water runoff and suspended sediment transport in catchments across diverse morphoclimatic zones’ by Gudowicz J., Bochenek W., Kijowska-Strugała M., Majewski M. and Zwoliński Z. will not take place, and its associated discussion has been removed. The remaining presentation times are unchanged. Please check the Program tab or View Detailed Program on the homepage for the updated agenda.",
+    "created_at": "2026-10-05T06:42:03.000Z"
+  },
+  {
     "id": "alert-agenda-update-20261003",
     "title": "Workshop Agenda Updated",
     "body": "On Tuesday, 6 October, Santoro G.’s presentation on erosion modelling in Aliano is now at 12:55–13:10 in Session 1. Posazhennikova V.’s presentation on debris-flow susceptibility in the Greater Caucasus is now at 17:20–17:35 in Session 2. Dr. Mihai Micu has been added to the welcome speeches (09:30–10:00). The agenda now lists all session chairs and Wednesday’s closing speakers, Prof. Achim A. Beylich and Prof. Zbigniew Zwoliński (15:00–15:30). Please check the Program tab or View Detailed Program on the homepage for the updated agenda.",
@@ -66,22 +72,12 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
   {
     "id": "tue-bus",
     "date": "2026-10-06",
-    "start_time": "08:45",
+    "start_time": "09:00",
     "end_time": "",
     "title": "Bus transfer to venue",
-    "description": "On both days of the workshop, a single bus service to the venue will be provided in the morning, departing from the central bus station in Naxos Town (https://maps.app.goo.gl/PsK22G3EVy2mAKBL8). The journey takes approximately 10 minutes. Return transfer will also be provided at the end of the day’s activities.\n\nPlease note that this is the only scheduled morning departure on each day. Participants are kindly asked to arrive at the departure point a few minutes in advance.",
+    "description": "On Tuesday, 6 October, the bus service to the venue will depart at 09:00 from the central bus station in Naxos Town (https://maps.app.goo.gl/PsK22G3EVy2mAKBL8). The journey takes approximately 10 minutes. Return transfer will also be provided at the end of the day’s activities.\n\nPlease note that this is the only scheduled morning departure on each day. Participants are kindly asked to arrive at the departure point a few minutes in advance.",
     "location": "Central bus station, Naxos Town",
     "session_type": "social"
-  },
-  {
-    "id": "tue-reg",
-    "date": "2026-10-06",
-    "start_time": "09:00",
-    "end_time": "09:30",
-    "title": "Registration",
-    "description": "",
-    "location": "Laguna Coast Resort, Naxos",
-    "session_type": "break"
   },
   {
     "id": "tue-welcome",
@@ -135,32 +131,12 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "session_type": "break"
   },
   {
-    "id": "tue-s1-1",
-    "date": "2026-10-06",
-    "start_time": "11:35",
-    "end_time": "11:50",
-    "title": "SWAT-based modelling of water runoff and suspended sediment transport in catchments across diverse morphoclimatic zones",
-    "description": "Gudowicz J., Bochenek W., Kijowska-Strugała M., Majewski M., Zwoliński Z.\n\nSession 1: Catchment Hydrology, Sediment Connectivity and Modelling (Understanding how sediment is mobilised, transported and monitored)\nChairs: Achim Beylich, Giannis Saitis",
-    "location": "Laguna Coast Resort, Naxos",
-    "session_type": "session"
-  },
-  {
-    "id": "tue-s1-1-disc",
-    "date": "2026-10-06",
-    "start_time": "11:50",
-    "end_time": "11:55",
-    "title": "Discussion",
-    "description": "",
-    "location": "Laguna Coast Resort, Naxos",
-    "session_type": "break"
-  },
-  {
     "id": "tue-s1-2",
     "date": "2026-10-06",
     "start_time": "11:55",
     "end_time": "12:10",
     "title": "From LiDAR to Water-Level Animation: Visualizing Reservoir Storage Dynamics in the Mavrokolympos reservoir basin, Cyprus",
-    "description": "Roussou O., Moysidou L., Agapiou A., Skarlatos D., Papakonstantinou A.\n\nSession 1: Catchment Hydrology, Sediment Connectivity and Modelling",
+    "description": "Roussou O., Moysidou L., Agapiou A., Skarlatos D., Papakonstantinou A.\n\nSession 1: Catchment Hydrology, Sediment Connectivity and Modelling (Understanding how sediment is mobilised, transported and monitored)\nChairs: Achim Beylich, Giannis Saitis",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "session"
   },
@@ -636,3 +612,4 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "session_type": "session"
   }
 ]
+
