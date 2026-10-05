@@ -502,7 +502,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "date": "2026-10-07",
     "start_time": "12:10",
     "end_time": "12:25",
-    "title": "The Gialova Lagoon as a Holocene sediment trap: from sediment storage to catchment-scale denudation in the Xirolagkados basin (SW Peloponnese, Greece)",
+    "title": "From Open Bay to Coastal Lagoon: Holocene Landscape Evolution of the Voidokilia–Gialova Coastal System",
     "description": "Vespremeanu-Stroe Α., Evelpidou N., Cîrjan A., Preoteasa L., Dobre M., Țuțuianu L., Hanganu D., Cruceru N., Grosu G., Karkani A., Saitis G., Spyrou E., Verga M., Piotrowska N., Mănăilescu C., Tătui F.\n\nSession 4: From Catchments to Coasts: Coastal Responses to Sediment Fluxes",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "session"

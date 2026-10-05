@@ -191,11 +191,12 @@ function isAffiliatedPerson(text: string) {
   return /^(?:Prof\.|Dr\.)\s/.test(text) || /^(?:Vasilis Flerianos|Dimitris Lianos), /.test(text)
 }
 
-function PersonText({ text }: { text: string }) {
+function PersonText({ text, boldName = false }: { text: string; boldName?: boolean }) {
   const comma = text.indexOf(",")
-  if (!isAffiliatedPerson(text) || comma < 0) return text
+  if (!boldName && (!isAffiliatedPerson(text) || comma < 0)) return text
+  const nameEnd = comma < 0 ? text.length : comma
 
-  return <><strong className="agenda-person-name">{text.slice(0, comma)}</strong>{text.slice(comma)}</>
+  return <><strong className="agenda-person-name">{text.slice(0, nameEnd)}</strong>{text.slice(nameEnd)}</>
 }
 
 function Speaker({ text }: { text: string }) {
@@ -419,11 +420,11 @@ export function AgendaPage() {
           <div className="agenda-committees">
             <section aria-labelledby="agenda-organizing-committee-heading">
               <h3 id="agenda-organizing-committee-heading">Organizing Committee</h3>
-              <ul>{organizingCommittee.map((member) => <li key={member}><PersonText text={member} /></li>)}</ul>
+              <ul>{organizingCommittee.map((member) => <li key={member}><PersonText text={member} boldName /></li>)}</ul>
             </section>
             <section aria-labelledby="agenda-scientific-committee-heading">
               <h3 id="agenda-scientific-committee-heading">Scientific Committee</h3>
-              <ul>{scientificCommittee.map((member) => <li key={member}><PersonText text={member} /></li>)}</ul>
+              <ul>{scientificCommittee.map((member) => <li key={member}><PersonText text={member} boldName /></li>)}</ul>
             </section>
           </div>
           </AgendaDisclosure>
