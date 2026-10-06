@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { BUS_DEPARTURE_URL, VENUE_URL } from "@/lib/travel-map-data"
+import { session3VenueName, session3VenueUrl } from "@/pages/agenda/agenda-data"
 import {
   ArrowDown,
   BusFront,
@@ -197,6 +198,11 @@ export function Program() {
                     />
                   </a>
                 </div>
+                {index === 0 && (
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    Session 3: <a href={session3VenueUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary underline-offset-4 hover:underline">{session3VenueName}</a> · 7 October at 09:30.
+                  </p>
+                )}
               </div>
             </li>
           ))}
@@ -213,12 +219,12 @@ export function Program() {
                   <BusFront className="h-5 w-5" aria-hidden="true" />
                 </div>
                 <h3 id="workshop-transport-heading" className="text-lg font-bold text-foreground">
-                  Workshop transport
+                  Workshop transport &amp; venues
                 </h3>
               </div>
 
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-                On both days of the workshop, a single bus service to the venue will be provided in the morning,
+                On Tuesday 6 October, a single bus service to Laguna Coast Resort will be provided in the morning,
                 departing from the central bus station in Naxos Town. The journey takes approximately 10 minutes.
                 Return transfer will also be provided at the end of the day’s activities.
               </p>
@@ -253,18 +259,23 @@ export function Program() {
               </div>
 
               <p className="mt-3 border-t border-border/70 pt-4 text-sm leading-relaxed text-muted-foreground">
-                Please note that this is the only scheduled morning departure on each day. Participants are kindly
+                Please note that this is the only scheduled Tuesday morning departure. Participants are kindly
                 asked to arrive at the departure point a few minutes in advance.
+              </p>
+
+              <p className="mt-4 border-t border-border/70 pt-4 text-sm leading-relaxed text-muted-foreground">
+                Wednesday 7 October · Session 3 takes place at <a href={session3VenueUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary underline-offset-4 hover:underline">{session3VenueName}</a>.
+                {" "}Please be at the entrance on the side opposite the basketball court at 09:30.
               </p>
             </div>
 
             <div className="border-t border-primary/15 bg-primary/[0.045] p-5 sm:p-6 md:border-l md:border-t-0">
-              <p className="text-sm font-bold text-foreground">Morning departures</p>
+              <p className="text-sm font-bold text-foreground">Morning arrangements</p>
               <div className="mt-4 divide-y divide-primary/15">
                 <div className="flex items-center justify-between gap-5 pb-4">
                   <div>
                     <p className="font-semibold text-foreground">Tuesday</p>
-                    <p className="mt-0.5 text-sm text-muted-foreground">6 October</p>
+                    <p className="mt-0.5 text-sm text-muted-foreground">6 October · Bus departure</p>
                   </div>
                   <time dateTime="2026-10-06T09:00" className="text-xl font-bold tabular-nums text-primary">
                     09:00
@@ -273,10 +284,11 @@ export function Program() {
                 <div className="flex items-center justify-between gap-5 pt-4">
                   <div>
                     <p className="font-semibold text-foreground">Wednesday</p>
-                    <p className="mt-0.5 text-sm text-muted-foreground">7 October</p>
+                    <p className="mt-0.5 text-sm text-muted-foreground">7 October · Session 3</p>
+                    <a href={session3VenueUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block text-sm font-semibold text-primary underline-offset-4 hover:underline">{session3VenueName}</a>
                   </div>
-                  <time dateTime="2026-10-07T09:10" className="text-xl font-bold tabular-nums text-primary">
-                    09:10
+                  <time dateTime="2026-10-07T09:30" className="text-xl font-bold tabular-nums text-primary">
+                    09:30
                   </time>
                 </div>
               </div>
@@ -300,4 +312,3 @@ export function Program() {
     </section>
   )
 }
-

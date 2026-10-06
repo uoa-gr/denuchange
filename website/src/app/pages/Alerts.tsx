@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase"
 import { Bell } from "lucide-react"
 import { DEFAULT_ANNOUNCEMENTS, type NotificationItem } from "../lib/program-data"
 import { mergeAnnouncements } from "../lib/announcements"
+import { LinkedText } from "../components/LinkedText"
 
 type Notification = NotificationItem
 
@@ -110,7 +111,7 @@ export function AlertsPage() {
               {!isUnread && <span className="mt-1.5 h-2 w-2 flex-none" />}
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-foreground">{n.title}</p>
-                <p className="text-sm text-muted-foreground mt-0.5 leading-relaxed">{n.body}</p>
+                <p className="text-sm text-muted-foreground mt-0.5 leading-relaxed"><LinkedText text={n.body} /></p>
                 <p className="text-[11px] text-muted-foreground mt-1.5">{timeAgo(n.created_at)}</p>
               </div>
             </div>

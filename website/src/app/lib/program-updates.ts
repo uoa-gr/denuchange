@@ -8,13 +8,32 @@ const PITARAS_PRESENTATION = DEFAULT_PROGRAM_SESSIONS.find(session => session.id
 const CANCELLED_PRESENTATION = "SWAT-based modelling of water runoff and suspended sediment transport in catchments across diverse morphoclimatic zones"
 const GIALOVA_PRESENTATION = DEFAULT_PROGRAM_SESSIONS.find(session => session.id === "wed-s4-3")!
 const PREVIOUS_GIALOVA_TITLE = "The Gialova Lagoon as a Holocene sediment trap: from sediment storage to catchment-scale denudation in the Xirolagkados basin (SW Peloponnese, Greece)"
+const WEDNESDAY_VENUE = DEFAULT_PROGRAM_SESSIONS.find(session => session.id === "wed-s3-venue")!
+const WEDNESDAY_SESSION3 = DEFAULT_PROGRAM_SESSIONS.filter(session => session.id.startsWith("wed-s3-") && session.id !== WEDNESDAY_VENUE.id)
 
 /** Apply the published program changes to existing server records as well as bundled data. */
 function applyPublishedProgramUpdates(sessions: ProgramSession[]): ProgramSession[] {
   let hasTuesdayBus = false
   let hasTuesdayParallelEvent = false
+  let hasWednesdayVenue = false
   const updated = sessions.flatMap(session => {
     const title = session.title.trim()
+    if (session.date === WEDNESDAY_VENUE.date) {
+      if (session.id === "wed-bus" || title === TUESDAY_BUS.title) return []
+      if (session.id === WEDNESDAY_VENUE.id || title === WEDNESDAY_VENUE.title) {
+        if (hasWednesdayVenue) return []
+        hasWednesdayVenue = true
+        return [{ ...WEDNESDAY_VENUE, id: session.id }]
+      }
+      const session3 = WEDNESDAY_SESSION3.find(known =>
+        known.id === session.id ||
+        (known.title === title && (title !== "Discussion" || (
+          known.start_time.slice(0, 5) === session.start_time.slice(0, 5) &&
+          known.end_time.slice(0, 5) === session.end_time.slice(0, 5)
+        )))
+      )
+      if (session3) return [{ ...session, location: WEDNESDAY_VENUE.location }]
+    }
     if (
       session.date === GIALOVA_PRESENTATION.date &&
       (session.id === GIALOVA_PRESENTATION.id || title === PREVIOUS_GIALOVA_TITLE || title === GIALOVA_PRESENTATION.title)
@@ -50,7 +69,12 @@ function applyPublishedProgramUpdates(sessions: ProgramSession[]): ProgramSessio
   })
   if (!hasTuesdayBus) updated.push(TUESDAY_BUS)
   if (!hasTuesdayParallelEvent) updated.push(TUESDAY_PARALLEL_EVENT)
-  return updated.sort((left, right) => left.date.localeCompare(right.date) || left.start_time.localeCompare(right.start_time))
+  if (!hasWednesdayVenue) updated.push(WEDNESDAY_VENUE)
+  return updated.sort((left, right) =>
+    left.date.localeCompare(right.date) ||
+    left.start_time.slice(0, 5).localeCompare(right.start_time.slice(0, 5)) ||
+    Number(right.title === WEDNESDAY_VENUE.title) - Number(left.title === WEDNESDAY_VENUE.title)
+  )
 }
 
 interface ProgramUpdateOptions {
