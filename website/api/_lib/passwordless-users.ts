@@ -39,8 +39,8 @@ export const PASSWORDLESS_USERS: Readonly<Record<string, PasswordlessUserInfo>> 
     lastName: "Alachmaneti",
   },
   "kkefalea@gmail.com": {
-    firstName: "Guest",
-    lastName: "",
+    firstName: "Kirki",
+    lastName: "Kefalea",
   },
 }
 
