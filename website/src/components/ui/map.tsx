@@ -65,7 +65,18 @@ function Map({ children, styles, ...props }: MapProps) {
   const mapRef = useRef<MapLibreGL.Map | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isStyleLoaded, setIsStyleLoaded] = useState(false);
+  const [mapUnavailable, setMapUnavailable] = useState(false);
   const { resolvedTheme } = useTheme();
+
+  const fallbackMapUrl = useMemo(() => {
+    if (!props.center) return null;
+    try {
+      const { lat, lng } = MapLibreGL.LngLat.convert(props.center);
+      return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+    } catch {
+      return null;
+    }
+  }, [props.center]);
 
   const mapStyles = useMemo(
     () => ({
@@ -81,15 +92,22 @@ function Map({ children, styles, ...props }: MapProps) {
     const mapStyle =
       resolvedTheme === "dark" ? mapStyles.dark : mapStyles.light;
 
-    const mapInstance = new MapLibreGL.Map({
-      container: containerRef.current,
-      style: mapStyle,
-      renderWorldCopies: false,
-      attributionControl: {
-        compact: true,
-      },
-      ...props,
-    });
+    let mapInstance: MapLibreGL.Map;
+    try {
+      mapInstance = new MapLibreGL.Map({
+        container: containerRef.current,
+        style: mapStyle,
+        renderWorldCopies: false,
+        attributionControl: {
+          compact: true,
+        },
+        ...props,
+      });
+    } catch {
+      setMapUnavailable(true);
+      return;
+    }
+    setMapUnavailable(false);
 
     const styleDataHandler = () => setIsStyleLoaded(true);
     const loadHandler = () => setIsLoaded(true);
@@ -131,7 +149,16 @@ function Map({ children, styles, ...props }: MapProps) {
   return (
     <MapContext.Provider value={contextValue}>
       <div ref={containerRef} className="relative w-full h-full">
-        {isLoading && <DefaultLoader />}
+        {mapUnavailable ? (
+          <div role="status" className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-muted p-6 text-center text-sm text-muted-foreground">
+            <p>Interactive map unavailable.</p>
+            {fallbackMapUrl && (
+              <a href={fallbackMapUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary underline underline-offset-4">
+                Open map in Google Maps
+              </a>
+            )}
+          </div>
+        ) : isLoading && <DefaultLoader />}
         {/* SSR-safe: children render only when map exists on client */}
         {mapRef.current && children}
       </div>

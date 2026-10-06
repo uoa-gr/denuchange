@@ -10,7 +10,7 @@ export function releaseFreshness(base: string): Plugin {
     transformIndexHtml(html) {
       return { html, tags: [
         { tag: 'meta', attrs: { name: 'denuchange-release', content: version }, injectTo: 'head-prepend' },
-        { tag: 'script', attrs: { src: `${base}browser-refresh.js` }, injectTo: 'head' },
+        { tag: 'script', attrs: { src: `${base}browser-refresh.js` }, injectTo: 'head-prepend' },
       ] }
     },
     generateBundle() {
