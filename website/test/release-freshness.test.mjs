@@ -18,7 +18,7 @@ test('each build publishes the same release marker in HTML and the uncached chec
   const transformed = plugin.transformIndexHtml('<html><head></head><body></body></html>')
   assert.equal(transformed.tags.find(tag => tag.tag === 'meta').attrs.content, version)
   assert.equal(transformed.tags.find(tag => tag.tag === 'script').attrs.src, '/denuchange/browser-refresh.js')
-  assert.equal(transformed.tags.find(tag => tag.tag === 'script').injectTo, 'head')
+  assert.equal(transformed.tags.find(tag => tag.tag === 'script').injectTo, 'head-prepend')
   const nextBuild = []
   releaseFreshness('/').generateBundle.call({ emitFile(file) { nextBuild.push(file) } })
   assert.notEqual(JSON.parse(nextBuild[0].source).version, version, 'A later release must be distinguishable')

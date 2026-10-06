@@ -9,7 +9,7 @@ import { createServer } from "vite"
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const ministryEmails = ["ch.koromilas@prv.ypeka.gr", "mpouzasd@prv.ypeka.gr"]
-const guestEmails = [...ministryEmails, "apittaras@icloud.com", "operations@lagunacoastresort.com", "office@lagunacoast.org", "kkefalea@gmail.com"]
+const guestEmails = [...ministryEmails, "apittaras@icloud.com", "operations@lagunacoastresort.com", "office@lagunacoast.org", "kkefalea@gmail.com", "noamgr@geo.haifa.ac.il"]
 const jwtSecret = "local-passwordless-auth-regression-test-secret"
 
 // The real auth handlers, JWT library and Supabase client talk to a local REST

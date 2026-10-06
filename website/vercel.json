@@ -21,7 +21,7 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!api/|_vercel/|DENUCHANGE_Program\\.pdf$).*)",
+      "source": "/((?!api/|_vercel/|assets/|DENUCHANGE_Program\\.pdf$).*)",
       "destination": "/index.html"
     }
   ]

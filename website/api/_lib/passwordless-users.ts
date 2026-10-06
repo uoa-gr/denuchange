@@ -42,6 +42,10 @@ export const PASSWORDLESS_USERS: Readonly<Record<string, PasswordlessUserInfo>> 
     firstName: "Kirki",
     lastName: "Kefalea",
   },
+  "noamgr@geo.haifa.ac.il": {
+    firstName: "Noam",
+    lastName: "Greenbaum",
+  },
 }
 
 export function getPasswordlessUser(email: string): PasswordlessUserInfo | undefined {

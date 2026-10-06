@@ -87,4 +87,14 @@
     event.preventDefault();
     void checkRelease();
   });
+  // Stylesheet failures do not emit vite:preloadError. Catch them before the
+  // app starts so an outdated cached asset cannot leave the page unstyled.
+  window.addEventListener('error', (event) => {
+    const target = event.target;
+    if (target?.tagName !== 'LINK' || target.rel !== 'stylesheet' || !target.href) return;
+    const asset = new URL(target.href, base);
+    if (asset.origin !== base.origin || !asset.pathname.startsWith(`${base.pathname}assets/`)) return;
+    failedChunk = true;
+    void checkRelease();
+  }, true);
 })();
