@@ -69,12 +69,14 @@ export const scientificCommittee = [
 
 export const venueName = 'Laguna Coast Resort, Naxos';
 export const venueUrl = 'https://maps.app.goo.gl/iDLaAnaS7PCajEDv5';
+export const session3VenueName = 'Naxos City Hall';
+export const session3VenueUrl = 'https://maps.app.goo.gl/RwyAEEyAK7FjZZA78';
 export const busStationUrl = 'https://maps.app.goo.gl/PsK22G3EVy2mAKBL8';
 export const transportParagraphs = [
   'For the ice breaker event, a bus service to the venue will be provided at 18:45 departing from the central bus station in Naxos Town.',
-  `On both days of the workshop, a single bus service to the venue will be provided in the morning, departing from the central bus station in Naxos Town (${busStationUrl}). The journey takes approximately 10 minutes. Return transfer will also be provided at the end of the day’s activities.`,
-  'Departures: Tuesday 6 October at 09:00 · Wednesday 7 October at 09:10',
-  'Please note that this is the only scheduled morning departure on each day. Participants are kindly asked to arrive at the departure point a few minutes in advance.',
+  `On Tuesday, 6 October, a single morning bus service to Laguna Coast Resort will depart from the central bus station in Naxos Town (${busStationUrl}). The journey takes approximately 10 minutes. Return transfer will also be provided at the end of the day’s activities.`,
+  'Departures: Tuesday 6 October at 09:00',
+  'This is the only scheduled Tuesday morning departure. Please arrive at the departure point a few minutes in advance.',
 ];
 
 
@@ -250,6 +252,16 @@ export const days: AgendaDay[] = [
     date: '2026-10-07',
     label: 'Wednesday, 7 October 2026',
     blocks: [
+      {
+        entries: [{
+          time: '09:30',
+          title: 'Session 3 venue: Naxos City Hall',
+          paragraphs: [
+            'Please be at the entrance on the side opposite the basketball court at 09:30.',
+            `${session3VenueName} — ${session3VenueUrl}`,
+          ],
+        }],
+      },
       {
         title: 'Session 3: Climate Change, Wildfires and Extreme Events',
         subtitle: 'Disturbance-driven denudation and geomorphic hazards',

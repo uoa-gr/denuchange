@@ -4,6 +4,7 @@ import type { ProgramSession } from "../lib/program-data"
 import { getGoogleCalendarUrl } from "../lib/calendar"
 import { groupProgramSessions, type ProgramScheduleItem } from "../lib/program-sections"
 import { formatSessionTime } from "../lib/program-time"
+import { LinkedText } from "./LinkedText"
 
 const TYPE_COLORS: Record<string, string> = {
   keynote: "border-l-primary bg-primary/5",
@@ -122,7 +123,7 @@ function ProgramCard({ item, discussions, remindedId, onAddReminder }: {
         )}
       </div>
       {item.displayedDescription && (
-        <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed whitespace-pre-line break-words">{item.displayedDescription}</p>
+        <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed whitespace-pre-line break-words"><LinkedText text={item.displayedDescription} /></p>
       )}
       {discussions.length > 0 && (
         <div className="mt-2 space-y-1 text-xs text-muted-foreground">
@@ -130,7 +131,7 @@ function ProgramCard({ item, discussions, remindedId, onAddReminder }: {
             <p key={discussion.session.id} data-program-discussion-id={discussion.session.id} className="leading-relaxed whitespace-pre-line">
               <span className="font-medium">Discussion</span>{" · "}
               {formatSessionTime(discussion.session.start_time, discussion.session.end_time)}
-              {discussion.displayedDescription && <> · {discussion.displayedDescription}</>}
+              {discussion.displayedDescription && <> · <LinkedText text={discussion.displayedDescription} /></>}
             </p>
           ))}
         </div>

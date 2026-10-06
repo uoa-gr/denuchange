@@ -23,6 +23,12 @@ export interface NotificationItem {
 
 export const DEFAULT_ANNOUNCEMENTS: NotificationItem[] = [
   {
+    "id": "alert-wednesday-session3-venue-20261006",
+    "title": "Wednesday Session 3: Naxos City Hall at 09:30",
+    "body": "On Wednesday, 7 October, Session 3 will take place at Naxos City Hall, starting at 09:30. Please be at the entrance on the side opposite the basketball court at 09:30. Location: https://maps.app.goo.gl/RwyAEEyAK7FjZZA78",
+    "created_at": "2026-10-06T17:46:02.000Z"
+  },
+  {
     "id": "alert-conversation-in-stone-20261005",
     "title": "A Conversation in Stone: Tuesday Parallel Event",
     "body": "A Conversation in Stone with artist Tom Von Kaenel will take place on Tuesday, 6 October, 18:30–19:30 at Laguna Coast Resort, in parallel with the DENUCHANGE Business Meeting, for participants not attending the meeting.",
@@ -81,7 +87,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "start_time": "09:00",
     "end_time": "",
     "title": "Bus transfer to venue",
-    "description": "On Tuesday, 6 October, the bus service to the venue will depart at 09:00 from the central bus station in Naxos Town (https://maps.app.goo.gl/PsK22G3EVy2mAKBL8). The journey takes approximately 10 minutes. Return transfer will also be provided at the end of the day’s activities.\n\nPlease note that this is the only scheduled morning departure on each day. Participants are kindly asked to arrive at the departure point a few minutes in advance.",
+    "description": "On Tuesday, 6 October, the bus service to the venue will depart at 09:00 from the central bus station in Naxos Town (https://maps.app.goo.gl/PsK22G3EVy2mAKBL8). The journey takes approximately 10 minutes. Return transfer will also be provided at the end of the day’s activities.\n\nPlease note that this is the only scheduled Tuesday morning departure. Participants are kindly asked to arrive at the departure point a few minutes in advance.",
     "location": "Central bus station, Naxos Town",
     "session_type": "social"
   },
@@ -337,13 +343,13 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "session_type": "meal"
   },
   {
-    "id": "wed-bus",
+    "id": "wed-s3-venue",
     "date": "2026-10-07",
-    "start_time": "09:10",
+    "start_time": "09:30",
     "end_time": "",
-    "title": "Bus transfer to venue",
-    "description": "On both days of the workshop, a single bus service to the venue will be provided in the morning, departing from the central bus station in Naxos Town (https://maps.app.goo.gl/PsK22G3EVy2mAKBL8). The journey takes approximately 10 minutes. Return transfer will also be provided at the end of the day’s activities.\n\nPlease note that this is the only scheduled morning departure on each day. Participants are kindly asked to arrive at the departure point a few minutes in advance.",
-    "location": "Central bus station, Naxos Town",
+    "title": "Session 3 venue: Naxos City Hall",
+    "description": "On Wednesday, 7 October, Session 3 will take place at Naxos City Hall at 09:30. Please be at the entrance on the side opposite the basketball court.\n\nLocation: https://maps.app.goo.gl/RwyAEEyAK7FjZZA78",
+    "location": "Naxos City Hall",
     "session_type": "social"
   },
   {
@@ -353,7 +359,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "end_time": "09:45",
     "title": "Wildfire-Induced Denudation Processes in Mediterranean Mountain Catchments",
     "description": "Wittenberg L., Malkinson D., Brook A., Ben Yehuda D., Tessler N., Shtober-Zisu N.\n\nSession 3: Climate Change, Wildfires and Extreme Events (Disturbance-driven denudation and geomorphic hazards)\nChairs: Mihaela Verga, Anna Karkani",
-    "location": "Laguna Coast Resort, Naxos",
+    "location": "Naxos City Hall",
     "session_type": "session"
   },
   {
@@ -363,7 +369,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "end_time": "09:50",
     "title": "Discussion",
     "description": "",
-    "location": "Laguna Coast Resort, Naxos",
+    "location": "Naxos City Hall",
     "session_type": "break"
   },
   {
@@ -373,7 +379,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "end_time": "10:05",
     "title": "The role of upstream contributing area to channel incision: Insights from the 21st-January flash flood of Glyfada, Athens, Greece",
     "description": "Spyrou E., Evelpidou N., Enzel Y.\n\nSession 3: Climate Change, Wildfires and Extreme Events",
-    "location": "Laguna Coast Resort, Naxos",
+    "location": "Naxos City Hall",
     "session_type": "session"
   },
   {
@@ -383,7 +389,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "end_time": "10:10",
     "title": "Discussion",
     "description": "",
-    "location": "Laguna Coast Resort, Naxos",
+    "location": "Naxos City Hall",
     "session_type": "break"
   },
   {
@@ -393,7 +399,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "end_time": "10:25",
     "title": "Hydrological and sedimentological changes following the 2010-forest fire in the Nahal Oren Basin, Mt. Carmel, Israel – a comparison to pre-fire natural rates",
     "description": "Greenbaum N., Wittenberg L., Malkinson D.\n\nSession 3: Climate Change, Wildfires and Extreme Events",
-    "location": "Laguna Coast Resort, Naxos",
+    "location": "Naxos City Hall",
     "session_type": "session"
   },
   {
@@ -403,7 +409,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "end_time": "10:30",
     "title": "Discussion",
     "description": "",
-    "location": "Laguna Coast Resort, Naxos",
+    "location": "Naxos City Hall",
     "session_type": "break"
   },
   {
@@ -413,7 +419,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "end_time": "10:45",
     "title": "Late Quaternary extreme erosion post-fire in the southern Levant",
     "description": "Frumkin A.\n\nSession 3: Climate Change, Wildfires and Extreme Events",
-    "location": "Laguna Coast Resort, Naxos",
+    "location": "Naxos City Hall",
     "session_type": "session"
   },
   {
@@ -423,7 +429,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "end_time": "10:50",
     "title": "Discussion",
     "description": "",
-    "location": "Laguna Coast Resort, Naxos",
+    "location": "Naxos City Hall",
     "session_type": "break"
   },
   {
@@ -433,7 +439,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "end_time": "11:05",
     "title": "HistoricFloods.org: An Open WebGIS Database of Historic Flood Events in Greece (1886–2022)",
     "description": "Liaskos A., Spyrou E., Saitis G., Karkani A., Evelpidou N.\n\nSession 3: Climate Change, Wildfires and Extreme Events",
-    "location": "Laguna Coast Resort, Naxos",
+    "location": "Naxos City Hall",
     "session_type": "session"
   },
   {
@@ -443,7 +449,7 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "end_time": "11:10",
     "title": "Discussion",
     "description": "",
-    "location": "Laguna Coast Resort, Naxos",
+    "location": "Naxos City Hall",
     "session_type": "break"
   },
   {

@@ -10,6 +10,8 @@ import {
   supportedBy,
   venueName,
   venueUrl,
+  session3VenueName,
+  session3VenueUrl,
   busStationUrl,
   transportParagraphs,
   days,
@@ -117,20 +119,21 @@ function LinkedText({ text }: { text: string }) {
   )
 }
 
-function VenueMapButton() {
+function VenueMapButton({ url = venueUrl }: { url?: string }) {
   return (
-    <a className="agenda-map-action" href={venueUrl} target="_blank" rel="noopener noreferrer">
+    <a className="agenda-map-action" href={url} target="_blank" rel="noopener noreferrer">
       Open venue map<ArrowUpRight size={17} aria-hidden="true" />
     </a>
   )
 }
 
 function EntryDetail({ text }: { text: string }) {
-  if (text.includes(venueUrl)) {
+  const mapUrl = [venueUrl, session3VenueUrl].find(url => text.includes(url))
+  if (mapUrl) {
     return (
       <div className="agenda-detail agenda-entry-venue">
-        <p>{text.replace(` — ${venueUrl}`, "")}</p>
-        <VenueMapButton />
+        <p>{text.replace(` — ${mapUrl}`, "")}</p>
+        <VenueMapButton url={mapUrl} />
       </div>
     )
   }
@@ -143,13 +146,24 @@ function VenueAndTransport() {
 
   return (
     <section className="agenda-information agenda-travel" id="agenda-venue" aria-labelledby="agenda-venue-heading" tabIndex={-1}>
-      <AgendaDisclosure title="Workshop Venue" headingId="agenda-venue-heading">
+      <AgendaDisclosure title="Workshop Venues" headingId="agenda-venue-heading">
       <div className="agenda-venue-band">
         <span className="agenda-venue-icon"><MapPin size={24} aria-hidden="true" /></span>
         <div className="agenda-venue-name">
           <p>{venueName}</p>
+          <span className="agenda-detail">Workshop venue, except Session 3</span>
         </div>
         <VenueMapButton />
+      </div>
+
+      <h3>Session 3 · Wednesday 7 October · 09:30</h3>
+      <div className="agenda-venue-band">
+        <span className="agenda-venue-icon"><MapPin size={24} aria-hidden="true" /></span>
+        <div className="agenda-venue-name">
+          <p>{session3VenueName}</p>
+          <span className="agenda-detail">Please be at the entrance on the side opposite the basketball court at 09:30.</span>
+        </div>
+        <VenueMapButton url={session3VenueUrl} />
       </div>
 
       <div className="agenda-transport">
