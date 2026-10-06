@@ -9,7 +9,7 @@ import { createServer } from "vite"
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const ministryEmails = ["ch.koromilas@prv.ypeka.gr", "mpouzasd@prv.ypeka.gr"]
-const guestEmails = [...ministryEmails, "apittaras@icloud.com", "operations@lagunacoastresort.com"]
+const guestEmails = [...ministryEmails, "apittaras@icloud.com", "operations@lagunacoastresort.com", "office@lagunacoast.org", "kkefalea@gmail.com"]
 const jwtSecret = "local-passwordless-auth-regression-test-secret"
 
 // The real auth handlers, JWT library and Supabase client talk to a local REST
@@ -112,7 +112,7 @@ test("allowlisted email entry signs in without a password and preserves existing
   assert.ok(f.writes.every(write => write.body.email === email || (write.table === "app_users" && write.method === "PATCH")), "Only the signed-in guest is synchronized")
 })
 
-test("all four approved guests enter from email alone and get non-admin sessions", async context => {
+test("all approved guest addresses enter from email alone and get non-admin sessions", async context => {
   const f = await fixture(context)
   for (const email of guestEmails) {
     const entry = await call(f.auth, "check", { email })
@@ -166,7 +166,7 @@ test("guest me and admin routes ignore admin privileges in old cookies and store
   assert.equal(f.tables.notifications.length, 0)
 })
 
-test("passwordless access is limited to the four exact approved addresses", async context => {
+test("passwordless access is limited to the exact approved addresses", async context => {
   const f = await fixture(context)
   const { PASSWORDLESS_USERS } = await f.vite.ssrLoadModule("/api/_lib/passwordless-users.ts")
   assert.deepEqual(Object.keys(PASSWORDLESS_USERS).sort(), [...guestEmails].sort())

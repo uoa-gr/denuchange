@@ -38,6 +38,10 @@ export const PASSWORDLESS_USERS: Readonly<Record<string, PasswordlessUserInfo>> 
     firstName: "Eleni",
     lastName: "Alachmaneti",
   },
+  "kkefalea@gmail.com": {
+    firstName: "Guest",
+    lastName: "",
+  },
 }
 
 export function getPasswordlessUser(email: string): PasswordlessUserInfo | undefined {
@@ -46,4 +50,3 @@ export function getPasswordlessUser(email: string): PasswordlessUserInfo | undef
     ? PASSWORDLESS_USERS[normalized]
     : undefined
 }
-
