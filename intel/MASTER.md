@@ -3,9 +3,9 @@
 ## EVENT
 - **Title**: IAG DENUCHANGE Workshop
 - **Type**: First Circular
-- **Dates**: 6-9 October 2026
+- **Dates**: 5-9 October 2026
 - **Location**: Naxos, Greece
-- **Schedule**: Oct 6-7 presentations/posters | Oct 8-9 field trip
+- **Schedule**: Oct 5 welcome event | Oct 6-7 presentations/posters | Oct 8-9 field trip
 
 ## ORGANIZATIONS
 | Abbrev | Full Name | Role |
@@ -106,7 +106,7 @@ Bring geoscientists together to advance understanding of:
 | 2nd | 2019 | Calpe, Spain | 12-14 September |
 | 3rd | 2023 | Haifa, Israel | 13-16 March (postponed from 2020 due to COVID) |
 | 4th | 2024 | Rome, Italy | 23-26 September, Sapienza University |
-| 5th | 2026 | Naxos, Greece | 6-9 October ← **THIS ONE** |
+| 5th | 2026 | Naxos, Greece | 5-9 October ← **THIS ONE** |
 
 ### Current WG Leadership (2022-2026)
 - **Chair**: Prof. Zbigniew Zwoliński (Poland)

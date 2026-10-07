@@ -6,7 +6,7 @@ import { Calendar, MapPin, Bell, ArrowRight } from "lucide-react"
 import { DEFAULT_ANNOUNCEMENTS } from "../lib/program-data"
 import { mergeAnnouncements } from "../lib/announcements"
 
-const EVENT_DATE = new Date("2026-10-06T09:00:00+03:00")
+const EVENT_DATE = new Date("2026-10-05T19:00:00+03:00")
 
 function getCountdown() {
   const diff = EVENT_DATE.getTime() - Date.now()
@@ -79,7 +79,7 @@ export function Home() {
               <span className="text-sm font-medium ml-1 opacity-80">hrs</span>
             </div>
           </div>
-          <p className="text-xs opacity-70 mt-2">6 October 2026 · Naxos, Greece</p>
+          <p className="text-xs opacity-70 mt-2">5–9 October 2026 · Naxos, Greece</p>
         </div>
       )}
 
@@ -88,7 +88,7 @@ export function Home() {
         <div className="rounded-xl border border-border bg-card p-4">
           <Calendar className="h-5 w-5 text-primary mb-2" />
           <p className="text-xs text-muted-foreground">Dates</p>
-          <p className="text-sm font-semibold text-foreground">6–9 Oct 2026</p>
+          <p className="text-sm font-semibold text-foreground">5–9 Oct 2026</p>
           <p className="text-xs text-muted-foreground">Workshop Sessions, VFT Lab & Field Trip</p>
         </div>
         <div className="rounded-xl border border-border bg-card p-4">
@@ -132,7 +132,7 @@ export function Home() {
         <div className="flex-1 text-left">
           <p className="text-xs text-muted-foreground mb-0.5">Workshop program</p>
           <p className="text-sm font-semibold text-foreground">View Full Schedule</p>
-          <p className="text-xs text-muted-foreground">6–9 October 2026 · Oral, Poster, VFT Lab & Field Trip</p>
+          <p className="text-xs text-muted-foreground">5–9 October 2026 · Oral, Poster, VFT Lab & Field Trip</p>
         </div>
         <ArrowRight className="h-4 w-4 text-muted-foreground flex-none" />
       </button>

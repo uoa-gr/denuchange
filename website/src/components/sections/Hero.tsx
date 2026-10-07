@@ -77,7 +77,7 @@ export function Hero() {
                 Date
               </dt>
               <dd className="mt-0.5 text-sm font-semibold tracking-tight text-foreground">
-                6–9 October 2026
+                5–9 October 2026
               </dd>
             </div>
           </div>
@@ -97,7 +97,7 @@ export function Hero() {
           </div>
 
           <div className="border-t border-primary/10 md:border-l md:border-t-0">
-            <dt className="sr-only">Pre-workshop event</dt>
+            <dt className="sr-only">Welcome event</dt>
             <dd className="h-full">
               <a
                 href="#ice-breaker"
@@ -108,7 +108,7 @@ export function Hero() {
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block text-[0.62rem] font-bold uppercase tracking-[0.16em] text-primary/75">
-                    Pre-workshop event
+                    Welcome event
                   </span>
                   <span className="mt-0.5 block text-sm font-semibold tracking-tight text-foreground">
                     Ice Breaker

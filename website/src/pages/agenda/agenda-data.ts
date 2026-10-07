@@ -34,7 +34,7 @@ export interface AgendaDay {
 
 export const agendaTitle = 'IAG DENUCHANGE Workshop 2026';
 export const agendaSubtitle = '5th International Workshop on Denudation and Climate Change';
-export const agendaLocationDate = 'Naxos, Greece 6 - 9 October 2026';
+export const agendaLocationDate = 'Naxos, Greece 5 - 9 October 2026';
 
 export const organizingBodies = [
   { name: 'National and Kapodistrian University of Athens', image: '/images/logo-nkua.jpg' },

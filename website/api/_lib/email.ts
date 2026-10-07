@@ -33,7 +33,7 @@ const BANNER = `
           IAG DENUCHANGE Workshop 2026
         </h1>
         <p style="margin:4px 0 0;color:#b2dce5;font-size:13px;font-family:Arial,Helvetica,sans-serif;">
-          6&#8211;9 October 2026 &middot; Naxos, Greece
+          5&#8211;9 October 2026 &middot; Naxos, Greece
         </p>
       </td>
     </tr>
