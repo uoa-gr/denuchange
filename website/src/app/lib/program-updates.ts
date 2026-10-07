@@ -10,14 +10,27 @@ const GIALOVA_PRESENTATION = DEFAULT_PROGRAM_SESSIONS.find(session => session.id
 const PREVIOUS_GIALOVA_TITLE = "The Gialova Lagoon as a Holocene sediment trap: from sediment storage to catchment-scale denudation in the Xirolagkados basin (SW Peloponnese, Greece)"
 const WEDNESDAY_VENUE = DEFAULT_PROGRAM_SESSIONS.find(session => session.id === "wed-s3-venue")!
 const WEDNESDAY_SESSION3 = DEFAULT_PROGRAM_SESSIONS.filter(session => session.id.startsWith("wed-s3-") && session.id !== WEDNESDAY_VENUE.id)
+const FIELD_TRIP_BUSES = [
+  DEFAULT_PROGRAM_SESSIONS.find(session => session.id === "thu-field-trip-bus")!,
+  DEFAULT_PROGRAM_SESSIONS.find(session => session.id === "fri-field-trip-bus")!,
+]
 
 /** Apply the published program changes to existing server records as well as bundled data. */
 function applyPublishedProgramUpdates(sessions: ProgramSession[]): ProgramSession[] {
   let hasTuesdayBus = false
   let hasTuesdayParallelEvent = false
   let hasWednesdayVenue = false
+  const fieldTripBusIds = new Set<string>()
   const updated = sessions.flatMap(session => {
     const title = session.title.trim()
+    const fieldTripBus = FIELD_TRIP_BUSES.find(bus =>
+      bus.id === session.id || (bus.date === session.date && bus.title === title)
+    )
+    if (fieldTripBus) {
+      if (fieldTripBusIds.has(fieldTripBus.id)) return []
+      fieldTripBusIds.add(fieldTripBus.id)
+      return [{ ...fieldTripBus, id: session.id }]
+    }
     if (session.date === WEDNESDAY_VENUE.date) {
       if (session.id === "wed-bus" || title === TUESDAY_BUS.title) return []
       if (session.id === WEDNESDAY_VENUE.id || title === WEDNESDAY_VENUE.title) {
@@ -70,6 +83,9 @@ function applyPublishedProgramUpdates(sessions: ProgramSession[]): ProgramSessio
   if (!hasTuesdayBus) updated.push(TUESDAY_BUS)
   if (!hasTuesdayParallelEvent) updated.push(TUESDAY_PARALLEL_EVENT)
   if (!hasWednesdayVenue) updated.push(WEDNESDAY_VENUE)
+  for (const bus of FIELD_TRIP_BUSES) {
+    if (!fieldTripBusIds.has(bus.id)) updated.push(bus)
+  }
   return updated.sort((left, right) =>
     left.date.localeCompare(right.date) ||
     left.start_time.slice(0, 5).localeCompare(right.start_time.slice(0, 5)) ||

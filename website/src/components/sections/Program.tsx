@@ -38,6 +38,7 @@ const schedule = [
     items: [
       "Catchment to coast transect",
       "Naxos geomorphological sites",
+      "Bus departure at 09:00 on both days",
       "Lunches included",
     ],
     location: {

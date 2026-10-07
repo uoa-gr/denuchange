@@ -24,6 +24,8 @@ const shortDays = [
   { weekday: "Monday", date: "5 October" },
   { weekday: "Tuesday", date: "6 October" },
   { weekday: "Wednesday", date: "7 October" },
+  { weekday: "Thursday", date: "8 October" },
+  { weekday: "Friday", date: "9 October" },
 ]
 
 const agendaOutline = [

@@ -14,6 +14,8 @@ const DAYS: { date: string; label: string; short: string }[] = [
   { date: "2026-10-05", label: "Monday, 5 Oct", short: "Mon 5" },
   { date: "2026-10-06", label: "Tuesday, 6 Oct", short: "Tue 6" },
   { date: "2026-10-07", label: "Wednesday, 7 Oct", short: "Wed 7" },
+  { date: "2026-10-08", label: "Thursday, 8 Oct", short: "Thu 8" },
+  { date: "2026-10-09", label: "Friday, 9 Oct", short: "Fri 9" },
 ]
 
 export function Program() {

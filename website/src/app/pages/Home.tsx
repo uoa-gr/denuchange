@@ -88,8 +88,8 @@ export function Home() {
         <div className="rounded-xl border border-border bg-card p-4">
           <Calendar className="h-5 w-5 text-primary mb-2" />
           <p className="text-xs text-muted-foreground">Dates</p>
-          <p className="text-sm font-semibold text-foreground">6–7 Oct 2026</p>
-          <p className="text-xs text-muted-foreground">Workshop Sessions & VFT Lab</p>
+          <p className="text-sm font-semibold text-foreground">6–9 Oct 2026</p>
+          <p className="text-xs text-muted-foreground">Workshop Sessions, VFT Lab & Field Trip</p>
         </div>
         <div className="rounded-xl border border-border bg-card p-4">
           <MapPin className="h-5 w-5 text-primary mb-2" />
@@ -132,7 +132,7 @@ export function Home() {
         <div className="flex-1 text-left">
           <p className="text-xs text-muted-foreground mb-0.5">Workshop program</p>
           <p className="text-sm font-semibold text-foreground">View Full Schedule</p>
-          <p className="text-xs text-muted-foreground">6–7 October 2026 · Oral, Poster & VFT Lab</p>
+          <p className="text-xs text-muted-foreground">6–9 October 2026 · Oral, Poster, VFT Lab & Field Trip</p>
         </div>
         <ArrowRight className="h-4 w-4 text-muted-foreground flex-none" />
       </button>
