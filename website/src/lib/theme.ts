@@ -44,7 +44,7 @@ export const theme = {
     dates: {
       workshop: "6-7 October 2026",
       fieldTrip: "8-9 October 2026",
-      full: "6-9 October 2026",
+      full: "5–9 October 2026",
     },
     location: "Naxos, Greece",
     deadlines: {
@@ -56,4 +56,3 @@ export const theme = {
 } as const;
 
 export type Theme = typeof theme;
-

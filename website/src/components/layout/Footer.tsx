@@ -6,7 +6,7 @@ export function Footer() {
         <div className="text-center text-sm text-muted-foreground">
           <p>© 2026 IAG DENUCHANGE Working Group</p>
           <p className="mt-1">
-            5th International Workshop · Naxos, Greece · October 6-9, 2026
+            5th International Workshop · Naxos, Greece · October 5–9, 2026
           </p>
           <p className="mt-3 text-xs">
             Developed by{" "}

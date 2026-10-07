@@ -137,7 +137,7 @@ export function RegistrationDialog({ children }: { children: React.ReactNode }) 
             <DialogHeader>
               <DialogTitle>Register for the Workshop</DialogTitle>
               <DialogDescription>
-                IAG DENUCHANGE Workshop · 6–9 October 2026 · Naxos, Greece
+                IAG DENUCHANGE Workshop · 5–9 October 2026 · Naxos, Greece
               </DialogDescription>
             </DialogHeader>
 

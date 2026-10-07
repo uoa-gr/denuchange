@@ -81,7 +81,7 @@ export function Program() {
                   October 5 · 19:00
                 </time>
                 <span className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                  Pre-workshop event
+                  Welcome event
                 </span>
               </div>
               <h3 id="ice-breaker-heading" className="mt-3 text-xl font-bold tracking-tight text-foreground">
