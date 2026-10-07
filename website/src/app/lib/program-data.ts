@@ -632,5 +632,25 @@ export const DEFAULT_PROGRAM_SESSIONS: ProgramSession[] = [
     "description": "Computer-based demonstration: Integrating collected field data into different virtual environments to develop a VFT.",
     "location": "Laguna Coast Resort, Naxos",
     "session_type": "session"
+  },
+  {
+    "id": "thu-field-trip-bus",
+    "date": "2026-10-08",
+    "start_time": "09:00",
+    "end_time": "",
+    "title": "Field trip bus departure",
+    "description": "Day 1 – Inland field trip. The bus departs at 09:00 from the workshop bus departure point at the central bus station in Naxos Town.\n\nDeparture point: https://maps.app.goo.gl/PsK22G3EVy2mAKBL8",
+    "location": "Central bus station, Naxos Town",
+    "session_type": "field_trip"
+  },
+  {
+    "id": "fri-field-trip-bus",
+    "date": "2026-10-09",
+    "start_time": "09:00",
+    "end_time": "",
+    "title": "Field trip bus departure",
+    "description": "Day 2 – Coastal field trip. The bus departs at 09:00 from the workshop bus departure point at the central bus station in Naxos Town.\n\nDeparture point: https://maps.app.goo.gl/PsK22G3EVy2mAKBL8",
+    "location": "Central bus station, Naxos Town",
+    "session_type": "field_trip"
   }
 ]

@@ -10,8 +10,9 @@ import {
   useMap,
 } from "@/components/ui/map"
 import { ThemeProvider } from "@/components/theme-provider"
-import { ChevronDown, Calendar } from "lucide-react"
+import { BusFront, ChevronDown, Calendar, ExternalLink, MapPin } from "lucide-react"
 import { fieldTripDays, allFieldStops, type FieldTripStop } from "@/lib/fieldtrip-data"
+import { BUS_DEPARTURE_URL } from "@/lib/travel-map-data"
 
 // Use imported data
 const fieldStops = allFieldStops
@@ -263,6 +264,32 @@ export function FieldTrip() {
             </a>
           </p>
         </div>
+
+        <aside aria-labelledby="field-trip-departures-heading" className="mx-auto mb-8 max-w-6xl rounded-xl border border-primary/15 bg-card p-5 sm:p-6">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h3 id="field-trip-departures-heading" className="flex items-center gap-2 font-bold text-foreground">
+                <BusFront className="h-5 w-5 text-primary" aria-hidden="true" />
+                Field trip bus departures
+              </h3>
+              <a href={BUS_DEPARTURE_URL} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-8 items-center gap-1.5 text-sm font-semibold text-primary underline-offset-4 hover:underline">
+                <MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />
+                Central bus station, Naxos Town
+                <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+              </a>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-lg bg-primary/[0.06] px-4 py-3">
+                <p className="text-sm font-semibold text-foreground">Thursday 8 October</p>
+                <time dateTime="2026-10-08T09:00" className="mt-1 block text-xl font-bold tabular-nums text-primary">09:00</time>
+              </div>
+              <div className="rounded-lg bg-primary/[0.06] px-4 py-3">
+                <p className="text-sm font-semibold text-foreground">Friday 9 October</p>
+                <time dateTime="2026-10-09T09:00" className="mt-1 block text-xl font-bold tabular-nums text-primary">09:00</time>
+              </div>
+            </div>
+          </div>
+        </aside>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto items-stretch">
           {/* Map */}
