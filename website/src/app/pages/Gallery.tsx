@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from "react"
 import * as Dialog from "@radix-ui/react-dialog"
-import { ChevronLeft, ChevronRight, Download, LoaderCircle, X } from "lucide-react"
+import { Link } from "react-router-dom"
+import { ChevronLeft, ChevronRight, Download, LoaderCircle, Settings2, X } from "lucide-react"
 import { workshopGalleryDays, workshopGalleryOverview, type GalleryMedia } from "../lib/workshop-gallery-data"
 import { downloadGalleryArchive, type GalleryArchiveFile } from "../lib/gallery-download"
-import { SharedGallery } from "../components/SharedGallery"
+import { getPublishedGalleryItems, type ManagedGalleryItem } from "../lib/gallery-admin-api"
+import { localGalleryStore } from "../lib/gallery-local-preview"
+import { useAuth } from "../lib/auth"
 
-interface GalleryEntry { media: GalleryMedia; day: string; group: string }
+interface GalleryEntry { media: GalleryMedia; day: string; group: string; groupTitle: string; groupOrder: number; position: number }
 interface Viewer { items: GalleryMedia[]; index: number }
 
 const mediaTypes = [
@@ -14,26 +17,29 @@ const mediaTypes = [
   { kind: "video", label: "Videos" },
 ] as const
 
-const assetUrl = (src: string) => /^https?:\/\//.test(src) ? src : `${import.meta.env.BASE_URL}${src.replace(/^\//, "")}`
+const assetUrl = (src: string) => /^(https?:|blob:|data:)/.test(src) ? src : `${import.meta.env.BASE_URL}${src.replace(/^\//, "")}`
 const dayLabel = (date: string) => new Date(`${date}T12:00:00`).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" })
 const folderName = (name: string) => name.replace(/[<>:"/\\|?*\u0000-\u001f]/g, "-")
-const collection: GalleryEntry[] = [
-  ...workshopGalleryDays.flatMap((day) => day.groups.flatMap((group) => group.items.map((media) => ({ media, day: day.id, group: `${day.id}/${group.id}` })))),
-  ...workshopGalleryOverview.map((media) => ({ media, day: "overview", group: "film" })),
+const staticCollection: GalleryEntry[] = [
+  ...workshopGalleryDays.flatMap((day) => day.groups.flatMap((group, groupOrder) => group.items.map((media, index) => ({ media, day: day.id, group: `${day.id}/${group.id}`, groupTitle: group.title, groupOrder, position: index + 1 })))),
+  ...workshopGalleryOverview.map((media, index) => ({ media, day: "overview", group: "film", groupTitle: "Workshop video", groupOrder: 0, position: index + 1 })),
 ]
+const dayOrder = (day: string) => day === "overview" ? workshopGalleryDays.length : workshopGalleryDays.findIndex((item) => item.id === day)
 
 function archiveFiles(entries: GalleryEntry[]): GalleryArchiveFile[] {
-  return entries.map(({ media, day, group }) => {
+  return entries.map(({ media, day, groupTitle }) => {
     const galleryDay = workshopGalleryDays.find((item) => item.id === day)
-    const galleryGroup = galleryDay?.groups.find((item) => `${day}/${item.id}` === group)
-    const path = galleryDay && galleryGroup
-      ? `${galleryDay.label} - ${dayLabel(galleryDay.date)}/${folderName(galleryGroup.title)}/${media.kind === "collage" ? "Collages/" : ""}${media.filename}`
+    const path = galleryDay
+      ? `${galleryDay.label} - ${dayLabel(galleryDay.date)}/${folderName(groupTitle)}/${media.kind === "collage" ? "Collages/" : ""}${media.filename}`
       : media.filename
     return { url: assetUrl(media.original), path, bytes: media.bytes }
   })
 }
 
 export function Gallery() {
+  const { user } = useAuth()
+  const localPreview = import.meta.env.DEV && new URLSearchParams(window.location.search).get("preview") === "gallery"
+  const [uploads, setUploads] = useState<ManagedGalleryItem[]>([])
   const [activeKind, setActiveKind] = useState<GalleryMedia["kind"]>("photo")
   const [activeDay, setActiveDay] = useState("all")
   const [activeGroup, setActiveGroup] = useState("all")
@@ -44,14 +50,32 @@ export function Gallery() {
   const menu = useRef<HTMLDetailsElement | null>(null)
   const downloadController = useRef<AbortController | null>(null)
   const swipeStart = useRef<number | null>(null)
-  const shared = activeDay === "shared"
+  const collection: GalleryEntry[] = [
+    ...staticCollection,
+    ...uploads.filter((item) => item.published && item.uploadComplete && item.dayId && item.groupId && item.groupTitle).map((item) => ({ media: item, day: item.dayId!, group: item.dayId === "overview" ? "film" : `${item.dayId}/${item.groupId}`, groupTitle: item.groupTitle!, groupOrder: item.groupOrder, position: item.position })),
+  ].sort((a, b) => dayOrder(a.day) - dayOrder(b.day) || a.groupOrder - b.groupOrder || a.position - b.position || a.media.id.localeCompare(b.media.id))
   const kindEntries = collection.filter((item) => item.media.kind === activeKind)
   const dayEntries = activeDay === "all" ? kindEntries : kindEntries.filter((item) => item.day === activeDay)
   const entries = activeGroup === "all" ? dayEntries : dayEntries.filter((item) => item.group === activeGroup)
   const images = entries.map((entry) => entry.media)
   const current = viewer?.items[viewer.index]
-  const kindDays = workshopGalleryDays.filter((day) => day.groups.some((group) => group.items.some((item) => item.kind === activeKind)))
+  const kindDays = workshopGalleryDays.filter((day) => kindEntries.some((item) => item.day === day.id))
   const availableDays = activeDay === "all" ? kindDays : kindDays.filter((day) => day.id === activeDay)
+  const groupsForDay = (dayId: string) => Array.from(new Map(kindEntries.filter((item) => item.day === dayId).map((item) => [item.group, { id: item.group, title: item.groupTitle }])).values())
+
+  useEffect(() => {
+    const controller = new AbortController()
+    let active = true
+    const load = async () => {
+      try {
+        const items = localPreview ? await localGalleryStore.list() : await getPublishedGalleryItems(controller.signal)
+        if (active) setUploads(items.filter((item) => item.published))
+      } catch { /* The prepared workshop collection remains available. */ }
+    }
+    void load()
+    window.addEventListener("denuchange-gallery-change", load)
+    return () => { active = false; controller.abort(); window.removeEventListener("denuchange-gallery-change", load) }
+  }, [localPreview])
 
   useEffect(() => () => downloadController.current?.abort(), [])
   useEffect(() => { gallery.current?.closest("main")?.scrollTo({ top: 0 }) }, [activeKind, activeDay, activeGroup])
@@ -110,7 +134,7 @@ export function Gallery() {
             onClick={() => {
               setActiveKind(kind)
               setActiveGroup("all")
-              if (shared || activeDay !== "all" && !workshopGalleryDays.some((day) => day.id === activeDay && day.groups.some((group) => group.items.some((item) => item.kind === kind)))) setActiveDay("all")
+              if (activeDay !== "all" && !collection.some((item) => item.day === activeDay && item.media.kind === kind)) setActiveDay("all")
             }}
             className={`flex-1 py-2 text-xs font-medium border-b-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${activeKind === kind ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}
           >{label}</button>)}
@@ -120,41 +144,41 @@ export function Gallery() {
           aria-label="Day"
           value={activeDay}
           onChange={(event) => { setActiveDay(event.target.value); setActiveGroup("all") }}
-          className="min-w-0 flex-1 rounded border border-border bg-background px-2 py-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          className="min-w-0 w-0 flex-1 min-h-11 rounded border border-border bg-background px-2 py-2 text-base sm:text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option value="all">All days</option>
           {kindDays.map((day) => <option key={day.id} value={day.id}>{day.label} · {dayLabel(day.date)}</option>)}
-          {activeKind === "photo" && <option value="shared">Shared photos</option>}
         </select>
-        {!shared && <select
+        <select
           aria-label="Group"
           value={activeGroup}
           onChange={(event) => setActiveGroup(event.target.value)}
-          className="min-w-0 flex-1 rounded border border-border bg-background px-2 py-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          className="min-w-0 w-0 flex-1 min-h-11 rounded border border-border bg-background px-2 py-2 text-base sm:text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option value="all">All groups</option>
           {activeKind === "video" && activeDay === "all" && <option value="film">Workshop video</option>}
-          {availableDays.map((day) => <optgroup key={day.id} label={`${day.label} · ${dayLabel(day.date)}`}>{day.groups.filter((group) => group.items.some((item) => item.kind === activeKind)).map((group) => <option key={group.id} value={`${day.id}/${group.id}`}>{group.title}</option>)}</optgroup>)}
-        </select>}
-        {!shared && <details ref={menu} className="relative flex-none">
-          <summary aria-label="Downloads" title={progress === null ? "Downloads" : `Preparing download: ${progress}%`} className="list-none [&::-webkit-details-marker]:hidden cursor-pointer p-2 rounded text-muted-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+          {availableDays.map((day) => <optgroup key={day.id} label={`${day.label} · ${dayLabel(day.date)}`}>{groupsForDay(day.id).map((group) => <option key={group.id} value={group.id}>{group.title}</option>)}</optgroup>)}
+        </select>
+        {(user?.isAdmin || localPreview) && <Link to={localPreview ? "/app/admin?preview=gallery-admin" : "/app/admin?tab=gallery"} aria-label="Manage gallery" title="Manage gallery" className="h-11 w-11 flex-none flex items-center justify-center rounded text-muted-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"><Settings2 className="h-4 w-4" /></Link>}
+        <details ref={menu} className="relative flex-none">
+          <summary aria-label="Downloads" title={progress === null ? "Downloads" : `Preparing download: ${progress}%`} className="list-none [&::-webkit-details-marker]:hidden cursor-pointer h-11 w-11 flex items-center justify-center rounded text-muted-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
             {progress === null ? <Download className="h-4 w-4" /> : <LoaderCircle className="h-4 w-4 animate-spin" />}
           </summary>
-          <div className="absolute right-0 top-full mt-1 w-44 rounded-md border border-border bg-background shadow-md py-1 text-xs">
+          <div className="absolute right-0 top-full mt-1 w-44 max-h-[60dvh] overflow-y-auto overscroll-contain touch-pan-y rounded-md border border-border bg-background shadow-md py-1 text-xs">
             {progress !== null ? <button onClick={() => { downloadController.current?.abort(); if (menu.current) menu.current.open = false }} className="block w-full px-3 py-2 text-left hover:bg-muted">Cancel download ({progress}%)</button> : <>
               {activeGroup !== "all" && <button onClick={() => void download(entries, `DENUCHANGE-${activeGroup.replace("/", "-")}-${activeKind}.zip`)} className="block w-full px-3 py-2 text-left hover:bg-muted">Download group</button>}
               {activeDay !== "all" && <button onClick={() => void download(dayEntries, `DENUCHANGE-${activeDay}-${activeKind}.zip`)} className="block w-full px-3 py-2 text-left hover:bg-muted">Download day</button>}
               <button onClick={() => void download(collection, "DENUCHANGE-Naxos-2026.zip")} className="block w-full px-3 py-2 text-left hover:bg-muted">Download all</button>
             </>}
           </div>
-        </details>}
+        </details>
         </div>
       </div>
       {downloadError && <p role="alert" className="px-3 py-2 text-xs text-destructive">Download failed. Please try again.</p>}
 
-      {shared ? <SharedGallery onOpen={(items, index) => setViewer({ items, index })} /> : <div className="p-1 grid grid-cols-2 sm:grid-cols-3 gap-1">
+      <div className="p-1 grid grid-cols-2 sm:grid-cols-3 gap-1">
         {images.map((item, index) => item.kind === "video" ? (
-          <video key={item.id} controls playsInline preload="none" poster={assetUrl(item.poster ?? item.thumbnail)} aria-label={item.title} title={item.title} className="block w-full aspect-[4/3] rounded bg-black object-contain" width={item.width} height={item.height}>
+          <video key={item.id} controls playsInline preload="none" poster={item.poster || item.thumbnail ? assetUrl(item.poster || item.thumbnail) : undefined} aria-label={item.title} title={item.title} className="block w-full aspect-[4/3] rounded bg-black object-contain" width={item.width || undefined} height={item.height || undefined}>
             <source src={assetUrl(item.src)} type="video/mp4" />
             <a href={assetUrl(item.original)} download={item.filename}>Download video</a>
           </video>
@@ -163,7 +187,7 @@ export function Gallery() {
             <img src={assetUrl(item.thumbnail)} alt={item.title} width={item.width} height={item.height} loading="lazy" decoding="async" className={`w-full h-full ${item.kind === "collage" ? "object-contain" : "object-cover"}`} />
           </button>
         ))}
-      </div>}
+      </div>
 
       <Dialog.Root open={!!viewer} onOpenChange={(open) => { if (!open) setViewer(null) }}>
         <Dialog.Portal>
@@ -179,7 +203,7 @@ export function Gallery() {
                 onTouchStart={(event) => { swipeStart.current = current.kind === "video" ? null : event.touches[0].clientX }}
                 onTouchEnd={(event) => { if (swipeStart.current !== null) { const delta = event.changedTouches[0].clientX - swipeStart.current; if (Math.abs(delta) > 60) move(delta > 0 ? -1 : 1); swipeStart.current = null } }}
               >
-                {current.kind === "video" ? <video key={current.id} controls playsInline autoPlay poster={assetUrl(current.poster ?? current.thumbnail)} className="max-w-full max-h-full"><source src={assetUrl(current.src)} type="video/mp4" /></video> : <img key={current.id} src={assetUrl(current.src)} alt={current.title} className="max-w-full max-h-full w-auto h-auto object-contain [content-visibility:visible]" />}
+                {current.kind === "video" ? <video key={current.id} controls playsInline autoPlay poster={current.poster || current.thumbnail ? assetUrl(current.poster || current.thumbnail) : undefined} className="max-w-full max-h-full"><source src={assetUrl(current.src)} type="video/mp4" /></video> : <img key={current.id} src={assetUrl(current.src)} alt={current.title} className="max-w-full max-h-full w-auto h-auto object-contain [content-visibility:visible]" />}
                 {viewer.items.length > 1 && <>
                   <button onClick={() => move(-1)} disabled={viewer.index === 0} aria-label="Previous" className="absolute left-1 p-2 rounded bg-black/40 disabled:opacity-20 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"><ChevronLeft className="h-5 w-5" /></button>
                   <button onClick={() => move(1)} disabled={viewer.index === viewer.items.length - 1} aria-label="Next" className="absolute right-1 p-2 rounded bg-black/40 disabled:opacity-20 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"><ChevronRight className="h-5 w-5" /></button>
