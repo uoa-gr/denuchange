@@ -7,8 +7,11 @@ export function AppShell() {
   const { user, isLoading } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const galleryPreview = import.meta.env.DEV && location.pathname.endsWith("/app/gallery") &&
-    new URLSearchParams(location.search).get("preview") === "gallery"
+  const preview = new URLSearchParams(location.search).get("preview")
+  const galleryPreview = import.meta.env.DEV && (
+    location.pathname.endsWith("/app/gallery") && preview === "gallery" ||
+    location.pathname.endsWith("/app/admin") && preview === "gallery-admin"
+  )
 
   useEffect(() => {
     if (!galleryPreview && !isLoading && !user) {
@@ -47,7 +50,7 @@ export function AppShell() {
       </header>
 
       {/* Page content */}
-      <main className="flex-1 overflow-y-auto overscroll-contain">
+      <main className="flex-1 min-h-0 w-full overflow-y-auto overscroll-contain touch-pan-y [-webkit-overflow-scrolling:touch]">
         <Outlet />
       </main>
 

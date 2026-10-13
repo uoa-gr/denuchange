@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
+import { GalleryManager } from "./GalleryManager"
 import { useAuth } from "@/app/lib/auth"
 import { api, type SessionInput } from "@/app/lib/api"
 import { supabase } from "@/lib/supabase"
@@ -81,75 +82,6 @@ function AlertsTab() {
         className="w-full py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium disabled:opacity-50"
       >
         {sending ? "Sending…" : "Send notification"}
-      </button>
-    </div>
-  )
-}
-
-// ── Gallery tab ─────────────────────────────────────────────────────────────
-
-function GalleryTab() {
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const [caption, setCaption] = useState("")
-  const [uploading, setUploading] = useState(false)
-  const [done, setDone] = useState(false)
-  const [error, setError] = useState("")
-
-  async function handleUpload() {
-    const file = fileInputRef.current?.files?.[0]
-    if (!file) return
-    const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg"
-    setUploading(true)
-    setError("")
-    try {
-      const { token, path, mimeType } = await api.adminGetGalleryUploadUrl(ext, caption.trim())
-      await supabase.storage.from("gallery").uploadToSignedUrl(path, token, file, {
-        contentType: mimeType,
-        upsert: false,
-      })
-      setDone(true)
-      setCaption("")
-      if (fileInputRef.current) fileInputRef.current.value = ""
-      setTimeout(() => setDone(false), 3000)
-    } catch {
-      setError("Upload failed. Please try again.")
-    } finally {
-      setUploading(false)
-    }
-  }
-
-  return (
-    <div className="p-4 space-y-3">
-      <p className="text-xs text-muted-foreground">Add photos to the participant gallery.</p>
-      <div>
-        <label className="block text-xs font-medium text-foreground mb-1">Photo</label>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          className="w-full text-sm text-muted-foreground file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-muted file:text-xs file:font-medium"
-        />
-      </div>
-      <div>
-        <label className="block text-xs font-medium text-foreground mb-1">
-          Caption <span className="text-muted-foreground">(optional)</span>
-        </label>
-        <input
-          type="text"
-          value={caption}
-          onChange={(e) => setCaption(e.target.value)}
-          placeholder="Describe the photo…"
-          className="w-full px-3 py-2 text-sm rounded-lg bg-muted border-0 focus:outline-none focus:ring-2 focus:ring-primary/30"
-        />
-      </div>
-      {error && <p className="text-xs text-destructive">{error}</p>}
-      {done && <p className="text-xs text-green-600">Photo uploaded!</p>}
-      <button
-        onClick={handleUpload}
-        disabled={uploading}
-        className="w-full py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium disabled:opacity-50"
-      >
-        {uploading ? "Uploading…" : "Upload photo"}
       </button>
     </div>
   )
@@ -279,7 +211,7 @@ function ProgramTab() {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full min-h-0">
       <div className="p-3 border-b border-border">
         <button
           onClick={() => setEditing({ ...EMPTY_SESSION })}
@@ -331,15 +263,18 @@ function ProgramTab() {
 export function AdminPanel() {
   const { user, isLoading } = useAuth()
   const navigate = useNavigate()
-  const [tab, setTab] = useState<Tab>("alerts")
+  const location = useLocation()
+  const [tab, setTab] = useState<Tab>(() => new URLSearchParams(location.search).get("tab") === "gallery" ? "gallery" : "alerts")
+  const galleryPreview = import.meta.env.DEV && new URLSearchParams(location.search).get("preview") === "gallery-admin"
 
   useEffect(() => {
-    if (!isLoading && user && !user.isAdmin) {
+    if (!galleryPreview && !isLoading && user && !user.isAdmin) {
       navigate("/app", { replace: true })
     }
-  }, [isLoading, user, navigate])
+  }, [galleryPreview, isLoading, user, navigate])
 
-  if (isLoading || !user) return null
+  if (galleryPreview) return <GalleryManager preview />
+  if (isLoading || !user?.isAdmin) return null
 
   const TABS: { key: Tab; label: string; Icon: typeof Bell }[] = [
     { key: "alerts", label: "Alerts", Icon: Bell },
@@ -348,7 +283,7 @@ export function AdminPanel() {
   ]
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full min-h-0">
       {/* Sub tabs */}
       <div className="flex border-b border-border bg-background">
         {TABS.map(({ key, label, Icon }) => (
@@ -367,9 +302,9 @@ export function AdminPanel() {
         ))}
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 min-h-0 overflow-y-auto touch-pan-y">
         {tab === "alerts" && <AlertsTab />}
-        {tab === "gallery" && <GalleryTab />}
+        {tab === "gallery" && <GalleryManager />}
         {tab === "program" && <ProgramTab />}
       </div>
     </div>

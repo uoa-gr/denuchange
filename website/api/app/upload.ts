@@ -3,7 +3,7 @@ import { extractJwt } from "../_lib/auth"
 
 // Consolidated upload-URL handler
 // POST ?action=avatar   → signed upload URL for user avatar (authenticated)
-// POST ?action=gallery  → signed upload URL for gallery photo (admin only)
+// Gallery media uses the structured admin-only /api/app/gallery handler.
 
 const ALLOWED_EXTS = ["jpg", "jpeg", "png", "webp"] as const
 type AllowedExt = (typeof ALLOWED_EXTS)[number]
@@ -63,31 +63,7 @@ async function _handle(req: any, res: any) {
 
   if (action === "gallery") {
     if (!payload.isAdmin) return res.status(403).json({ error: "Forbidden" })
-
-    const caption: string = (req.body?.caption ?? "").toString().trim().slice(0, 500)
-    const timestamp = Date.now()
-    const randomHex = Math.random().toString(16).slice(2, 10)
-    const filePath = `${timestamp}-${randomHex}.${ext}`
-
-    const { data, error } = await getSupabaseAdmin().storage
-      .from("gallery")
-      .createSignedUploadUrl(filePath)
-    if (error || !data) {
-      console.error("gallery createSignedUploadUrl:", error)
-      return res.status(500).json({ error: "Could not create upload URL" })
-    }
-
-    const { data: inserted, error: insertErr } = await getSupabaseAdmin()
-      .from("gallery_images")
-      .insert({ file_path: filePath, caption, uploaded_by: payload.email })
-      .select("id")
-      .single()
-    if (insertErr || !inserted) {
-      console.error("gallery insert:", insertErr)
-      return res.status(500).json({ error: "Internal server error" })
-    }
-
-    return res.json({ token: data.token, path: filePath, imageId: inserted.id, mimeType })
+    return res.status(410).json({ error: "Please refresh the app and use the Gallery upload manager." })
   }
 
   return res.status(404).json({ error: "Unknown action" })
