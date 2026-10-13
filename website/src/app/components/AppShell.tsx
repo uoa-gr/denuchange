@@ -1,19 +1,22 @@
 import { useEffect } from "react"
-import { Outlet, useNavigate } from "react-router-dom"
+import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import { BottomNav } from "./BottomNav"
 import { useAuth } from "../lib/auth"
 
 export function AppShell() {
   const { user, isLoading } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+  const galleryPreview = import.meta.env.DEV && location.pathname.endsWith("/app/gallery") &&
+    new URLSearchParams(location.search).get("preview") === "gallery"
 
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!galleryPreview && !isLoading && !user) {
       navigate("/app/auth/email", { replace: true })
     }
-  }, [isLoading, user, navigate])
+  }, [galleryPreview, isLoading, user, navigate])
 
-  if (isLoading) {
+  if (isLoading && !galleryPreview) {
     return (
       <div className="h-[100dvh] flex items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-3">
@@ -24,7 +27,7 @@ export function AppShell() {
     )
   }
 
-  if (!user) return null
+  if (!user && !galleryPreview) return null
 
   return (
     <div className="h-[100dvh] flex flex-col bg-background overflow-hidden">
