@@ -22,7 +22,7 @@ export default defineConfig({
       injectManifest: {
         rollupFormat: 'iife',
         globPatterns: ['**/*.{js,css,html,ico,png,jpg,jpeg,svg,webp}'],
-        globIgnores: ['**/browser-refresh.js', '**/version.json'],
+        globIgnores: ['**/browser-refresh.js', '**/version.json', '**/workshop-gallery/**'],
         maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MiB
       },
       manifest: {
