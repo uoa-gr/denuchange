@@ -2,6 +2,7 @@ import { Navigation } from "@/components/layout/Navigation"
 import { Footer } from "@/components/layout/Footer"
 import { FadeIn } from "@/components/ui/fade-in"
 import { Hero } from "@/components/sections/Hero"
+import { WorkshopPhotoArchive } from "@/components/sections/WorkshopPhotoArchive"
 import { About } from "@/components/sections/About"
 import { Program } from "@/components/sections/Program"
 import { FieldTrip } from "@/components/sections/FieldTrip"
@@ -20,6 +21,7 @@ function App() {
       <Navigation />
       <main className="flex-1">
         <Hero />
+        <WorkshopPhotoArchive />
         <FadeIn delay={100}><About /></FadeIn>
         <FadeIn direction="right"><Program /></FadeIn>
         <FadeIn direction="left"><Labs /></FadeIn>

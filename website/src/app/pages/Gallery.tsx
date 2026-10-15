@@ -39,6 +39,10 @@ function archiveFiles(entries: GalleryEntry[]): GalleryArchiveFile[] {
 export function Gallery() {
   const { user } = useAuth()
   const localPreview = import.meta.env.DEV && new URLSearchParams(window.location.search).get("preview") === "gallery"
+  return <WorkshopGallery canManage={!!user?.isAdmin} localPreview={localPreview} />
+}
+
+export function WorkshopGallery({ canManage = false, localPreview = false }: { canManage?: boolean; localPreview?: boolean }) {
   const [uploads, setUploads] = useState<ManagedGalleryItem[]>([])
   const [activeKind, setActiveKind] = useState<GalleryMedia["kind"]>("photo")
   const [activeDay, setActiveDay] = useState("all")
@@ -78,7 +82,16 @@ export function Gallery() {
   }, [localPreview])
 
   useEffect(() => () => downloadController.current?.abort(), [])
-  useEffect(() => { gallery.current?.closest("main")?.scrollTo({ top: 0 }) }, [activeKind, activeDay, activeGroup])
+  useEffect(() => {
+    const element = gallery.current
+    const main = element?.closest("main")
+    if (!element || !main) return
+    if (main.scrollHeight > main.clientHeight) main.scrollTo({ top: 0 })
+    else {
+      const top = element.getBoundingClientRect().top + window.scrollY
+      if (window.scrollY > top) window.scrollTo({ top })
+    }
+  }, [activeKind, activeDay, activeGroup])
 
   useEffect(() => {
     const closeMenu = (event: PointerEvent) => {
@@ -159,7 +172,7 @@ export function Gallery() {
           {activeKind === "video" && activeDay === "all" && <option value="film">Workshop video</option>}
           {availableDays.map((day) => <optgroup key={day.id} label={`${day.label} · ${dayLabel(day.date)}`}>{groupsForDay(day.id).map((group) => <option key={group.id} value={group.id}>{group.title}</option>)}</optgroup>)}
         </select>
-        {(user?.isAdmin || localPreview) && <Link to={localPreview ? "/app/admin?preview=gallery-admin" : "/app/admin?tab=gallery"} aria-label="Manage gallery" title="Manage gallery" className="h-11 w-11 flex-none flex items-center justify-center rounded text-muted-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"><Settings2 className="h-4 w-4" /></Link>}
+        {(canManage || localPreview) && <Link to={localPreview ? "/app/admin?preview=gallery-admin" : "/app/admin?tab=gallery"} aria-label="Manage gallery" title="Manage gallery" className="h-11 w-11 flex-none flex items-center justify-center rounded text-muted-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"><Settings2 className="h-4 w-4" /></Link>}
         <details ref={menu} className="relative flex-none">
           <summary aria-label="Downloads" title={progress === null ? "Downloads" : `Preparing download: ${progress}%`} className="list-none [&::-webkit-details-marker]:hidden cursor-pointer h-11 w-11 flex items-center justify-center rounded text-muted-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
             {progress === null ? <Download className="h-4 w-4" /> : <LoaderCircle className="h-4 w-4 animate-spin" />}
