@@ -13,10 +13,22 @@ const AgendaPage = lazy(() =>
   import('./pages/agenda/AgendaPage.tsx').then((m) => ({ default: m.AgendaPage })),
 )
 
+const PhotoArchivePage = lazy(() =>
+  import('./pages/PhotoArchivePage.tsx').then((m) => ({ default: m.PhotoArchivePage })),
+)
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
+        <Route
+          path="/photo-archive"
+          element={
+            <Suspense fallback={<div role="status" style={{ padding: 24 }}>Loading photo archive…</div>}>
+              <PhotoArchivePage />
+            </Suspense>
+          }
+        />
         <Route
           path="/agenda"
           element={

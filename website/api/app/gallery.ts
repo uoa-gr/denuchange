@@ -155,14 +155,18 @@ async function requireOriginal(row: GalleryRow) {
 export default async function handler(req: any, res: any) {
   try {
     res.setHeader("Cache-Control", "private, no-store")
-    const payload = extractJwt(req)
-    if (!payload) return res.status(401).json({ error: "Sign in to open the gallery." })
     const action = typeof req.query?.action === "string" ? req.query.action : ""
-    if (action !== "published" && !payload.isAdmin) return res.status(403).json({ error: "Gallery management is available to administrators only." })
-
-    if (action === "published" || action === "manage") {
+    if (action === "published") {
       if (req.method !== "GET") return res.status(405).json({ error: "Method not allowed" })
-      return res.json(await listItems(action === "published"))
+      return res.json(await listItems(true))
+    }
+    const payload = extractJwt(req)
+    if (!payload) return res.status(401).json({ error: "Sign in to manage the gallery." })
+    if (!payload.isAdmin) return res.status(403).json({ error: "Gallery management is available to administrators only." })
+
+    if (action === "manage") {
+      if (req.method !== "GET") return res.status(405).json({ error: "Method not allowed" })
+      return res.json(await listItems(false))
     }
     if (action === "prepare") {
       if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" })

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
-import { ArrowRight, CalendarClock, CalendarDays, ChevronsDown, MapPin, Smartphone } from "lucide-react"
+import { ArrowRight, CalendarClock, CalendarDays, ChevronsDown, Images, MapPin, Smartphone } from "lucide-react"
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 
 const detailedProgramUrl = "https://uoa-gr.github.io/denuchange/agenda/"
 
@@ -126,7 +127,7 @@ export function Hero() {
           </div>
         </dl>
 
-        <nav aria-label="Workshop actions" className="flex flex-col justify-center gap-3 sm:flex-row">
+        <nav aria-label="Workshop actions" className="flex flex-col justify-center gap-3 sm:flex-row sm:flex-wrap">
           <Button
             size="lg"
             asChild
@@ -144,6 +145,13 @@ export function Hero() {
             <Smartphone className="h-4 w-4" aria-hidden="true" />
             Get the Attendee App
           </a>
+          <Link
+            to="/photo-archive"
+            className="inline-flex min-h-11 items-center justify-center gap-2 px-3 text-sm font-semibold text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:decoration-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            <Images className="h-4 w-4" aria-hidden="true" />
+            Workshop Photo Archive
+          </Link>
         </nav>
 
         </div>
