@@ -65,12 +65,12 @@ const actions = [
   {
     icon: Receipt,
     step: "Step 3",
-    title: "Upload Payment Receipt",
-    description: "After completing your bank transfer, upload your proof of payment here.",
+    title: "Receipt Uploads Closed",
+    description: "The workshop has concluded. Payment receipt uploads are no longer accepted.",
     dialog: PaymentReceiptDialog,
-    label: "Upload Receipt",
+    label: "Uploads Closed",
     variant: "outline" as const,
-    closed: false,
+    closed: true,
   },
 ]
 
@@ -86,7 +86,7 @@ export function Registration() {
             Join Us in Naxos
           </h2>
           <p className="text-muted-foreground">
-            Registration and abstract submission are now closed.
+            Registration, abstract submission, and receipt uploads are now closed.
           </p>
         </div>
 
