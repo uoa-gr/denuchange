@@ -193,7 +193,7 @@ export function WorkshopGallery({ canManage = false, localPreview = false }: { c
           className="order-last min-w-0 w-full sm:order-none sm:w-0 sm:flex-1 min-h-11 rounded border border-border bg-background px-2 py-2 text-base sm:text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option value="all">All formats</option>
-          <option value="original">Original</option>
+          <option value="original">Landscape</option>
           <option value="mobile">Mobile (9:16)</option>
         </select>}
         {(canManage || localPreview) && <Link to={localPreview ? "/app/admin?preview=gallery-admin" : "/app/admin?tab=gallery"} aria-label="Manage gallery" title="Manage gallery" className="h-11 w-11 flex-none flex items-center justify-center rounded text-muted-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"><Settings2 className="h-4 w-4" /></Link>}
